@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">JCourier</string>
+    <string name="title_activity_auth">AuthActivity</string>
+    <string name="login_error">Ошибка входа</string>
+</resources>
