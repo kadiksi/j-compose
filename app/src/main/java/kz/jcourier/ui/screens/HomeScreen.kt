@@ -17,7 +17,7 @@ import kz.jcourier.viewmodel.LoginViewModel
 fun HomeScreen(
     show: Boolean,
     viewModel: LoginViewModel = viewModel(),
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel = viewModel()
 ) {
     if (show) {
         val navController = rememberNavController()
@@ -48,25 +48,38 @@ fun HomeScreen(
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = DrawerScreens.Home.route
+                    startDestination = DrawerScreens.ActiveOrders.route
                 ) {
-                    composable(DrawerScreens.Home.route) {
-                        Home(
+                    composable(DrawerScreens.ActiveOrders.route) {
+                        ActiveOrders(
                             openDrawer = {
                                 openDrawer()
                             },
                             homeViewModel = homeViewModel
                         )
                     }
-                    composable(DrawerScreens.Account.route) {
-                        Account(
+                    composable(DrawerScreens.Map.route) {
+                        Map(
                             openDrawer = {
                                 openDrawer()
                             }
                         )
                     }
-                    composable(DrawerScreens.Help.route) {
-                        viewModel.logOut()
+                    composable(DrawerScreens.Notifications.route) {
+//                        viewModel.logOut()
+                        Settings(
+                            navController
+                        )
+                    }
+                    composable(DrawerScreens.Statistic.route) {
+                        Settings(
+                            navController
+                        )
+                    }
+                    composable(DrawerScreens.Settings.route) {
+                        Settings(
+                            navController
+                        )
                     }
                 }
             }

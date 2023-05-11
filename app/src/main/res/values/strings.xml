@@ -2,4 +2,11 @@
     <string name="app_name">JCourier</string>
     <string name="title_activity_auth">AuthActivity</string>
     <string name="login_error">Ошибка входа</string>
+
+    <string name="active_orders">Активные заказы</string>
+    <string name="map">Карта</string>
+    <string name="notifications">Уведомления</string>
+    <string name="statistic">Статистика</string>
+    <string name="settings">Настройки</string>
+
 </resources>

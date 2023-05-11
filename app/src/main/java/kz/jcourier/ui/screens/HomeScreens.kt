@@ -11,13 +11,12 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kz.jcourier.ui.component.TopBar
 import kz.jcourier.viewmodel.HomeViewModel
 
 @Composable
-fun Home(
+fun ActiveOrders(
     openDrawer: () -> Unit,
     homeViewModel: HomeViewModel
 ) {
@@ -39,7 +38,7 @@ fun Home(
 }
 
 @Composable
-fun Account(openDrawer: () -> Unit) {
+fun Map(openDrawer: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
             title = "Account",
@@ -57,7 +56,7 @@ fun Account(openDrawer: () -> Unit) {
 }
 
 @Composable
-fun Help(navController: NavController) {
+fun Settings(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
             title = "Help",

@@ -35,7 +35,7 @@ class EntryPointActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    LoginPage(homeViewModel = homeViewModel)
+                    LoginPage()
                 }
             }
         }
@@ -43,14 +43,14 @@ class EntryPointActivity : ComponentActivity() {
 }
 
 @Composable
-fun LoginPage(viewModel: LoginViewModel = viewModel(), homeViewModel: HomeViewModel) {
+fun LoginPage(viewModel: LoginViewModel = viewModel()) {
     val isAuthorised by viewModel.uiState.isAuthorised
 
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
         LoginScreen(!isAuthorised)
-        HomeScreen(isAuthorised, homeViewModel = homeViewModel)
+        HomeScreen(isAuthorised)
     }
 }
 
