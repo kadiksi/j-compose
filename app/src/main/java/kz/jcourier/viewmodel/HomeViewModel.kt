@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.jcourier.common.NetworkResult
-import kz.jcourier.data.interceptors.TokenManager
 import kz.jcourier.data.model.auth.TokenModule
 import kz.jcourier.data.repository.LoginRepository
 import javax.inject.Inject

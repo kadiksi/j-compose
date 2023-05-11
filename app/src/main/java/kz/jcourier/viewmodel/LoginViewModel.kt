@@ -11,11 +11,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kz.jcourier.addCharAtIndex
+import kz.jcourier.utils.addCharAtIndex
 import kz.jcourier.common.NetworkResult
-import kz.jcourier.data.interceptors.TokenManager
 import kz.jcourier.data.model.auth.TokenModule
 import kz.jcourier.data.repository.LoginRepository
+import kz.jcourier.data.sharedprefs.SharedPreferencesProvider
 import javax.inject.Inject
 
 data class LoginState(
@@ -27,14 +27,14 @@ data class LoginState(
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val tokenManager: TokenManager
+    private val sharedPreferencesProvider: SharedPreferencesProvider
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(LoginState())
 
     init {
         viewModelScope.launch {
-            uiState.isAuthorised.value = !tokenManager.getToken().first().isNullOrEmpty()
+            uiState.isAuthorised.value = !sharedPreferencesProvider.accessToken.isNullOrEmpty()
         }
     }
 
@@ -44,8 +44,8 @@ class LoginViewModel @Inject constructor(
         when (val result = loginRepository.login(getValidPhone(phone), password)) {
             is NetworkResult.Success -> {
                 result.data?.let {
+                    it.data?.let { it1 -> sharedPreferencesProvider.setUserData(it1) }
                     uiState.user.value = it.data
-                    it.data?.tokens?.auth?.token?.let { it1 -> tokenManager.saveToken(it1) }
                     Log.e("SUCCESS", it.data?.tokens?.auth?.token!!)
                     uiState.isError.value = false
                     uiState.isAuthorised.value = true
@@ -73,7 +73,7 @@ class LoginViewModel @Inject constructor(
 
     fun logOut(){
         viewModelScope.launch {
-            tokenManager.deleteToken()
+            sharedPreferencesProvider.cleanup()
             uiState.isAuthorised.value = false
         }
     }
