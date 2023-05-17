@@ -1,9 +1,10 @@
 package kz.jcourier.ui.component
 
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(title: String = "", buttonIcon: ImageVector, onButtonClicked: () -> Unit) {
     TopAppBar(
@@ -17,6 +18,5 @@ fun TopBar(title: String = "", buttonIcon: ImageVector, onButtonClicked: () -> U
                 Icon(buttonIcon, contentDescription = "")
             }
         },
-        backgroundColor = MaterialTheme.colors.primaryVariant
     )
 }

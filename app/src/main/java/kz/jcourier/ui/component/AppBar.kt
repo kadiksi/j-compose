@@ -1,13 +1,15 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package kz.jcourier.ui.component
 
 import android.widget.Toast
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
+import androidx.compose.material3.TopAppBar
 
 @Composable
 fun ToolbarWidget(name: String,content: @Composable () -> Unit) {
@@ -28,9 +30,6 @@ fun ToolbarWidget(name: String,content: @Composable () -> Unit) {
                         Icon(Icons.Filled.Menu, "MenuIcon")
                     }
                 },
-                backgroundColor = Color.Blue,
-                contentColor = Color.White,
-                elevation = 12.dp
             )
         }, content = { content() },
         bottomBar = {

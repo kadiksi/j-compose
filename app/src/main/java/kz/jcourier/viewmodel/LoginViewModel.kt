@@ -9,18 +9,17 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kz.jcourier.utils.addCharAtIndex
 import kz.jcourier.common.NetworkResult
-import kz.jcourier.data.model.auth.TokenModule
+import kz.jcourier.data.model.auth.TokenModel
 import kz.jcourier.data.repository.LoginRepository
 import kz.jcourier.data.sharedprefs.SharedPreferencesProvider
 import javax.inject.Inject
 
 data class LoginState(
     var isAuthorised: MutableState<Boolean> = mutableStateOf(false),
-    val user: MutableState<TokenModule?> = mutableStateOf(null),
+    val user: MutableState<TokenModel?> = mutableStateOf(null),
     var isError: MutableState<Boolean> = mutableStateOf(false),
 )
 

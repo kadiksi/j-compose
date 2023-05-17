@@ -3,7 +3,7 @@ package kz.jcourier.data.sharedprefs
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
-import kz.jcourier.data.model.auth.TokenModule
+import kz.jcourier.data.model.auth.TokenModel
 
 
 interface SharedPreferencesProvider {
@@ -31,7 +31,7 @@ interface SharedPreferencesProvider {
     var isFirstEntry: Boolean
 
     fun cleanup()
-    fun setUserData(user: TokenModule)
+    fun setUserData(user: TokenModel)
     fun saveCredentials(
         login: String? = null,
         password: String? = null
@@ -56,7 +56,7 @@ class SharedPreferencesProviderImpl constructor(
         tokenType = null
     }
 
-    override fun setUserData(user: TokenModule) {
+    override fun setUserData(user: TokenModel) {
         accessToken = user.tokens?.auth?.token
         refreshToken = user.refresh?.token
         accessExpired = user.tokens?.auth?.expired

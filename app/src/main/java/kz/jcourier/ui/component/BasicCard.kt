@@ -3,9 +3,9 @@ package kz.jcourier.ui.component
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -15,7 +15,7 @@ import coil.transform.CircleCropTransformation
 import kz.jcourier.data.model.PhotosModel
 import kz.jcourier.ui.containers.ChatActivity
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicCard(photosModel: PhotosModel) {
     val context = LocalContext.current;

@@ -8,5 +8,6 @@
     <string name="notifications">Уведомления</string>
     <string name="statistic">Статистика</string>
     <string name="settings">Настройки</string>
+    <string name="exit">Выход</string>
 
 </resources>

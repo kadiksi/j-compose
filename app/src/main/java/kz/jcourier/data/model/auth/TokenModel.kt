@@ -1,11 +1,11 @@
 package kz.jcourier.data.model.auth
 
-data class TokenModuleData(
+data class TokenModeleData(
     var success: Boolean?,
-    var data: TokenModule?
+    var data: TokenModel?
 )
 
-data class TokenModule(
+data class TokenModel(
     var tokens: Tokens?,
     var refresh: Refresh?
 )

@@ -6,8 +6,8 @@ import kotlinx.coroutines.withContext
 import kz.jcourier.common.BaseApiResponse
 import kz.jcourier.common.NetworkResult
 import kz.jcourier.data.api.LoginApiService
-import kz.jcourier.data.model.auth.LoginModule
-import kz.jcourier.data.model.auth.TokenModuleData
+import kz.jcourier.data.model.auth.LoginModel
+import kz.jcourier.data.model.auth.TokenModeleData
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -15,11 +15,11 @@ class LoginRepository @Inject constructor(
     private val loginApiService: LoginApiService,
     private val defaultDispatcher: CoroutineDispatcher
 ) : BaseApiResponse() {
-    suspend fun login(phone: String, password: String): NetworkResult<TokenModuleData> {
+    suspend fun login(phone: String, password: String): NetworkResult<TokenModeleData> {
         return withContext(defaultDispatcher) {
             safeApiCall {
                 loginApiService.login(
-                    LoginModule(
+                    LoginModel(
                         phone,
                         password
                     )
@@ -28,7 +28,7 @@ class LoginRepository @Inject constructor(
         }
     }
 
-    suspend fun getUserRoleList(): NetworkResult<TokenModuleData> {
+    suspend fun getUserRoleList(): NetworkResult<TokenModeleData> {
         return withContext(defaultDispatcher) {
             safeApiCall {
                 loginApiService.getUserRoleList()

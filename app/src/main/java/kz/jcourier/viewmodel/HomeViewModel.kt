@@ -11,13 +11,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.jcourier.common.NetworkResult
-import kz.jcourier.data.model.auth.TokenModule
+import kz.jcourier.data.model.auth.TokenModel
 import kz.jcourier.data.repository.LoginRepository
 import javax.inject.Inject
 
 data class HomeState(
     var isAuthorised: MutableState<Boolean> = mutableStateOf(false),
-    val user: MutableState<TokenModule?> = mutableStateOf(null),
+    val user: MutableState<TokenModel?> = mutableStateOf(null),
     var isError: MutableState<Boolean> = mutableStateOf(false),
 )
 
@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
         getUserRoleList()
     }
 
-    private fun getUserRoleList() = viewModelScope.launch {
+    fun getUserRoleList() = viewModelScope.launch {
         when (val result = loginRepository.getUserRoleList()) {
             is NetworkResult.Success -> {
                 result.data?.let {

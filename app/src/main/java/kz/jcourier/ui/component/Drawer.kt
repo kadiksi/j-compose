@@ -3,8 +3,8 @@ package kz.jcourier.ui.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +23,7 @@ sealed class DrawerScreens(val title: Int, val route: String) {
     object Notifications : DrawerScreens(R.string.notifications, "notifications")
     object Statistic : DrawerScreens(R.string.statistic, "statistic")
     object Settings : DrawerScreens(R.string.settings, "settings")
+    object Exit : DrawerScreens(R.string.exit, "exit")
 }
 
 private val screens = listOf(
@@ -30,7 +31,8 @@ private val screens = listOf(
     DrawerScreens.Map,
     DrawerScreens.Notifications,
     DrawerScreens.Statistic,
-    DrawerScreens.Settings
+    DrawerScreens.Settings,
+    DrawerScreens.Exit
 )
 
 @Composable
@@ -75,7 +77,7 @@ fun Drawer(
         screens.forEach { screen ->
             Spacer(Modifier.height(24.dp))
             Text(text = stringResource(id = screen.title),
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.clickable {
                     onDestinationClicked(screen.route)
                 })

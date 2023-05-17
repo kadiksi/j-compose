@@ -10,9 +10,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +38,6 @@ class ChatActivity : ComponentActivity() {
             JTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
                 ) {
                     ToolbarWidget(getString(R.string.app_name)) {
                         Column(Modifier.fillMaxSize()) {
@@ -51,6 +50,7 @@ class ChatActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContainer() {
     val context = LocalContext.current
@@ -83,7 +83,6 @@ fun MainContainer() {
                 TextField(
                     modifier = Modifier.weight(1f),
                     colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.Transparent,
                         cursorColor = Color.Black,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent

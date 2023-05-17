@@ -5,7 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kz.jcourier.data.exception.ApiTokenRefreshException
 import kz.jcourier.data.api.ApiConstants
-import kz.jcourier.data.model.auth.TokenModule
+import kz.jcourier.data.model.auth.TokenModel
 import kz.jcourier.data.sharedprefs.SharedPreferencesProvider
 import kz.jcourier.di.BasicOkHttpClient
 import kz.jcourier.utils.HttpUtils
@@ -46,7 +46,7 @@ class TokenAuthenticator @Inject constructor(
             if (response.isSuccessful) {
                 val body = response.body
                 if (body != null) {
-                    val user = gson.fromJson(body.string(), TokenModule::class.java)
+                    val user = gson.fromJson(body.string(), TokenModel::class.java)
                     response.close()
                     Timber.d("RefreshToken RESPONSE: %s", user.toString())
                     if (user.tokens?.auth?.token != null && user.refresh?.token != null) {

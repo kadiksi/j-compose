@@ -8,8 +8,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -23,7 +24,6 @@ import kz.jcourier.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    show: Boolean,
     viewModel: LoginViewModel = viewModel()
 ) {
     var emailText by remember { mutableStateOf("") }
@@ -65,7 +65,7 @@ fun LoginScreen(
             trailingIcon = {
                 IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
                     Icon(
-                        imageVector = if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        imageVector = if (passwordVisibility) Icons.Filled.Menu else Icons.Filled.AccountBox,
                         contentDescription = if (passwordVisibility) "Hide password" else "Show password"
                     )
                 }
