@@ -6,24 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import kz.jcourier.ui.component.Drawer
-import kz.jcourier.ui.component.DrawerScreens
-import kz.jcourier.ui.screens.ActiveOrders
-import kz.jcourier.ui.screens.Map
-import kz.jcourier.ui.screens.Settings
-import kz.jcourier.viewmodel.HomeViewModel
-import kz.jcourier.viewmodel.LoginViewModel
+import kz.jcourier.ui.navigation.MainNavHost
 
 @Composable
-fun HomeScreen(
-    loginViewModel: LoginViewModel = viewModel(),
-    homeViewModel: HomeViewModel = viewModel()
-) {
+fun HomeScreen() {
     val navController = rememberNavController()
     Surface {
         val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -54,45 +43,7 @@ fun HomeScreen(
                 }
             }
         ) {
-            NavHost(
-                navController = navController,
-                startDestination = DrawerScreens.ActiveOrders.route
-            ) {
-                composable(DrawerScreens.ActiveOrders.route) {
-                    ActiveOrders(
-                        navController,
-                        openDrawer = {
-                            openDrawer()
-                        },
-                        homeViewModel = homeViewModel
-                    )
-                }
-                composable(DrawerScreens.Map.route) {
-                    Map(
-                        openDrawer = {
-                            openDrawer()
-                        }
-                    )
-                }
-                composable(DrawerScreens.Notifications.route) {
-                    Settings(
-                        navController
-                    )
-                }
-                composable(DrawerScreens.Statistic.route) {
-                    Settings(
-                        navController
-                    )
-                }
-                composable(DrawerScreens.Settings.route) {
-                    Settings(
-                        navController
-                    )
-                }
-                composable(DrawerScreens.Exit.route) {
-                    loginViewModel.logOut()
-                }
-            }
+            MainNavHost(navController, openDrawer)
         }
     }
 }

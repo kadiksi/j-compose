@@ -11,17 +11,20 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import kz.jcourier.ui.component.TopBar
 import kz.jcourier.ui.screens.activeorders.activeOrders
 import kz.jcourier.viewmodel.HomeViewModel
+import kz.jcourier.viewmodel.TaskViewModel
 
 @Composable
 fun ActiveOrders(
-    navController : NavHostController,
+    navController: NavHostController,
     openDrawer: () -> Unit,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     activeOrders(navController, openDrawer, homeViewModel)
 }
@@ -45,7 +48,10 @@ fun Map(openDrawer: () -> Unit) {
 }
 
 @Composable
-fun Settings(navController: NavController) {
+fun Settings(
+    navController: NavController,
+    taskViewModel : TaskViewModel = hiltViewModel()
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
             title = "Help",

@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import kz.jcourier.data.model.task.Task
 import kz.jcourier.ui.containers.ChatActivity
+import kz.jcourier.ui.navigation.navigate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,12 +21,12 @@ fun TaskCard(
     navController: NavHostController,
     task: Task
 ) {
-//    val context = LocalContext.current;
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp)
         .width(IntrinsicSize.Max), onClick = {
-        navController.navigate(DrawerScreens.Settings.route)
+        navController.navigate(DrawerScreens.Settings.route,
+        "task" to task)
 //        context.startActivity(Intent(context, ChatActivity::class.java))
     }
     ) {

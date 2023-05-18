@@ -1,5 +1,9 @@
 package kz.jcourier.data.model.task
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Task(
     var id: Int? = null,
     var userId: Int? = null,
@@ -13,4 +17,4 @@ data class Task(
     var contactFrom: ContactFrom? = ContactFrom(),
     var product: ArrayList<Product> = arrayListOf(),
     var histories: ArrayList<String> = arrayListOf()
-)
+) : Parcelable

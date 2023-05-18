@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
         getUserRoleList()
     }
 
-    fun getUserRoleList() = viewModelScope.launch {
+    private fun getUserRoleList() = viewModelScope.launch {
         when (val result = loginRepository.getUserRoleList()) {
             is NetworkResult.Success -> {
                 result.data?.let {
