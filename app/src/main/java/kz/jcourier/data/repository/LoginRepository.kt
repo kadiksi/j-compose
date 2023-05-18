@@ -8,6 +8,7 @@ import kz.jcourier.common.NetworkResult
 import kz.jcourier.data.api.LoginApiService
 import kz.jcourier.data.model.auth.LoginModel
 import kz.jcourier.data.model.auth.TokenModeleData
+import kz.jcourier.data.model.task.Task
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -28,7 +29,7 @@ class LoginRepository @Inject constructor(
         }
     }
 
-    suspend fun getUserRoleList(): NetworkResult<TokenModeleData> {
+    suspend fun getUserRoleList(): NetworkResult<List<Task>> {
         return withContext(defaultDispatcher) {
             safeApiCall {
                 loginApiService.getUserRoleList()

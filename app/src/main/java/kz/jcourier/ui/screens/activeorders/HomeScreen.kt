@@ -60,6 +60,7 @@ fun HomeScreen(
             ) {
                 composable(DrawerScreens.ActiveOrders.route) {
                     ActiveOrders(
+                        navController,
                         openDrawer = {
                             openDrawer()
                         },
@@ -74,7 +75,6 @@ fun HomeScreen(
                     )
                 }
                 composable(DrawerScreens.Notifications.route) {
-//                        viewModel.logOut()
                     Settings(
                         navController
                     )
@@ -95,5 +95,4 @@ fun HomeScreen(
             }
         }
     }
-
 }

@@ -12,13 +12,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.jcourier.common.NetworkResult
 import kz.jcourier.data.model.auth.TokenModel
+import kz.jcourier.data.model.task.Task
 import kz.jcourier.data.repository.LoginRepository
 import javax.inject.Inject
 
 data class HomeState(
-    var isAuthorised: MutableState<Boolean> = mutableStateOf(false),
-    val user: MutableState<TokenModel?> = mutableStateOf(null),
     var isError: MutableState<Boolean> = mutableStateOf(false),
+    var taskList: MutableState<List<Task>> = mutableStateOf(emptyList()),
 )
 
 @HiltViewModel
@@ -36,6 +36,7 @@ class HomeViewModel @Inject constructor(
         when (val result = loginRepository.getUserRoleList()) {
             is NetworkResult.Success -> {
                 result.data?.let {
+                    uiState.taskList.value = it
                 }
             }
             is NetworkResult.Error -> {

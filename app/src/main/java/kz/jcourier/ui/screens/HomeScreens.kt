@@ -12,16 +12,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import kz.jcourier.ui.component.TopBar
 import kz.jcourier.ui.screens.activeorders.activeOrders
 import kz.jcourier.viewmodel.HomeViewModel
 
 @Composable
 fun ActiveOrders(
+    navController : NavHostController,
     openDrawer: () -> Unit,
     homeViewModel: HomeViewModel
 ) {
-    activeOrders(openDrawer, homeViewModel)
+    activeOrders(navController, openDrawer, homeViewModel)
 }
 
 @Composable
