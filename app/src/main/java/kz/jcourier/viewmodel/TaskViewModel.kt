@@ -12,23 +12,22 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.jcourier.common.NetworkResult
-import kz.jcourier.data.model.auth.TokenModel
 import kz.jcourier.data.model.task.Task
-import kz.jcourier.data.repository.LoginRepository
+import kz.jcourier.data.repository.TaskRepository
 import javax.inject.Inject
 
 data class TaskState(
     var isError: MutableState<Boolean> = mutableStateOf(false),
-    var taskList: MutableState<List<Task>> = mutableStateOf(emptyList()),
+    var task: MutableState<Task> = mutableStateOf(Task()),
 )
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(
-    private val loginRepository: LoginRepository,
+    private val taskRepository: TaskRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), LifecycleObserver {
 
-    var uiState by mutableStateOf(HomeState())
+    var uiState by mutableStateOf(TaskState())
     private val args = savedStateHandle.get<Task>("task")
 
     init {
@@ -36,22 +35,22 @@ class TaskViewModel @Inject constructor(
         Log.e("IDD", "${args?.id}")
     }
 
-    fun getTask(id: Int) = viewModelScope.launch {
+    private fun getTask(id: Int) = viewModelScope.launch {
         Log.e("IDD", "${id}")
-//        when (val result = loginRepository.getUserRoleList()) {
-//            is NetworkResult.Success -> {
-//                result.data?.let {
-//                    uiState.taskList.value = it
-//                }
-//            }
-//            is NetworkResult.Error -> {
-//                Log.e("ER", "${result.data}")
-//                uiState.isError.value = true
-//            }
-//            else -> {
-//                Log.e("ER", "Else")
-//                uiState.isError.value = true
-//            }
-//        }
+        when (val result = taskRepository.getTaskById(id)) {
+            is NetworkResult.Success -> {
+                result.data?.let {
+                    uiState.task.value = it
+                }
+            }
+            is NetworkResult.Error -> {
+                Log.e("ER", "${result.data}")
+                uiState.isError.value = true
+            }
+            else -> {
+                Log.e("ER", "Else")
+                uiState.isError.value = true
+            }
+        }
     }
 }

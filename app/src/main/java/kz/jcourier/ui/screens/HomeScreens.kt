@@ -12,11 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import kz.jcourier.ui.component.TopBar
-import kz.jcourier.ui.screens.activeorders.activeOrders
+import kz.jcourier.ui.screens.activeorders.activeTaskList
 import kz.jcourier.viewmodel.HomeViewModel
 import kz.jcourier.viewmodel.TaskViewModel
 
@@ -26,7 +25,7 @@ fun ActiveOrders(
     openDrawer: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    activeOrders(navController, openDrawer, homeViewModel)
+    activeTaskList(navController, openDrawer, homeViewModel)
 }
 
 @Composable
@@ -43,27 +42,6 @@ fun Map(openDrawer: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Account.", style = MaterialTheme.typography.bodyMedium)
-        }
-    }
-}
-
-@Composable
-fun Settings(
-    navController: NavController,
-    taskViewModel : TaskViewModel = hiltViewModel()
-) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(
-            title = "Help",
-            buttonIcon = Icons.Filled.ArrowBack,
-            onButtonClicked = { navController.popBackStack() }
-        )
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Help.", style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

@@ -18,12 +18,12 @@ import kz.jcourier.ui.component.TopBar
 import kz.jcourier.viewmodel.HomeViewModel
 
 @Composable
-fun activeOrders(
+fun activeTaskList(
     navController : NavHostController,
     openDrawer: () -> Unit,
     homeViewModel: HomeViewModel
 ) {
-    val pokeList = homeViewModel.uiState.taskList.value
+    val taskList = homeViewModel.uiState.taskList.value
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
@@ -41,7 +41,7 @@ fun activeOrders(
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             ) {
                 items(
-                    items = pokeList,
+                    items = taskList,
                     itemContent = {
                         TaskCard(navController, it)
                     }

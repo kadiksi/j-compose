@@ -9,5 +9,11 @@
     <string name="statistic">Статистика</string>
     <string name="settings">Настройки</string>
     <string name="exit">Выход</string>
-
+    <string name="task_id">Номер заказа: %1s</string>
+    <string name="from_address">Адрес от: \n %1s</string>
+    <string name="to_address">Адрес доставки: \n %1s</string>
+    <string name="from_contact">Отправитель: %1s</string>
+    <string name="to_contact">Получатель: %1s</string>
+    <string name="product_list">Товар</string>
+    <string name="history">История</string>
 </resources>

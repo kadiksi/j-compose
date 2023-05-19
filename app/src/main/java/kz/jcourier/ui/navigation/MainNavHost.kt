@@ -9,7 +9,7 @@ import kotlinx.coroutines.Job
 import kz.jcourier.ui.component.DrawerScreens
 import kz.jcourier.ui.screens.ActiveOrders
 import kz.jcourier.ui.screens.Map
-import kz.jcourier.ui.screens.Settings
+import kz.jcourier.ui.screens.activeorders.task
 import kz.jcourier.viewmodel.LoginViewModel
 
 @Composable
@@ -49,7 +49,7 @@ fun MainNavHost(
 //                    )
         }
         composable(DrawerScreens.Settings.route) {
-            Settings(
+            task(
                 navController,
             )
         }

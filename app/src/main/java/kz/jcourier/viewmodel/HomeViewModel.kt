@@ -11,9 +11,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.jcourier.common.NetworkResult
-import kz.jcourier.data.model.auth.TokenModel
 import kz.jcourier.data.model.task.Task
-import kz.jcourier.data.repository.LoginRepository
+import kz.jcourier.data.repository.TaskRepository
 import javax.inject.Inject
 
 data class HomeState(
@@ -23,7 +22,7 @@ data class HomeState(
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val taskRepository: TaskRepository
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(HomeState())
@@ -33,7 +32,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getUserRoleList() = viewModelScope.launch {
-        when (val result = loginRepository.getUserRoleList()) {
+        when (val result = taskRepository.getTaskList()) {
             is NetworkResult.Success -> {
                 result.data?.let {
                     uiState.taskList.value = it

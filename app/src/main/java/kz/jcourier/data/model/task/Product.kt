@@ -11,4 +11,8 @@ data class Product(
     var name: String? = null,
     var quantity: Int? = null,
     var delivered: Boolean? = null
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        return "$id $orderId $productId $name $quantity $delivered"
+    }
+}
