@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import kz.jcourier.ui.component.TopBar
+import kz.jcourier.ui.map.homeMap
 import kz.jcourier.ui.screens.activeorders.activeTaskList
 import kz.jcourier.viewmodel.HomeViewModel
 import kz.jcourier.viewmodel.TaskViewModel
@@ -29,19 +30,10 @@ fun ActiveOrders(
 }
 
 @Composable
-fun Map(openDrawer: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(
-            title = "Account",
-            buttonIcon = Icons.Filled.Menu,
-            onButtonClicked = { openDrawer() }
-        )
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Account.", style = MaterialTheme.typography.bodyMedium)
-        }
-    }
+fun Map(
+    navController: NavHostController,
+    openDrawer: () -> Unit,
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
+    homeMap(navController, openDrawer, homeViewModel)
 }

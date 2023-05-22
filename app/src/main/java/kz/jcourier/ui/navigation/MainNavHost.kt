@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import kotlinx.coroutines.Job
 import kz.jcourier.ui.component.DrawerScreens
+import kz.jcourier.ui.map.homeMap
 import kz.jcourier.ui.screens.ActiveOrders
 import kz.jcourier.ui.screens.Map
 import kz.jcourier.ui.screens.activeorders.task
@@ -33,6 +34,7 @@ fun MainNavHost(
         }
         composable(DrawerScreens.Map.route) {
             Map(
+                navController,
                 openDrawer = {
                     openDrawer()
                 }
