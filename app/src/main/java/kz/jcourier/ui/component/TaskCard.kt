@@ -25,18 +25,19 @@ fun TaskCard(
         .fillMaxWidth()
         .padding(8.dp)
         .width(IntrinsicSize.Max), onClick = {
-        navController.navigate(DrawerScreens.Settings.route,
-        "task" to task)
-//        context.startActivity(Intent(context, ChatActivity::class.java))
+        navController.navigate(
+            DrawerScreens.Settings.route,
+            "task" to task
+        )
     }
     ) {
         Row {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(start = 8.dp, top =  8.dp)
                     .weight(1f),
-                text = task.id.toString()
+                text = "№ ${task.id.toString()} status: ${task.status}"
             )
         }
         Row {

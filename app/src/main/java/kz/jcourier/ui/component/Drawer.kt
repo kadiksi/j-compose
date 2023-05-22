@@ -75,12 +75,19 @@ fun Drawer(
             }
         }
         screens.forEach { screen ->
-            Spacer(Modifier.height(24.dp))
-            Text(text = stringResource(id = screen.title),
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.clickable {
-                    onDestinationClicked(screen.route)
-                })
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clickable {
+                        onDestinationClicked(screen.route)
+                    }
+            ) {
+                Text(
+                    text = stringResource(id = screen.title),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }

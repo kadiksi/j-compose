@@ -16,4 +16,6 @@
     <string name="to_contact">Получатель: %1s</string>
     <string name="product_list">Товар</string>
     <string name="history">История</string>
+    <string name="start">Начать</string>
+    <string name="login">Войти</string>
 </resources>

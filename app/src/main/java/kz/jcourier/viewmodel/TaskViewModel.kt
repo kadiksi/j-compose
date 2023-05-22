@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.jcourier.common.NetworkResult
 import kz.jcourier.data.model.task.Task
+import kz.jcourier.data.model.task.TaskId
 import kz.jcourier.data.repository.TaskRepository
 import javax.inject.Inject
 
@@ -32,11 +33,9 @@ class TaskViewModel @Inject constructor(
 
     init {
         args?.id?.let { getTask(it) }
-        Log.e("IDD", "${args?.id}")
     }
 
     private fun getTask(id: Int) = viewModelScope.launch {
-        Log.e("IDD", "${id}")
         when (val result = taskRepository.getTaskById(id)) {
             is NetworkResult.Success -> {
                 result.data?.let {
@@ -44,11 +43,25 @@ class TaskViewModel @Inject constructor(
                 }
             }
             is NetworkResult.Error -> {
-                Log.e("ER", "${result.data}")
                 uiState.isError.value = true
             }
             else -> {
-                Log.e("ER", "Else")
+                uiState.isError.value = true
+            }
+        }
+    }
+
+    fun startTask(taskId: Int, courierId: Int) = viewModelScope.launch {
+        when (val result = taskRepository.startTask(TaskId(taskId, courierId))) {
+            is NetworkResult.Success -> {
+                result.data?.let {
+                    uiState.task.value = it
+                }
+            }
+            is NetworkResult.Error -> {
+                uiState.isError.value = true
+            }
+            else -> {
                 uiState.isError.value = true
             }
         }

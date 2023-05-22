@@ -7,6 +7,7 @@ import kz.jcourier.common.BaseApiResponse
 import kz.jcourier.common.NetworkResult
 import kz.jcourier.data.api.TaskApiService
 import kz.jcourier.data.model.task.Task
+import kz.jcourier.data.model.task.TaskId
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -27,6 +28,14 @@ class TaskRepository @Inject constructor(
         return withContext(defaultDispatcher) {
             safeApiCall {
                 taskApiService.getTaskById(id)
+            }
+        }
+    }
+
+    suspend fun startTask(task: TaskId): NetworkResult<Task> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.startTask(task)
             }
         }
     }

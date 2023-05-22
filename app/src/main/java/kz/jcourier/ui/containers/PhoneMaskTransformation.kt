@@ -42,7 +42,7 @@ class PhoneMaskTransformation : VisualTransformation {
                 }
                 if (offset <= 17) {
                     Log.e("originalToTransformed", "offset 6 $offset")
-                    return offset + 3
+                    return offset + 6
                 }
                 return 17
             }

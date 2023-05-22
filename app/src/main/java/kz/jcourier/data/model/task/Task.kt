@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Task(
     var id: Int? = null,
     var userId: Int? = null,
-    var status: String? = null,
+    var status: TaskStatus? = null,
     var serviceId: Int? = null,
     var orderId: Int? = null,
     var routeId: Int? = null,
@@ -16,5 +16,16 @@ data class Task(
     var contactTo: ContactTo? = ContactTo(),
     var contactFrom: ContactFrom? = ContactFrom(),
     var product: ArrayList<Product> = arrayListOf(),
-    var histories: ArrayList<String> = arrayListOf()
+    var histories: ArrayList<TaskHistory> = arrayListOf()
 ) : Parcelable
+
+enum class TaskStatus {
+    NEW,
+    ASSIGNED,
+    ON_WAY,
+    PICK_UP,
+    DELIVER,
+    CONFIRM,
+    FINISHED,
+    CANCEL
+}

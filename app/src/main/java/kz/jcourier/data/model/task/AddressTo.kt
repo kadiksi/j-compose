@@ -8,5 +8,5 @@ data class AddressTo(
     var id: Int? = null,
     var cityId: Int? = null,
     var address: String? = null,
-    var point: Point? = Point()
+    var point: Point? = null
 ) : Parcelable

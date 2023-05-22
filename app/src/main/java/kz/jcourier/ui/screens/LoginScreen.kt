@@ -10,14 +10,20 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kz.jcourier.R
 import kz.jcourier.ui.component.SimpleAlertDialog
 import kz.jcourier.ui.containers.PhoneMaskTransformation
 import kz.jcourier.viewmodel.LoginViewModel
@@ -65,7 +71,11 @@ fun LoginScreen(
             trailingIcon = {
                 IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
                     Icon(
-                        imageVector = if (passwordVisibility) Icons.Filled.Menu else Icons.Filled.AccountBox,
+                        imageVector = if (passwordVisibility)
+                            ImageVector.vectorResource(R.drawable.baseline_visibility_24) else
+                            ImageVector.vectorResource(
+                                R.drawable.baseline_visibility_off_24
+                            ),
                         contentDescription = if (passwordVisibility) "Hide password" else "Show password"
                     )
                 }
@@ -80,7 +90,7 @@ fun LoginScreen(
                 .padding(top = 16.dp)
                 .fillMaxWidth()
         ) {
-            Text("Log In")
+            Text(stringResource(id = R.string.login))
         }
         SimpleAlertDialog(
             show = isError,

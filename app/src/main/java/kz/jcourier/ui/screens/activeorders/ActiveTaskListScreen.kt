@@ -11,8 +11,10 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kz.jcourier.R
 import kz.jcourier.ui.component.TaskCard
 import kz.jcourier.ui.component.TopBar
 import kz.jcourier.viewmodel.HomeViewModel
@@ -27,7 +29,7 @@ fun activeTaskList(
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
-            title = "Home",
+            title = stringResource(id = R.string.active_orders),
             buttonIcon = Icons.Filled.Menu,
             onButtonClicked = { openDrawer() }
         )
