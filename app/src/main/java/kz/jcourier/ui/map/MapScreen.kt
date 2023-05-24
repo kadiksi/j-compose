@@ -1,15 +1,22 @@
 package kz.jcourier.ui.map
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.CameraPosition
@@ -18,14 +25,18 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kz.jcourier.ui.component.TopBar
-import kz.jcourier.viewmodel.HomeViewModel
+import kz.jcourier.viewmodel.MapViewModel
 
 @Composable
 fun homeMap(
     navController: NavHostController,
     openDrawer: () -> Unit,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    mapViewModel: MapViewModel = hiltViewModel(),
 ) {
+    val location = remember {
+        mapViewModel.uiState.lastSentLocation.value
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
             title = "Account",
@@ -37,21 +48,22 @@ fun homeMap(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val singapore = LatLng(1.35, 103.87)
+            Button(
+                onClick = { },
+                modifier = Modifier.padding(16.dp),
+            ) {}
+            val latLon = LatLng(location.longitude, location.latitude)
             val cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(singapore, 10f)
+                position = CameraPosition.fromLatLngZoom(latLon, 10f)
             }
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState
             ) {
                 Marker(
-                    position = singapore,
-                    title = "Singapore",
-                    snippet = "Marker in Singapore"
+                    position = latLon,
                 )
             }
-            Text(text = "Account.", style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

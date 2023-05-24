@@ -12,7 +12,7 @@ import kz.jcourier.ui.component.Drawer
 import kz.jcourier.ui.navigation.MainNavHost
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(startLocation: () -> Unit) {
     val navController = rememberNavController()
     Surface {
         val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -43,7 +43,7 @@ fun HomeScreen() {
                 }
             }
         ) {
-            MainNavHost(navController, openDrawer)
+            MainNavHost(navController, openDrawer, startLocation = startLocation)
         }
     }
 }

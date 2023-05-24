@@ -17,7 +17,8 @@ import kz.jcourier.viewmodel.LoginViewModel
 fun MainNavHost(
     navController: NavHostController,
     openDrawer: () -> Job,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    startLocation: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -33,6 +34,7 @@ fun MainNavHost(
             )
         }
         composable(DrawerScreens.Map.route) {
+            startLocation.invoke()
             Map(
                 navController,
                 openDrawer = {

@@ -1,5 +1,6 @@
 package kz.jcourier.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,22 +19,21 @@ import kz.jcourier.ui.component.TopBar
 import kz.jcourier.ui.map.homeMap
 import kz.jcourier.ui.screens.activeorders.activeTaskList
 import kz.jcourier.viewmodel.HomeViewModel
+import kz.jcourier.viewmodel.MapViewModel
 import kz.jcourier.viewmodel.TaskViewModel
 
 @Composable
 fun ActiveOrders(
     navController: NavHostController,
     openDrawer: () -> Unit,
-    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    activeTaskList(navController, openDrawer, homeViewModel)
+    activeTaskList(navController, openDrawer)
 }
 
 @Composable
 fun Map(
     navController: NavHostController,
     openDrawer: () -> Unit,
-    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    homeMap(navController, openDrawer, homeViewModel)
+    homeMap(navController, openDrawer)
 }
