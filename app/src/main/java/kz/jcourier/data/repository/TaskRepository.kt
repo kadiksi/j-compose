@@ -39,4 +39,35 @@ class TaskRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun pickupTask(task: TaskId): NetworkResult<Task> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.pickupTask(task)
+            }
+        }
+    }
+    suspend fun deliverTask(task: TaskId): NetworkResult<Task> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.deliverTask(task)
+            }
+        }
+    }
+
+    suspend fun confirmTask(task: TaskId): NetworkResult<Task> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.confirmTask(task)
+            }
+        }
+    }
+
+    suspend fun completeTask(task: TaskId): NetworkResult<Task> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.completeTask(task)
+            }
+        }
+    }
 }

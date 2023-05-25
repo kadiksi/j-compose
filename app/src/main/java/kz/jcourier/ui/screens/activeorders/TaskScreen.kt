@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kz.jcourier.R
+import kz.jcourier.data.model.task.TaskStatus
 import kz.jcourier.ui.component.TopBar
 import kz.jcourier.viewmodel.TaskViewModel
 
@@ -120,8 +121,32 @@ fun task(
                     TextView(it.action)
                 })
             }
-            MyButton(stringResource(id = R.string.start), R.drawable.baseline_arrow_forward_24) {
-                taskViewModel.startTask(task.id!!, task.id!!)
+            task.status?.let {
+                MyButton(
+                    stringResource(id = R.string.start), visibility = it == TaskStatus.ASSIGNED
+                ) {
+                    taskViewModel.startTask(task.id!!)
+                }
+                MyButton(
+                    stringResource(id = R.string.take), visibility = it == TaskStatus.ON_WAY
+                ) {
+                    taskViewModel.pickupTask(task.id!!)
+                }
+                MyButton(
+                    stringResource(id = R.string.delivered), visibility = it == TaskStatus.PICK_UP
+                ) {
+                    taskViewModel.deliverTask(task.id!!)
+                }
+                MyButton(
+                    stringResource(id = R.string.confirm), visibility = it == TaskStatus.DELIVER
+                ) {
+                    taskViewModel.confirmTask(task.id!!)
+                }
+                MyButton(
+                    stringResource(id = R.string.сomplete), visibility = it == TaskStatus.CONFIRM
+                ) {
+                    taskViewModel.completeTask(task.id!!)
+                }
             }
         }
     }
@@ -159,17 +184,19 @@ fun TextView(
 }
 
 @Composable
-fun MyButton(text: String, icon: Int, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.padding(16.dp),
-    ) {
-        Icon(
-            painterResource(icon),
-            contentDescription = "send",
-            modifier = Modifier.size(ButtonDefaults.IconSize)
-        )
-        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = text, style = MaterialTheme.typography.labelLarge)
+fun MyButton(text: String, visibility: Boolean = true, onClick: () -> Unit) {
+    if (visibility) {
+        Button(
+            onClick = onClick,
+            modifier = Modifier.padding(16.dp),
+        ) {
+//            Icon(
+//                painterResource(icon),
+//                contentDescription = "send",
+//                modifier = Modifier.size(ButtonDefaults.IconSize)
+//            )
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = text, style = MaterialTheme.typography.labelLarge)
+        }
     }
 }
