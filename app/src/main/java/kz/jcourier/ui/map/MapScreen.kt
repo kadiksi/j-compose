@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
+import kz.jcourier.R
 import kz.jcourier.ui.component.TopBar
 import kz.jcourier.viewmodel.MapViewModel
 
@@ -39,7 +41,7 @@ fun homeMap(
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
-            title = "Account",
+            title = stringResource(id = R.string.map),
             buttonIcon = Icons.Filled.Menu,
             onButtonClicked = { openDrawer() }
         )
@@ -48,10 +50,10 @@ fun homeMap(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(
-                onClick = { },
-                modifier = Modifier.padding(16.dp),
-            ) {}
+//            Button(
+//                onClick = { },
+//                modifier = Modifier.padding(16.dp),
+//            ) {}
             val latLon = LatLng(location.longitude, location.latitude)
             val cameraPositionState = rememberCameraPositionState {
                 position = CameraPosition.fromLatLngZoom(latLon, 10f)
