@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -86,4 +87,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:18.1.0"
 //    Location
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging'
 }

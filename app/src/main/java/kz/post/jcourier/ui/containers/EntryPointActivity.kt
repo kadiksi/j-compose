@@ -1,8 +1,10 @@
 package kz.post.jcourier.ui.containers
 
+import android.content.Intent
 import android.content.IntentFilter
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -15,8 +17,8 @@ import kz.post.jcourier.app.theme.JTheme
 import kz.post.jcourier.location.GpsLocationReceiver
 import kz.post.jcourier.location.GpsLocationReceiverListener
 import kz.post.jcourier.location.LocationPermissionLauncherFactory
-import kz.post.jcourier.ui.screens.activeorders.HomeScreen
 import kz.post.jcourier.ui.screens.LoginScreen
+import kz.post.jcourier.ui.screens.activeorders.HomeScreen
 import kz.post.jcourier.utils.hasPermissionAccessFineLocation
 import kz.post.jcourier.utils.registerPermissionsActivityResult
 import kz.post.jcourier.utils.requestLocationPermission
@@ -51,8 +53,22 @@ class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactor
                 }
             }
         }
+        printExtra(intent)
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        printExtra(intent)
+    }
+
+    fun printExtra(intent: Intent?){
+        val bundle = intent!!.extras
+        if (bundle != null) {
+            for (key in bundle.keySet()) {
+                Log.e("TAG", key + " : " + if (bundle[key] != null) bundle[key] else "NULL")
+            }
+        }
+    }
     override fun onGpsStatusChanged(isEnabled: Boolean) {
         if (hasPermissionAccessFineLocation() && isEnabled) {
             mapViewModel.onLocationPermissionGranted()
