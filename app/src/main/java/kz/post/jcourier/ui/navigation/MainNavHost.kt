@@ -8,10 +8,9 @@ import androidx.navigation.compose.composable
 import kotlinx.coroutines.Job
 import kz.post.jcourier.ui.archive.homeArchive
 import kz.post.jcourier.ui.component.DrawerScreens
-import kz.post.jcourier.ui.map.homeMap
-import kz.post.jcourier.ui.screens.ActiveOrders
-import kz.post.jcourier.ui.screens.Map
-import kz.post.jcourier.ui.screens.activeorders.task
+import kz.post.jcourier.ui.ActiveOrders
+import kz.post.jcourier.ui.Map
+import kz.post.jcourier.ui.tasks.task
 import kz.post.jcourier.viewmodel.LoginViewModel
 
 @Composable

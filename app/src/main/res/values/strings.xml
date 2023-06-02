@@ -22,4 +22,5 @@
     <string name="delivered">Доставил</string>
     <string name="confirm">Подтвкрдить доставку</string>
     <string name="сomplete">Завершить</string>
+    <string name="error">Ошибка</string>
 </resources>

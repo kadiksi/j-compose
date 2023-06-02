@@ -1,4 +1,4 @@
-package kz.post.jcourier.ui.screens
+package kz.post.jcourier.ui.login
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -6,16 +6,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -95,7 +89,8 @@ fun LoginScreen(
         SimpleAlertDialog(
             show = isError,
             onDismiss = viewModel::onDialogDismiss,
-            onConfirm = viewModel::onDialogConfirm
+            onConfirm = viewModel::onDialogConfirm,
+            stringResource(id = R.string.login_error)
         )
     }
 }

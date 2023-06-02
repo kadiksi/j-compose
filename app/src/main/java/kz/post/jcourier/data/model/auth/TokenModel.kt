@@ -1,17 +1,17 @@
 package kz.post.jcourier.data.model.auth
 
-data class TokenModeleData(
+data class TokenModelData(
     var success: Boolean?,
     var data: TokenModel?
 )
 
 data class TokenModel(
     var tokens: Tokens?,
-    var refresh: Refresh?
 )
 
 data class Tokens(
-    var auth: Auth
+    var auth: Auth,
+    var refresh: Refresh?
 )
 
 data class Auth(

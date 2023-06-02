@@ -17,8 +17,8 @@ import kz.post.jcourier.app.theme.JTheme
 import kz.post.jcourier.location.GpsLocationReceiver
 import kz.post.jcourier.location.GpsLocationReceiverListener
 import kz.post.jcourier.location.LocationPermissionLauncherFactory
-import kz.post.jcourier.ui.screens.LoginScreen
-import kz.post.jcourier.ui.screens.activeorders.HomeScreen
+import kz.post.jcourier.ui.login.LoginScreen
+import kz.post.jcourier.ui.HomeScreen
 import kz.post.jcourier.utils.hasPermissionAccessFineLocation
 import kz.post.jcourier.utils.registerPermissionsActivityResult
 import kz.post.jcourier.utils.requestLocationPermission

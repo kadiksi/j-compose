@@ -42,10 +42,9 @@ class LoginViewModel @Inject constructor(
             return@launch
         when (val result = loginRepository.login(getValidPhone(phone), password)) {
             is NetworkResult.Success -> {
-                result.data?.let {
-                    it.data?.let { it1 -> sharedPreferencesProvider.setUserData(it1) }
-                    uiState.user.value = it.data
-                    Log.e("SUCCESS", it.data?.tokens?.auth?.token!!)
+                result.data.data?.let {
+                    sharedPreferencesProvider.setUserData(it)
+                    uiState.user.value = it
                     uiState.isError.value = false
                     uiState.isAuthorised.value = true
                 }
@@ -63,7 +62,6 @@ class LoginViewModel @Inject constructor(
 
     fun onDialogConfirm() {
         uiState.isError.value = false
-        // Continue with executing the confirmed action
     }
 
     fun onDialogDismiss() {

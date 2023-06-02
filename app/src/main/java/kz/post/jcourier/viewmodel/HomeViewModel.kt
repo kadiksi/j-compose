@@ -18,6 +18,7 @@ import javax.inject.Inject
 data class HomeState(
     var isError: MutableState<Boolean> = mutableStateOf(false),
     var taskList: MutableState<List<Task>> = mutableStateOf(emptyList()),
+    var isRefreshing: MutableState<Boolean> = mutableStateOf(false)
 )
 
 @HiltViewModel
@@ -31,21 +32,28 @@ class HomeViewModel @Inject constructor(
         getUserRoleList()
     }
 
+    fun refresh() = viewModelScope.launch {
+        getUserRoleList()
+    }
+
     private fun getUserRoleList() = viewModelScope.launch {
+        uiState.isRefreshing.value = true
         when (val result = taskRepository.getTaskList()) {
             is NetworkResult.Success -> {
-                result.data?.let {
+                uiState.isRefreshing.value = false
+                result.data.let {
                     uiState.taskList.value = it
                 }
             }
             is NetworkResult.Error -> {
-                Log.e("ER", "${result.data}")
                 uiState.isError.value = true
+                uiState.isRefreshing.value = false
             }
             else -> {
-                Log.e("ER", "Else")
                 uiState.isError.value = true
+                uiState.isRefreshing.value = false
             }
+
         }
     }
 }

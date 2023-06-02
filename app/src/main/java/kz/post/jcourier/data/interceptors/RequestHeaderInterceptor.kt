@@ -40,7 +40,6 @@ class RequestHeaderInterceptor @Inject constructor(
                     ApiConstants.HEADER_AUTH,
                     HttpUtils.getBearerTokenHeader(accessToken)
                 )
-//                    .header("userId", "3369841")
             }
         }
         return if (builder != null) {

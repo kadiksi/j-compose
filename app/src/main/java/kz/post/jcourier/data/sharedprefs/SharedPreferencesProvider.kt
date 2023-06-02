@@ -58,9 +58,9 @@ class SharedPreferencesProviderImpl constructor(
 
     override fun setUserData(user: TokenModel) {
         accessToken = user.tokens?.auth?.token
-        refreshToken = user.refresh?.token
+        refreshToken = user.tokens?.refresh?.token
         accessExpired = user.tokens?.auth?.expired
-        refreshExpired = user.refresh?.expired
+        refreshExpired = user.tokens?.refresh?.expired
 //        name = user.name
 //        city = user.city
 //        company = user.company

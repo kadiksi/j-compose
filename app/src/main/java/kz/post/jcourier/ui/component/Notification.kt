@@ -11,7 +11,8 @@ import kz.post.jcourier.R
 fun SimpleAlertDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
+    text: String = stringResource(id = R.string.error)
 ) {
     if (show) {
         AlertDialog(
@@ -24,7 +25,7 @@ fun SimpleAlertDialog(
 //                TextButton(onClick = onDismiss)
 //                { Text(text = "Cancel") }
 //            },
-            text = { Text(text = stringResource(id = R.string.login_error)) },
+            text = { Text(text = text) },
 //            text = { Text(text = "Should I continue with the requested action?") }
         )
     }

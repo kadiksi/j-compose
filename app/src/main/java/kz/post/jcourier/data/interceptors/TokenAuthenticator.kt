@@ -6,6 +6,7 @@ import javax.inject.Singleton
 import kz.post.jcourier.data.exception.ApiTokenRefreshException
 import kz.post.jcourier.data.api.ApiConstants
 import kz.post.jcourier.data.model.auth.TokenModel
+import kz.post.jcourier.data.model.auth.TokenModelData
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import kz.post.jcourier.di.BasicOkHttpClient
 import kz.post.jcourier.utils.HttpUtils
@@ -38,20 +39,21 @@ class TokenAuthenticator @Inject constructor(
     private fun getUpdatedToken(): String? {
         synchronized(this) {
             val refreshToken = sharedPreferencesProvider.refreshToken ?: ""
+            val accessToken = sharedPreferencesProvider.accessToken ?: ""
             Timber.d("REFRESHING TOKEN with %s", refreshToken)
-            val request = makeRefreshTokenRequest(refreshToken)
+            val request = makeRefreshTokenRequest(accessToken, refreshToken)
             Timber.d("Made request: %s", request.toString())
 
             val response = okHttpClient.newCall(request).execute()
             if (response.isSuccessful) {
                 val body = response.body
                 if (body != null) {
-                    val user = gson.fromJson(body.string(), TokenModel::class.java)
+                    val user = gson.fromJson(body.string(), TokenModelData::class.java)
                     response.close()
                     Timber.d("RefreshToken RESPONSE: %s", user.toString())
-                    if (user.tokens?.auth?.token != null && user.refresh?.token != null) {
-                        sharedPreferencesProvider.setUserData(user)
-                        return HttpUtils.getBearerTokenHeader(user.tokens?.auth?.token)
+                    if (user.data?.tokens?.auth?.token != null && user.data?.tokens?.refresh?.token != null) {
+                        sharedPreferencesProvider.setUserData(user.data!!)
+                        return HttpUtils.getBearerTokenHeader(user.data?.tokens?.auth?.token)
                     } else {
                         throw ApiTokenRefreshException(
                             "access token or refresh token is null",
