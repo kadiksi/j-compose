@@ -1,9 +1,11 @@
 package kz.post.jcourier.data.model.task
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Keep
 class TaskHistory(
     val id: Long,
     val createdBy: Long,

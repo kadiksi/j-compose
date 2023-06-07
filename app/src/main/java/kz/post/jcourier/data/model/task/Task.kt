@@ -1,9 +1,11 @@
 package kz.post.jcourier.data.model.task
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Keep
 data class Task(
     var id: Int? = null,
     var userId: Int? = null,
@@ -18,7 +20,7 @@ data class Task(
     var product: ArrayList<Product> = arrayListOf(),
     var histories: ArrayList<TaskHistory> = arrayListOf()
 ) : Parcelable
-
+@Keep
 enum class TaskStatus {
     NEW,
     ASSIGNED,
