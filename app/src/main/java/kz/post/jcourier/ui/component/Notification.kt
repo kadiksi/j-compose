@@ -1,10 +1,13 @@
 package kz.post.jcourier.ui.component
 
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import kz.post.jcourier.R
 
 @Composable
@@ -27,6 +30,41 @@ fun SimpleAlertDialog(
 //            },
             text = { Text(text = text) },
 //            text = { Text(text = "Should I continue with the requested action?") }
+        )
+    }
+}
+
+
+@Composable
+fun SimpleInputTextAlertDialog(
+    show: Boolean,
+    onDismiss: () -> Unit,
+    onConfirm: (taskId: Int, sms: String) -> Unit,
+    text: String = stringResource(id = R.string.sms),
+    taskId :Int
+) {
+    var inputText by remember { mutableStateOf("") }
+    if (show) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            confirmButton = {
+                TextButton(onClick = { onConfirm.invoke(taskId , inputText) })
+                { Text(text = stringResource(id = R.string.ok)) }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss)
+                { Text(text = stringResource(id = R.string.cancel)) }
+            },
+            text = {
+                Column {
+                    Text(text)
+                    TextField(
+                        value = inputText,
+                        onValueChange = { inputText = it },
+                        singleLine = true,
+                    )
+                }
+            },
         )
     }
 }

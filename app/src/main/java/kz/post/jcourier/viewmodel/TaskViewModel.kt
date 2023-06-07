@@ -16,11 +16,13 @@ import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.data.model.task.TaskId
+import kz.post.jcourier.data.model.task.TaskIdSms
 import kz.post.jcourier.data.repository.TaskRepository
 import javax.inject.Inject
 
 data class TaskState(
     var isError: MutableState<ErrorModel> = mutableStateOf(ErrorModel()),
+    var isSmsDialog: MutableState<Boolean> = mutableStateOf(false),
     var task: MutableState<Task> = mutableStateOf(Task()),
 )
 
@@ -129,8 +131,8 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun completeTask(taskId: Int) = viewModelScope.launch {
-        when (val result = taskRepository.completeTask(TaskId(taskId))) {
+    fun completeTask(taskId: Int, sms: String) = viewModelScope.launch {
+        when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
             is NetworkResult.Success -> {
                 result.data.let {
                     uiState.task.value = it
@@ -147,6 +149,17 @@ class TaskViewModel @Inject constructor(
 
     fun onDialogConfirm() {
         uiState.isError.value.isError = false
+    }
+    fun showSmsDialog() {
+        uiState.isSmsDialog.value = true
+    }
+    fun onDialogConfirmWithSms(taskId: Int, sms: String) {
+        dismissSmsDialog()
+        completeTask(taskId, sms)
+    }
+
+    fun dismissSmsDialog() {
+        uiState.isSmsDialog.value = false
     }
 
     fun onDialogDismiss() {

@@ -23,4 +23,7 @@
     <string name="confirm">Подтвкрдить доставку</string>
     <string name="сomplete">Завершить</string>
     <string name="error">Ошибка</string>
+    <string name="sms">Введите Смс</string>
+    <string name="ok">Ок</string>
+    <string name="cancel">Отмена</string>
 </resources>

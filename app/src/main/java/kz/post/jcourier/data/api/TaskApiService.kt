@@ -2,6 +2,7 @@ package kz.post.jcourier.data.api
 
 import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.data.model.task.TaskId
+import kz.post.jcourier.data.model.task.TaskIdSms
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -29,5 +30,5 @@ interface TaskApiService {
     suspend fun confirmTask(@Body task: TaskId): Response<Task>
 
     @POST("gw/jpost-courier/api/public/v1/task/complete")
-    suspend fun completeTask(@Body task: TaskId): Response<Task>
+    suspend fun completeTask(@Body task: TaskIdSms): Response<Task>
 }
