@@ -8,6 +8,7 @@ import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.api.TaskApiService
 import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.data.model.task.TaskId
+import kz.post.jcourier.data.model.task.TaskIdReason
 import kz.post.jcourier.data.model.task.TaskIdSms
 import javax.inject.Inject
 
@@ -68,6 +69,14 @@ class TaskRepository @Inject constructor(
         return withContext(defaultDispatcher) {
             safeApiCall {
                 taskApiService.completeTask(task)
+            }
+        }
+    }
+
+    suspend fun cancelTask(task: TaskIdReason): NetworkResult<Task> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.cancelTask(task)
             }
         }
     }

@@ -1,6 +1,5 @@
 package kz.post.jcourier.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,15 +13,14 @@ import kotlinx.coroutines.launch
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSuccess
-import kz.post.jcourier.data.model.task.Task
-import kz.post.jcourier.data.model.task.TaskId
-import kz.post.jcourier.data.model.task.TaskIdSms
+import kz.post.jcourier.data.model.task.*
 import kz.post.jcourier.data.repository.TaskRepository
 import javax.inject.Inject
 
 data class TaskState(
     var isError: MutableState<ErrorModel> = mutableStateOf(ErrorModel()),
     var isSmsDialog: MutableState<Boolean> = mutableStateOf(false),
+    var isCancelReasonDialog: MutableState<Boolean> = mutableStateOf(false),
     var task: MutableState<Task> = mutableStateOf(Task()),
 )
 
@@ -49,8 +47,8 @@ class TaskViewModel @Inject constructor(
             it.let {
                 uiState.task.value = it
             }
-        }.onError {
-            uiState.isError.value = ErrorModel(true, it.toString())
+        }.onError { data, message ->
+            uiState.isError.value = ErrorModel(true, message)
         }
 //        when (val result = taskRepository.getTaskById(id)) {
 //            is NetworkResult.Success -> {
@@ -147,22 +145,59 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun onDialogConfirm() {
-        uiState.isError.value.isError = false
-    }
-    fun showSmsDialog() {
-        uiState.isSmsDialog.value = true
-    }
-    fun onDialogConfirmWithSms(taskId: Int, sms: String) {
+    private fun cancelTask(id: Int, reason: CancelReasonDto, cancelReasonOther: String?) =
+        viewModelScope.launch {
+            val otherReason: String? = if (cancelReasonOther?.isEmpty() == true) {
+                null
+            } else {
+                cancelReasonOther
+            }
+            taskRepository.cancelTask(TaskIdReason(id, reason, otherReason)).onSuccess {
+                it.let {
+                    uiState.task.value = it
+                }
+            }.onError { data, message ->
+                uiState.isError.value = ErrorModel(true, message)
+            }
+        }
+
+    fun onConfirmWithSmsDialog(taskId: Int, sms: String) {
         dismissSmsDialog()
         completeTask(taskId, sms)
+    }
+
+    fun onCancelTaskDialog(taskId: Int, reasonIndex: Int, cancelReasonOther: String?) {
+        hideCancelReasonDialog()
+        cancelTask(taskId, getCancellationReason(reasonIndex), cancelReasonOther)
+    }
+
+    fun showCancelReasonDialog() {
+        uiState.isCancelReasonDialog.value = true
+    }
+
+    fun hideCancelReasonDialog() {
+        uiState.isCancelReasonDialog.value = false
+    }
+
+    fun showSmsDialog() {
+        uiState.isSmsDialog.value = true
     }
 
     fun dismissSmsDialog() {
         uiState.isSmsDialog.value = false
     }
 
-    fun onDialogDismiss() {
-        uiState.isError.value.isError = false
+    fun onDialogConfirm() {
+        uiState.isError.value = ErrorModel()
+    }
+
+    private fun getCancellationReason(reasonIndex: Int): CancelReasonDto {
+        return arrayOf(
+            CancelReasonDto.NA,
+            CancelReasonDto.LDT,
+            CancelReasonDto.AG,
+            CancelReasonDto.FC,
+            CancelReasonDto.O
+        )[reasonIndex]
     }
 }

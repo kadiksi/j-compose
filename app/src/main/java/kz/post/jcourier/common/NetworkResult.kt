@@ -18,9 +18,9 @@ inline fun <T : Any> NetworkResult<T>.onSuccess(
     return this
 }
 inline fun <T : Any> NetworkResult<T>.onError(
-    onError: (T?) -> Unit
+    onError: (T?, message: String) -> Unit
 ): NetworkResult<T> {
-    if (this is NetworkResult.Error) onError(this.data)
+    if (this is NetworkResult.Error) onError(this.data, this.message)
 
     return this
 }

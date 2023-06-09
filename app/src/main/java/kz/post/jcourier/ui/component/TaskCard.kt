@@ -7,11 +7,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kz.post.jcourier.R
 import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.ui.navigation.navigate
+import kz.post.jcourier.utils.boldSpanStyles
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,9 +40,10 @@ fun TaskCard(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 8.dp, top =  8.dp)
+                    .padding(start = 8.dp, top = 8.dp)
                     .weight(1f),
-                text = "№ ${task.id.toString()} status: ${task.status}"
+                color = Color.Red,
+                text = "№ ${task.orderId.toString()} status: ${task.status}"
             )
         }
         Row {
@@ -44,7 +52,7 @@ fun TaskCard(
                     .fillMaxWidth()
                     .padding(8.dp)
                     .weight(1f),
-                text = task.addressFrom?.address.toString()
+                text = task.contactFrom?.companyName.toString()
             )
         }
         Row {
@@ -53,7 +61,27 @@ fun TaskCard(
                     .fillMaxWidth()
                     .padding(8.dp)
                     .weight(1f),
-                text = task.addressTo?.address.toString()
+                text = AnnotatedString(
+                    text = stringResource(
+                        id = R.string.a_point,
+                        task.addressFrom?.address.toString()
+                    ), spanStyles = boldSpanStyles()
+                )
+            )
+        }
+
+        Row {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .weight(1f),
+                text = AnnotatedString(
+                    text = stringResource(
+                        id = R.string.b_point,
+                        task.addressTo?.address.toString()
+                    ), spanStyles = boldSpanStyles()
+                )
             )
         }
     }

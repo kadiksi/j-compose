@@ -22,8 +22,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kz.post.jcourier.R
 import kz.post.jcourier.data.model.task.TaskStatus
-import kz.post.jcourier.ui.component.SimpleAlertDialog
-import kz.post.jcourier.ui.component.SimpleInputTextAlertDialog
+import kz.post.jcourier.ui.component.AlertDialog
+import kz.post.jcourier.ui.component.CancelReasonAlertDialog
+import kz.post.jcourier.ui.component.InputTextAlertDialog
 import kz.post.jcourier.ui.component.TopBar
 import kz.post.jcourier.viewmodel.TaskViewModel
 
@@ -34,6 +35,7 @@ fun task(
     val task = taskViewModel.uiState.task.value
     val isError by taskViewModel.uiState.isError
     val isSmsDialog by taskViewModel.uiState.isSmsDialog
+    val isCancelReasonDialog by taskViewModel.uiState.isCancelReasonDialog
 
     Column(modifier = Modifier.fillMaxSize()) {
         task.id?.let {
@@ -111,10 +113,6 @@ fun task(
                     it.name?.let { it1 -> TextView(it1) }
                 })
             }
-
-            TextView(
-                stringResource(R.string.history), MaterialTheme.typography.titleLarge
-            )
             task.status?.let {
                 MyButton(
                     stringResource(id = R.string.start), visibility = it == TaskStatus.ASSIGNED
@@ -141,7 +139,16 @@ fun task(
                 ) {
                     taskViewModel.showSmsDialog()
                 }
+                MyButton(
+                    stringResource(id = R.string.cancel_task), visibility = it != TaskStatus.FINISHED
+                ) {
+                    taskViewModel.showCancelReasonDialog()
+                }
             }
+
+            TextView(
+                stringResource(R.string.history), MaterialTheme.typography.titleLarge
+            )
             LazyColumn(
                 Modifier.weight(10f),
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
@@ -151,18 +158,27 @@ fun task(
                 })
             }
         }
-        SimpleAlertDialog(
+        AlertDialog(
             show = isError.isError,
-            onDismiss = taskViewModel::onDialogDismiss,
+            onDismiss = taskViewModel::onDialogConfirm,
             onConfirm = taskViewModel::onDialogConfirm,
             text = isError.text
         )
         task.id?.let {
-            SimpleInputTextAlertDialog(
+            InputTextAlertDialog(
                 show = isSmsDialog,
                 onDismiss = taskViewModel::dismissSmsDialog,
-                onConfirm = taskViewModel::onDialogConfirmWithSms,
+                onConfirm = taskViewModel::onConfirmWithSmsDialog,
                 taskId = it
+            )
+        }
+        task.id?.let {
+            CancelReasonAlertDialog(
+                show = isCancelReasonDialog,
+                onDismiss = taskViewModel::hideCancelReasonDialog,
+                onConfirm = taskViewModel::onCancelTaskDialog,
+                taskId = it,
+                text = stringResource(id = R.string.cancel_task)
             )
         }
     }
