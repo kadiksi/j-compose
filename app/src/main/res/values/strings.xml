@@ -32,6 +32,9 @@
 
     <string name="a_point">A: %1$s</string>
     <string name="b_point">B: %1$s</string>
+    <string name="call">Звонок</string>
+    <string name="clinet">Клиент</string>
+    <string name="merchant">Продавец</string>
 
     <string-array name="cancellation_reason_list">
         <item>Выбрать</item>

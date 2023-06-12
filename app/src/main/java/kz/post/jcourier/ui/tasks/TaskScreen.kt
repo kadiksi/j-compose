@@ -22,10 +22,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kz.post.jcourier.R
 import kz.post.jcourier.data.model.task.TaskStatus
-import kz.post.jcourier.ui.component.AlertDialog
-import kz.post.jcourier.ui.component.CancelReasonAlertDialog
-import kz.post.jcourier.ui.component.InputTextAlertDialog
+import kz.post.jcourier.ui.component.dialogs.ErrorAlertDialog
 import kz.post.jcourier.ui.component.TopBar
+import kz.post.jcourier.ui.component.dialogs.CallVariantDialog
+import kz.post.jcourier.ui.component.dialogs.CancelReasonAlertDialog
+import kz.post.jcourier.ui.component.dialogs.InputTextAlertDialog
 import kz.post.jcourier.viewmodel.TaskViewModel
 
 @Composable
@@ -36,6 +37,7 @@ fun task(
     val isError by taskViewModel.uiState.isError
     val isSmsDialog by taskViewModel.uiState.isSmsDialog
     val isCancelReasonDialog by taskViewModel.uiState.isCancelReasonDialog
+    val isCallVariantsDialog by taskViewModel.uiState.isCallVariantDialog
 
     Column(modifier = Modifier.fillMaxSize()) {
         task.id?.let {
@@ -140,9 +142,15 @@ fun task(
                     taskViewModel.showSmsDialog()
                 }
                 MyButton(
-                    stringResource(id = R.string.cancel_task), visibility = it != TaskStatus.FINISHED
+                    stringResource(id = R.string.cancel_task),
+                    visibility = it != TaskStatus.FINISHED
                 ) {
                     taskViewModel.showCancelReasonDialog()
+                }
+                MyButton(
+                    stringResource(id = R.string.call), visibility = it != TaskStatus.FINISHED
+                ) {
+                    taskViewModel.showCallVariantDialog()
                 }
             }
 
@@ -158,7 +166,7 @@ fun task(
                 })
             }
         }
-        AlertDialog(
+        ErrorAlertDialog(
             show = isError.isError,
             onDismiss = taskViewModel::onDialogConfirm,
             onConfirm = taskViewModel::onDialogConfirm,
@@ -171,14 +179,19 @@ fun task(
                 onConfirm = taskViewModel::onConfirmWithSmsDialog,
                 taskId = it
             )
-        }
-        task.id?.let {
             CancelReasonAlertDialog(
                 show = isCancelReasonDialog,
                 onDismiss = taskViewModel::hideCancelReasonDialog,
                 onConfirm = taskViewModel::onCancelTaskDialog,
                 taskId = it,
                 text = stringResource(id = R.string.cancel_task)
+            )
+            CallVariantDialog(
+                show = isCallVariantsDialog,
+                onDismiss = taskViewModel::hideCallVariantDialog,
+                onConfirm = taskViewModel::onCallVariantDialog,
+                taskId = it,
+                text = ""
             )
         }
     }

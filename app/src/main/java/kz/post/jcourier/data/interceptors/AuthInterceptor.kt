@@ -1,6 +1,5 @@
 package kz.post.jcourier.data.interceptors
 
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import okhttp3.Interceptor
@@ -10,7 +9,6 @@ import javax.inject.Inject
 class AuthInterceptor @Inject constructor(
     private val sharedPreferencesProvider: SharedPreferencesProvider
 ): Interceptor {
-
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = runBlocking {

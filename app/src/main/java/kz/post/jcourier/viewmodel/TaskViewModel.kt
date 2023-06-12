@@ -1,5 +1,6 @@
 package kz.post.jcourier.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +22,7 @@ data class TaskState(
     var isError: MutableState<ErrorModel> = mutableStateOf(ErrorModel()),
     var isSmsDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCancelReasonDialog: MutableState<Boolean> = mutableStateOf(false),
+    var isCallVariantDialog: MutableState<Boolean> = mutableStateOf(false),
     var task: MutableState<Task> = mutableStateOf(Task()),
 )
 
@@ -47,22 +49,9 @@ class TaskViewModel @Inject constructor(
             it.let {
                 uiState.task.value = it
             }
-        }.onError { data, message ->
+        }.onError { _, message ->
             uiState.isError.value = ErrorModel(true, message)
         }
-//        when (val result = taskRepository.getTaskById(id)) {
-//            is NetworkResult.Success -> {
-//                result.data.let {
-//                    uiState.task.value = it
-//                }
-//            }
-//            is NetworkResult.Error -> {
-//                uiState.isError.value = ErrorModel(true, result.
-//            }
-//            else -> {
-//                uiState.isError.value.isError = true
-//            }
-//        }
     }
 
     fun startTask(taskId: Int) = viewModelScope.launch {
@@ -129,7 +118,7 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun completeTask(taskId: Int, sms: String) = viewModelScope.launch {
+    private fun completeTask(taskId: Int, sms: String) = viewModelScope.launch {
         when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
             is NetworkResult.Success -> {
                 result.data.let {
@@ -156,19 +145,49 @@ class TaskViewModel @Inject constructor(
                 it.let {
                     uiState.task.value = it
                 }
-            }.onError { data, message ->
+            }.onError { _, message ->
                 uiState.isError.value = ErrorModel(true, message)
             }
         }
+
+    private fun taskCall(taskId: Int, variant: String) = viewModelScope.launch {
+        Log.e("data",taskId.toString() + " "+ variant)
+//        when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
+//            is NetworkResult.Success -> {
+//                result.data.let {
+//                    uiState.task.value = it
+//                }
+//            }
+//            is NetworkResult.Error -> {
+//                uiState.isError.value.isError = true
+//            }
+//            else -> {
+//                uiState.isError.value.isError = true
+//            }
+//        }
+    }
 
     fun onConfirmWithSmsDialog(taskId: Int, sms: String) {
         dismissSmsDialog()
         completeTask(taskId, sms)
     }
 
+    fun onCallVariantDialog(taskId: Int, variant: String) {
+        hideCallVariantDialog()
+        taskCall(taskId, variant)
+    }
+
     fun onCancelTaskDialog(taskId: Int, reasonIndex: Int, cancelReasonOther: String?) {
         hideCancelReasonDialog()
         cancelTask(taskId, getCancellationReason(reasonIndex), cancelReasonOther)
+    }
+
+    fun showCallVariantDialog() {
+        uiState.isCallVariantDialog.value = true
+    }
+
+    fun hideCallVariantDialog() {
+        uiState.isCallVariantDialog.value = false
     }
 
     fun showCancelReasonDialog() {

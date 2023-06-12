@@ -1,76 +1,17 @@
-package kz.post.jcourier.ui.component
+package kz.post.jcourier.ui.component.dialogs
 
-import android.widget.Toast
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kz.post.jcourier.R
-import kz.post.jcourier.data.model.task.CancelReasonDto
 
-@Composable
-fun AlertDialog(
-    show: Boolean,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-    text: String = stringResource(id = R.string.error)
-) {
-    if (show) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            confirmButton = {
-                TextButton(onClick = onConfirm)
-                { Text(text = "OK") }
-            },
-            //            dismissButton = {
-            //                TextButton(onClick = onDismiss)
-            //                { Text(text = "Cancel") }
-            //            },
-            text = { Text(text = text) },
-            //            text = { Text(text = "Should I continue with the requested action?") }
-        )
-    }
-}
-
-
-@Composable
-fun InputTextAlertDialog(
-    show: Boolean,
-    onDismiss: () -> Unit,
-    onConfirm: (taskId: Int, sms: String) -> Unit,
-    text: String = stringResource(id = R.string.sms),
-    taskId: Int
-) {
-    var inputText by remember { mutableStateOf("") }
-    if (show) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            confirmButton = {
-                TextButton(onClick = { onConfirm.invoke(taskId, inputText) })
-                { Text(text = stringResource(id = R.string.ok)) }
-            },
-            dismissButton = {
-                TextButton(onClick = onDismiss)
-                { Text(text = stringResource(id = R.string.cancel)) }
-            },
-            text = {
-                Column {
-                    Text(text)
-                    TextField(
-                        value = inputText,
-                        onValueChange = { inputText = it },
-                        singleLine = true,
-                    )
-                }
-            },
-        )
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

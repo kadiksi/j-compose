@@ -18,7 +18,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kz.post.jcourier.R
-import kz.post.jcourier.ui.component.AlertDialog
+import kz.post.jcourier.ui.component.dialogs.ErrorAlertDialog
 import kz.post.jcourier.ui.containers.PhoneMaskTransformation
 import kz.post.jcourier.viewmodel.LoginViewModel
 
@@ -86,7 +86,7 @@ fun LoginScreen(
         ) {
             Text(stringResource(id = R.string.login))
         }
-        AlertDialog(
+        ErrorAlertDialog(
             show = isError,
             onDismiss = viewModel::onDialogDismiss,
             onConfirm = viewModel::onDialogConfirm,
