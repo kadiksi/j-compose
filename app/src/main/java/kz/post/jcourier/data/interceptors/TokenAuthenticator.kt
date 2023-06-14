@@ -5,7 +5,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kz.post.jcourier.data.exception.ApiTokenRefreshException
 import kz.post.jcourier.data.api.ApiConstants
-import kz.post.jcourier.data.model.auth.TokenModel
 import kz.post.jcourier.data.model.auth.TokenModelData
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import kz.post.jcourier.di.BasicOkHttpClient

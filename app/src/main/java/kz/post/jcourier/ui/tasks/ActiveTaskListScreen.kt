@@ -20,18 +20,22 @@ import kz.post.jcourier.R
 import kz.post.jcourier.ui.component.TaskCard
 import kz.post.jcourier.ui.component.TopBar
 import kz.post.jcourier.viewmodel.HomeViewModel
+import kz.post.jcourier.viewmodel.LoginViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun activeTaskList(
     navController: NavHostController,
     openDrawer: () -> Unit,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
 ) {
     val taskList = homeViewModel.uiState.taskList.value
     val isRefreshing = homeViewModel.uiState.isRefreshing.value
     val swipeRefreshState = rememberPullRefreshState(isRefreshing, { homeViewModel.refresh() })
-
+    if(!homeViewModel.isLogin.value.isLogin){
+        loginViewModel.logOut()
+    }
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
             title = stringResource(id = R.string.active_orders),

@@ -1,6 +1,5 @@
 package kz.post.jcourier.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +12,7 @@ import kotlinx.coroutines.launch
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.data.repository.TaskRepository
+import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import javax.inject.Inject
 
 data class HomeState(
@@ -23,21 +23,24 @@ data class HomeState(
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val taskRepository: TaskRepository,
+    val isLogin: MutableState<IsLogin>,
+    private val sharedPreferencesProvider: SharedPreferencesProvider,
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(HomeState())
-
     init {
-        getUserRoleList()
+        getTaskList()
+        isLogin.value = IsLogin(true)
     }
 
     fun refresh() = viewModelScope.launch {
-        getUserRoleList()
+        getTaskList()
     }
 
-    private fun getUserRoleList() = viewModelScope.launch {
+    private fun getTaskList() = viewModelScope.launch {
         uiState.isRefreshing.value = true
+        isLogin.value = IsLogin(true)
         when (val result = taskRepository.getTaskList()) {
             is NetworkResult.Success -> {
                 uiState.isRefreshing.value = false
@@ -48,6 +51,10 @@ class HomeViewModel @Inject constructor(
             is NetworkResult.Error -> {
                 uiState.isError.value = true
                 uiState.isRefreshing.value = false
+                if(result.message.contains("401")) {
+                    isLogin.value = IsLogin(false)
+                    sharedPreferencesProvider.cleanup()
+                }
             }
             else -> {
                 uiState.isError.value = true

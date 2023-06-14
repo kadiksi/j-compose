@@ -1,4 +1,4 @@
-package kz.post.jcourier.ui.containers
+package kz.post.jcourier
 
 import android.content.Intent
 import android.content.IntentFilter
@@ -9,8 +9,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kz.post.jcourier.app.theme.JTheme
@@ -35,17 +35,15 @@ class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactor
     private val gpsLocationReceiver by lazy { GpsLocationReceiver().also { it.listener = this } }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
 
-        val isAuthorised by loginViewModel.uiState.isAuthorised
-
         setContent {
-            JTheme {
+            JTheme {//14064
+                loginViewModel = hiltViewModel()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    if (isAuthorised) {
+                    if (loginViewModel.isLogin.value.isLogin) {
                         HomeScreen { startListenLocationChange() }
                     } else {
                         LoginScreen()

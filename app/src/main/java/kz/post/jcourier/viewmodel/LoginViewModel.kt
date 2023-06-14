@@ -18,7 +18,6 @@ import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import javax.inject.Inject
 
 data class LoginState(
-    var isAuthorised: MutableState<Boolean> = mutableStateOf(false),
     val user: MutableState<TokenModel?> = mutableStateOf(null),
     var isError: MutableState<Boolean> = mutableStateOf(false),
 )
@@ -26,14 +25,15 @@ data class LoginState(
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val sharedPreferencesProvider: SharedPreferencesProvider
+    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    val isLogin: MutableState<IsLogin>
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(LoginState())
 
     init {
         viewModelScope.launch {
-            uiState.isAuthorised.value = !sharedPreferencesProvider.accessToken.isNullOrEmpty()
+            isLogin.value = IsLogin(!sharedPreferencesProvider.accessToken.isNullOrEmpty())
         }
     }
 
@@ -46,7 +46,7 @@ class LoginViewModel @Inject constructor(
                     sharedPreferencesProvider.setUserData(it)
                     uiState.user.value = it
                     uiState.isError.value = false
-                    uiState.isAuthorised.value = true
+                    isLogin.value = IsLogin(true)
                 }
             }
             is NetworkResult.Error -> {
@@ -71,7 +71,7 @@ class LoginViewModel @Inject constructor(
     fun logOut(){
         viewModelScope.launch {
             sharedPreferencesProvider.cleanup()
-            uiState.isAuthorised.value = false
+            isLogin.value = IsLogin(false)
         }
     }
 

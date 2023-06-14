@@ -15,9 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JCourier">
         <activity
-            android:name="kz.post.jcourier.ui.containers.EntryPointActivity"
+            android:name="kz.post.jcourier.EntryPointActivity"
             android:exported="true"
-            android:label="@string/title_activity_auth"
             android:theme="@style/Theme.JCourier">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
