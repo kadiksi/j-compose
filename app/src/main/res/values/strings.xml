@@ -35,6 +35,7 @@
     <string name="call">Звонок</string>
     <string name="clinet">Клиент</string>
     <string name="merchant">Продавец</string>
+    <string name="update_files">Загрузить файлы</string>
 
     <string-array name="cancellation_reason_list">
         <item>Выбрать</item>

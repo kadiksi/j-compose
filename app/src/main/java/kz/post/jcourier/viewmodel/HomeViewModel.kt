@@ -60,7 +60,6 @@ class HomeViewModel @Inject constructor(
                 uiState.isError.value = true
                 uiState.isRefreshing.value = false
             }
-
         }
     }
 }

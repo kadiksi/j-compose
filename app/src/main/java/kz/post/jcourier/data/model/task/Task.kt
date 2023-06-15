@@ -17,8 +17,8 @@ data class Task(
     var addressFrom: AddressFrom? = AddressFrom(),
     var contactTo: ContactTo? = ContactTo(),
     var contactFrom: ContactFrom? = ContactFrom(),
-    var product: ArrayList<Product> = arrayListOf(),
-    var histories: ArrayList<TaskHistory> = arrayListOf()
+    var product: ArrayList<Product>? = arrayListOf(),
+    var histories: ArrayList<TaskHistory>? = arrayListOf()
 ) : Parcelable
 @Keep
 enum class TaskStatus {
