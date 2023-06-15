@@ -22,7 +22,7 @@ sealed class DrawerScreens(val title: Int, val route: String) {
     object ActiveOrders : DrawerScreens(R.string.active_orders, "active_orders")
     object Map : DrawerScreens(R.string.map, "map")
     object Notifications : DrawerScreens(R.string.notifications, "notifications")
-    object Statistic : DrawerScreens(R.string.statistic, "statistic")
+    object Statistic : DrawerScreens(R.string.archive_orders, "statistic")
     object Settings : DrawerScreens(R.string.settings, "settings")
     object Exit : DrawerScreens(R.string.exit, "exit")
 }

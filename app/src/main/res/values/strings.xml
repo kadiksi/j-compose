@@ -6,7 +6,6 @@
     <string name="active_orders">Активные заказы</string>
     <string name="map">Карта</string>
     <string name="notifications">Уведомления</string>
-    <string name="statistic">Статистика</string>
     <string name="settings">Настройки</string>
     <string name="exit">Выход</string>
     <string name="task_id">Номер заказа: %1s</string>
@@ -36,6 +35,7 @@
     <string name="clinet">Клиент</string>
     <string name="merchant">Продавец</string>
     <string name="update_files">Загрузить файлы</string>
+    <string name="archive_orders">Архивные заказы</string>
 
     <string-array name="cancellation_reason_list">
         <item>Выбрать</item>

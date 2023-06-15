@@ -8,8 +8,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,60 +27,56 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import kz.post.jcourier.R
+import kz.post.jcourier.ui.component.TaskCard
 import kz.post.jcourier.ui.component.TopBar
+import kz.post.jcourier.viewmodel.ArchiveViewModel
+import kz.post.jcourier.viewmodel.HomeViewModel
+import kz.post.jcourier.viewmodel.LoginViewModel
 import kz.post.jcourier.viewmodel.MapViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun homeArchive(
     navController: NavHostController,
     openDrawer: () -> Unit,
-    mapViewModel: MapViewModel = hiltViewModel(),
+    homeViewModel: ArchiveViewModel = hiltViewModel(),
 ) {
-    val location = remember {
-        mapViewModel.uiState.lastSentLocation.value
-    }
-    var selectedImageUris by remember {
-        mutableStateOf<List<Uri>>(emptyList())
-    }
-    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> selectedImageUris = uris }
-    )
-
+    val taskList = homeViewModel.uiState.taskList.value
+    val isRefreshing = homeViewModel.uiState.isRefreshing.value
+    val swipeRefreshState = rememberPullRefreshState(isRefreshing, { homeViewModel.refresh() })
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
-            title = stringResource(id = R.string.statistic),
+            title = stringResource(id = R.string.archive_orders),
             buttonIcon = Icons.Filled.Menu,
             onButtonClicked = { openDrawer() }
         )
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pullRefresh(swipeRefreshState)
         ) {
-            item {
-                Button(
-                    onClick = {
-                        multiplePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
-                    },
-                    modifier = Modifier.padding(16.dp)
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                LazyColumn(
+                    Modifier.weight(1f),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.statistic),
-                        style = MaterialTheme.typography.labelLarge
+                    items(
+                        items = taskList,
+                        itemContent = {
+                            TaskCard(navController, it)
+                        }
                     )
                 }
             }
-            items(selectedImageUris) { uri ->
-                AsyncImage(
-                    model = uri,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth(),
-                    contentScale = ContentScale.Crop
-                )
-            }
+            PullRefreshIndicator(
+                isRefreshing,
+                swipeRefreshState,
+                Modifier.align(Alignment.TopCenter)
+            ) // 3
         }
     }
 }

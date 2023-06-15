@@ -26,6 +26,14 @@ class TaskRepository @Inject constructor(
         }
     }
 
+    suspend fun getArchiveTaskList(): NetworkResult<List<Task>> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.getArchiveTaskList()
+            }
+        }
+    }
+
     suspend fun getTaskById(id: Int): NetworkResult<Task> {
         return withContext(defaultDispatcher) {
             safeApiCall {
