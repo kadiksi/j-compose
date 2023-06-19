@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import kz.post.jcourier.BuildConfig
+import kz.post.jcourier.data.api.LocationApiService
 import kz.post.jcourier.data.api.LoginApiService
 import kz.post.jcourier.data.api.ShiftApiService
 import kz.post.jcourier.data.api.TaskApiService
@@ -159,6 +160,12 @@ object RestNetwork {
     @Provides
     fun provideShiftApiService(retrofit: Retrofit): ShiftApiService {
         return retrofit.create(ShiftApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocationApiService(retrofit: Retrofit): LocationApiService {
+        return retrofit.create(LocationApiService::class.java)
     }
 
     @Provides

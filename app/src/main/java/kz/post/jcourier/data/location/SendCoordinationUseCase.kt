@@ -12,11 +12,17 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.launch
+import kz.post.jcourier.common.onSuccess
+import kz.post.jcourier.data.api.LocationApiService
+import kz.post.jcourier.data.repository.LocationRepository
+import kz.post.jcourier.data.repository.ShiftRepository
 import java.util.Calendar
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
@@ -29,9 +35,9 @@ import kz.post.jcourier.location.model.Time
 import kz.post.jcourier.location.model.TrackingLocation
 import kz.post.jcourier.utils.isGpsEnabled
 
-@Singleton
 class SendCoordinationUseCase @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val locationRepository: LocationRepository,
 ) {
 
     val lastSentLocation: MutableState<TrackingLocation> = mutableStateOf(
@@ -65,10 +71,10 @@ class SendCoordinationUseCase @Inject constructor(
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
-    operator fun invoke() {
+    suspend operator fun invoke() {
         val location = lastSavedLocation.value
 
-        if (isAbleToSend() && location != null) {
+        if (location != null) {
             onLocationChanged(
                 accuracy = location.accuracy,
                 latitude = location.latitude,
@@ -102,7 +108,7 @@ class SendCoordinationUseCase @Inject constructor(
                 context.isGpsEnabled()
     }
 
-    private fun onLocationChanged(accuracy: Int?, latitude: Double?, longitude: Double?) {
+    private suspend fun onLocationChanged(accuracy: Int?, latitude: Double?, longitude: Double?) {
         if (accuracy == null || latitude == null || longitude == null) return
 
         val location = TrackingLocation(
@@ -113,20 +119,20 @@ class SendCoordinationUseCase @Inject constructor(
 
         val realtime = SystemClock.elapsedRealtime()
 
-        if (lastSentLocation.value == location ||
-            isSendLocationBusy.get() ||
-            lastLocationSentTime.get() != NO_TIME &&
-            lastLocationSentTime.get() + MINUTE_IN_MILLIS > realtime
-        ) return
+//        if (lastSentLocation.value == location ||
+//            isSendLocationBusy.get() ||
+//            lastLocationSentTime.get() != NO_TIME &&
+//            lastLocationSentTime.get() + MINUTE_IN_MILLIS > realtime
+//        ) return
 
         isSendLocationBusy.set(true)
-//        trackingRepository
-//            .locationChanged(location)
-//            .onSuccess {
-        Log.e("Location loc ", location.latitude.toString())
-        lastSentLocation.value = location
-//            }
-
+        locationRepository
+            .setLocation(location.latitude, location.longitude)
+            .onSuccess {
+                Log.e("Location lat ", location.latitude.toString())
+                Log.e("Location lon ", location.longitude.toString())
+                lastSentLocation.value = location
+            }
         isSendLocationBusy.set(false)
         lastLocationSentTime.set(realtime)
     }

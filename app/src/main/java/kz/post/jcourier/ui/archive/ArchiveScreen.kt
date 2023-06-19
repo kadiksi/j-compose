@@ -25,14 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import kz.post.jcourier.R
 import kz.post.jcourier.ui.component.TaskCard
 import kz.post.jcourier.ui.component.TopBar
 import kz.post.jcourier.viewmodel.ArchiveViewModel
-import kz.post.jcourier.viewmodel.HomeViewModel
-import kz.post.jcourier.viewmodel.LoginViewModel
-import kz.post.jcourier.viewmodel.MapViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

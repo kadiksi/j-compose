@@ -22,6 +22,7 @@ fun HomeScreen(startLocation: () -> Unit) {
                 drawerState.open()
             }
         }
+//        startLocation.invoke()
         ModalNavigationDrawer(
             drawerState = drawerState,
             gesturesEnabled = drawerState.isOpen,

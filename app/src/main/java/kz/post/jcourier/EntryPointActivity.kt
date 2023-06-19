@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kz.post.jcourier.app.theme.JTheme
 import kz.post.jcourier.location.GpsLocationReceiver
@@ -22,23 +21,22 @@ import kz.post.jcourier.ui.HomeScreen
 import kz.post.jcourier.utils.hasPermissionAccessFineLocation
 import kz.post.jcourier.utils.registerPermissionsActivityResult
 import kz.post.jcourier.utils.requestLocationPermission
+import kz.post.jcourier.viewmodel.LocationViewModel
 import kz.post.jcourier.viewmodel.LoginViewModel
-import kz.post.jcourier.viewmodel.MapViewModel
 
 @AndroidEntryPoint
 class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactory,
     GpsLocationReceiverListener {
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit var mapViewModel: MapViewModel
-    override val locationPermissionLauncher =
-        registerPermissionsActivityResult { startListenLocationChange() }
+    private lateinit var locationViewModel: LocationViewModel
+    override val locationPermissionLauncher = registerPermissionsActivityResult { startListenLocationChange() }
     private val gpsLocationReceiver by lazy { GpsLocationReceiver().also { it.listener = this } }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
 
         setContent {
-            JTheme {//14064
+            JTheme {
+                locationViewModel = hiltViewModel()
                 loginViewModel = hiltViewModel()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -69,7 +67,7 @@ class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactor
     }
     override fun onGpsStatusChanged(isEnabled: Boolean) {
         if (hasPermissionAccessFineLocation() && isEnabled) {
-            mapViewModel.onLocationPermissionGranted()
+            locationViewModel.onLocationPermissionGranted()
         }
     }
 
@@ -78,7 +76,7 @@ class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactor
             launcher = locationPermissionLauncher,
             settingsAppRequestCode = REQUEST_CODE_SETTINGS,
         ) {
-            mapViewModel.onLocationPermissionGranted()
+            locationViewModel.onLocationPermissionGranted()
         }
     }
 

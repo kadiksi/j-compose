@@ -26,6 +26,7 @@ fun MainNavHost(
     )
     {
         composable(DrawerScreens.ActiveOrders.route) {
+            startLocation.invoke()
             ActiveOrders(
                 navController,
                 openDrawer = {
@@ -34,7 +35,6 @@ fun MainNavHost(
             )
         }
         composable(DrawerScreens.Map.route) {
-            startLocation.invoke()
             Map(
                 navController,
                 openDrawer = {

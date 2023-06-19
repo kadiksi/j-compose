@@ -140,7 +140,7 @@ dependencies {
     //Swipe-to-refresh
     implementation ("com.google.accompanist:accompanist-swiperefresh:0.28.0")
     //Maps
-    implementation ("com.google.maps.android:maps-compose:1.0.0")
+    implementation ("com.google.maps.android:maps-compose:2.8.0")
     implementation ("com.google.android.gms:play-services-maps:18.1.0")
 //    Location
     implementation ("com.google.android.gms:play-services-location:21.0.1")
