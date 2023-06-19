@@ -4,7 +4,6 @@ import androidx.annotation.Keep
 
 @Keep
 data class ShiftModel(
-    val courierId: String,
     val status: Shift,
 )
 

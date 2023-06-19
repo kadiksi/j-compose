@@ -46,6 +46,8 @@ fun Drawer(
     onDestinationClicked: (route: String) -> Unit,
     shiftViewModel: StatusViewModel = hiltViewModel()
 ) {
+    val shift = shiftViewModel.uiState.shift.value
+
     Column(
         modifier
             .fillMaxSize()
@@ -75,19 +77,19 @@ fun Drawer(
                     )
                 )
 
-                var isToggle by remember { mutableStateOf(false) }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp)
                 ) {
-                    CustomSwitch(checked = isToggle) {
-                        if (isToggle)
-                            shiftViewModel.setShift(Shift.ON_SHIFT)
-                        else {
+                    var isShift = shift == Shift.ON_SHIFT
+                    CustomSwitch(checked = isShift) {
+                        if (isShift) {
                             shiftViewModel.setShift(Shift.FREE)
+                        } else {
+                            shiftViewModel.setShift(Shift.ON_SHIFT)
                         }
-                        isToggle = it
+                        isShift = it
                     }
                 }
             }
