@@ -15,8 +15,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import kz.post.jcourier.R
+import kz.post.jcourier.data.model.shift.Shift
+import kz.post.jcourier.data.model.shift.ShiftModel
 import kz.post.jcourier.ui.component.switcher.CustomSwitch
+import kz.post.jcourier.viewmodel.StatusViewModel
 
 sealed class DrawerScreens(val title: Int, val route: String) {
     object ActiveOrders : DrawerScreens(R.string.active_orders, "active_orders")
@@ -38,7 +42,9 @@ private val screens = listOf(
 
 @Composable
 fun Drawer(
-    modifier: Modifier = Modifier, onDestinationClicked: (route: String) -> Unit
+    modifier: Modifier = Modifier,
+    onDestinationClicked: (route: String) -> Unit,
+    shiftViewModel: StatusViewModel = hiltViewModel()
 ) {
     Column(
         modifier
@@ -46,8 +52,7 @@ fun Drawer(
             .padding(start = 16.dp, top = 24.dp)
     ) {
         Row(
-            modifier = modifier
-                .fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
             Image(
                 painter = painterResource(R.drawable.baseline_error_24),
@@ -60,17 +65,13 @@ fun Drawer(
                     .align(Alignment.CenterVertically)
             ) {
                 Text(
-                    text = "name",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+                    text = "name", style = TextStyle(
+                        fontWeight = FontWeight.Bold, fontSize = 20.sp
                     )
                 )
                 Text(
-                    text = "address",
-                    style = TextStyle(
-                        color = Color.Gray,
-                        fontSize = 16.sp
+                    text = "address", style = TextStyle(
+                        color = Color.Gray, fontSize = 16.sp
                     )
                 )
 
@@ -81,6 +82,11 @@ fun Drawer(
                         .padding(start = 16.dp)
                 ) {
                     CustomSwitch(checked = isToggle) {
+                        if (isToggle)
+                            shiftViewModel.setShift(Shift.ON_SHIFT)
+                        else {
+                            shiftViewModel.setShift(Shift.FREE)
+                        }
                         isToggle = it
                     }
                 }
@@ -93,8 +99,7 @@ fun Drawer(
                     .padding(16.dp)
                     .clickable {
                         onDestinationClicked(screen.route)
-                    }
-            ) {
+                    }) {
                 Text(
                     text = stringResource(id = screen.title),
                     style = MaterialTheme.typography.bodyLarge

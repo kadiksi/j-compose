@@ -19,6 +19,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import kz.post.jcourier.BuildConfig
 import kz.post.jcourier.data.api.LoginApiService
+import kz.post.jcourier.data.api.ShiftApiService
 import kz.post.jcourier.data.api.TaskApiService
 import kz.post.jcourier.data.interceptors.AuthInterceptor
 import kz.post.jcourier.data.interceptors.RequestHeaderInterceptor
@@ -152,6 +153,12 @@ object RestNetwork {
     @Provides
     fun provideTaskApiService(retrofit: Retrofit): TaskApiService {
         return retrofit.create(TaskApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideShiftApiService(retrofit: Retrofit): ShiftApiService {
+        return retrofit.create(ShiftApiService::class.java)
     }
 
     @Provides
