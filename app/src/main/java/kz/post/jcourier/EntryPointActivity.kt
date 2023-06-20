@@ -1,5 +1,6 @@
 package kz.post.jcourier
 
+import android.app.Activity
 import android.content.Intent
 import android.content.IntentFilter
 import android.location.LocationManager
@@ -11,6 +12,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kz.post.jcourier.app.theme.JTheme
 import kz.post.jcourier.location.GpsLocationReceiver
@@ -25,11 +29,12 @@ import kz.post.jcourier.viewmodel.LocationViewModel
 import kz.post.jcourier.viewmodel.LoginViewModel
 
 @AndroidEntryPoint
-class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactory,
+open class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactory,
     GpsLocationReceiverListener {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var locationViewModel: LocationViewModel
-    override val locationPermissionLauncher = registerPermissionsActivityResult { startListenLocationChange() }
+    override val locationPermissionLauncher =
+        registerPermissionsActivityResult { startListenLocationChange() }
     private val gpsLocationReceiver by lazy { GpsLocationReceiver().also { it.listener = this } }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +48,7 @@ class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactor
                 ) {
                     if (loginViewModel.isLogin.value.isLogin) {
                         HomeScreen { startListenLocationChange() }
+                        if (isGooglePlayServicesAvailable(this)) sendFCMToken()
                     } else {
                         LoginScreen()
                     }
@@ -57,7 +63,7 @@ class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactor
         printExtra(intent)
     }
 
-    fun printExtra(intent: Intent?){
+    fun printExtra(intent: Intent?) {
         val bundle = intent!!.extras
         if (bundle != null) {
             for (key in bundle.keySet()) {
@@ -65,6 +71,7 @@ class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactor
             }
         }
     }
+
     override fun onGpsStatusChanged(isEnabled: Boolean) {
         if (hasPermissionAccessFineLocation() && isEnabled) {
             locationViewModel.onLocationPermissionGranted()
@@ -91,6 +98,25 @@ class EntryPointActivity : ComponentActivity(), LocationPermissionLauncherFactor
     override fun onStop() {
         super.onStop()
         unregisterReceiver(gpsLocationReceiver)
+    }
+
+    private fun sendFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            Log.e("FirebaseMessaging token", it)
+            loginViewModel.sendToken(it)
+        }
+    }
+
+    private fun isGooglePlayServicesAvailable(activity: Activity): Boolean {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val status = googleApiAvailability.isGooglePlayServicesAvailable(activity)
+        if (status != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(status)) {
+                googleApiAvailability.getErrorDialog(activity, status, 1201)?.show()
+            }
+            return false
+        }
+        return true
     }
 
     companion object {

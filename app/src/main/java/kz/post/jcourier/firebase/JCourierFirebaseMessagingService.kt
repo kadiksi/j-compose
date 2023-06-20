@@ -25,6 +25,5 @@ class JCourierFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         sharedPreferencesProvider.fcmToken = token
         Log.e("onNewToken", token)
-//        SendTokenWorker.launch(this, token)
     }
 }

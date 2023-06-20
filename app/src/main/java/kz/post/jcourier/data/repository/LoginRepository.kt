@@ -27,4 +27,12 @@ class LoginRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun sendToken(token: String): NetworkResult<TokenModelData> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                loginApiService.sendToken(token)
+            }
+        }
+    }
 }

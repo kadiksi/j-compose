@@ -50,12 +50,23 @@ class LoginViewModel @Inject constructor(
                 }
             }
             is NetworkResult.Error -> {
-                Log.e("ER", "${result.data}")
                 uiState.isError.value = true
             }
             else -> {
-                Log.e("ER", "Else")
                 uiState.isError.value = true
+            }
+        }
+    }
+
+    fun sendToken(token: String) = viewModelScope.launch {
+        when (val result = loginRepository.sendToken(token)) {
+            is NetworkResult.Success -> {
+                result.data.data?.let {
+                }
+            }
+            is NetworkResult.Error -> {
+            }
+            else -> {
             }
         }
     }
@@ -68,7 +79,7 @@ class LoginViewModel @Inject constructor(
         uiState.isError.value = false
     }
 
-    fun logOut(){
+    fun logOut() {
         viewModelScope.launch {
             sharedPreferencesProvider.cleanup()
             isLogin.value = IsLogin(false)
