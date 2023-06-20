@@ -18,16 +18,16 @@ data class Task(
     var contactTo: ContactTo? = ContactTo(),
     var contactFrom: ContactFrom? = ContactFrom(),
     var product: ArrayList<Product>? = arrayListOf(),
-    var histories: ArrayList<TaskHistory>? = arrayListOf()
+    var histories: ArrayList<TaskHistory>? = arrayListOf(),
+    var actions: ArrayList<TaskStatus> = arrayListOf(),
 ) : Parcelable
 @Keep
 enum class TaskStatus {
     NEW,
-    ASSIGNED,
     ON_WAY,
     PICK_UP,
     DELIVER,
     CONFIRM,
-    FINISHED,
+    COMPLETE,
     CANCEL
 }

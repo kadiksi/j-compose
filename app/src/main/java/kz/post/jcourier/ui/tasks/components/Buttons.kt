@@ -38,38 +38,38 @@ fun MyButton(text: String, visibility: Boolean = true, onClick: () -> Unit) {
 fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task, taskStatus: TaskStatus) {
 
     MyButton(
-        stringResource(id = R.string.start), visibility = taskStatus == TaskStatus.ASSIGNED
+        stringResource(id = R.string.start), visibility = task.actions.contains(TaskStatus.ON_WAY)
     ) {
-        taskViewModel.startTask(task.id!!)
+        taskViewModel.setStatus(task.id!!, TaskStatus.ON_WAY)
     }
     MyButton(
-        stringResource(id = R.string.take), visibility = taskStatus == TaskStatus.ON_WAY
+        stringResource(id = R.string.take), visibility = task.actions.contains(TaskStatus.PICK_UP)
     ) {
-        taskViewModel.pickupTask(task.id!!)
+        taskViewModel.setStatus(task.id!!, TaskStatus.PICK_UP)
     }
     MyButton(
-        stringResource(id = R.string.delivered), visibility = taskStatus == TaskStatus.PICK_UP
+        stringResource(id = R.string.delivered), visibility = task.actions.contains(TaskStatus.DELIVER)
     ) {
-        taskViewModel.deliverTask(task.id!!)
+        taskViewModel.setStatus(task.id!!, TaskStatus.DELIVER)
     }
     MyButton(
-        stringResource(id = R.string.confirm), visibility = taskStatus == TaskStatus.DELIVER
+        stringResource(id = R.string.confirm), visibility = task.actions.contains(TaskStatus.CONFIRM)
     ) {
-        taskViewModel.confirmTask(task.id!!)
+        taskViewModel.setStatus(task.id!!, TaskStatus.CONFIRM)
     }
     MyButton(
-        stringResource(id = R.string.сomplete), visibility = taskStatus == TaskStatus.CONFIRM
+        stringResource(id = R.string.complete), visibility = task.actions.contains(TaskStatus.COMPLETE)
     ) {
         taskViewModel.showSmsDialog()
     }
     MyButton(
         stringResource(id = R.string.cancel_task),
-        visibility = taskStatus != TaskStatus.FINISHED
+        visibility = task.actions.contains(TaskStatus.CANCEL)
     ) {
         taskViewModel.showCancelReasonDialog()
     }
     MyButton(
-        stringResource(id = R.string.call), visibility = taskStatus != TaskStatus.FINISHED
+        stringResource(id = R.string.call), visibility = taskStatus != TaskStatus.COMPLETE
     ) {
         taskViewModel.showCallVariantDialog()
     }

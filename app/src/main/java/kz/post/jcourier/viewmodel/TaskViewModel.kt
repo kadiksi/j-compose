@@ -54,56 +54,8 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun startTask(taskId: Int) = viewModelScope.launch {
-        when (val result = taskRepository.startTask(TaskId(taskId))) {
-            is NetworkResult.Success -> {
-                result.data.let {
-                    uiState.task.value = it
-                }
-            }
-            is NetworkResult.Error -> {
-                uiState.isError.value.isError = true
-            }
-            else -> {
-                uiState.isError.value.isError = true
-            }
-        }
-    }
-
-    fun pickupTask(taskId: Int) = viewModelScope.launch {
-        when (val result = taskRepository.pickupTask(TaskId(taskId))) {
-            is NetworkResult.Success -> {
-                result.data.let {
-                    uiState.task.value = it
-                }
-            }
-            is NetworkResult.Error -> {
-                uiState.isError.value.isError = true
-            }
-            else -> {
-                uiState.isError.value.isError = true
-            }
-        }
-    }
-
-    fun deliverTask(taskId: Int) = viewModelScope.launch {
-        when (val result = taskRepository.deliverTask(TaskId(taskId))) {
-            is NetworkResult.Success -> {
-                result.data.let {
-                    uiState.task.value = it
-                }
-            }
-            is NetworkResult.Error -> {
-                uiState.isError.value.isError = true
-            }
-            else -> {
-                uiState.isError.value.isError = true
-            }
-        }
-    }
-
-    fun confirmTask(taskId: Int) = viewModelScope.launch {
-        when (val result = taskRepository.confirmTask(TaskId(taskId))) {
+    fun setStatus(taskId: Int, status : TaskStatus) = viewModelScope.launch {
+        when (val result = taskRepository.setStatus(TaskStatusId(taskId, status))) {
             is NetworkResult.Success -> {
                 result.data.let {
                     uiState.task.value = it

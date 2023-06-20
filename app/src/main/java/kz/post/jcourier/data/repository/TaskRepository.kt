@@ -7,7 +7,7 @@ import kz.post.jcourier.common.BaseApiResponse
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.api.TaskApiService
 import kz.post.jcourier.data.model.task.Task
-import kz.post.jcourier.data.model.task.TaskId
+import kz.post.jcourier.data.model.task.TaskStatusId
 import kz.post.jcourier.data.model.task.TaskIdReason
 import kz.post.jcourier.data.model.task.TaskIdSms
 import javax.inject.Inject
@@ -42,33 +42,10 @@ class TaskRepository @Inject constructor(
         }
     }
 
-    suspend fun startTask(task: TaskId): NetworkResult<Task> {
+    suspend fun setStatus(task: TaskStatusId): NetworkResult<Task> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.startTask(task)
-            }
-        }
-    }
-
-    suspend fun pickupTask(task: TaskId): NetworkResult<Task> {
-        return withContext(defaultDispatcher) {
-            safeApiCall {
-                taskApiService.pickupTask(task)
-            }
-        }
-    }
-    suspend fun deliverTask(task: TaskId): NetworkResult<Task> {
-        return withContext(defaultDispatcher) {
-            safeApiCall {
-                taskApiService.deliverTask(task)
-            }
-        }
-    }
-
-    suspend fun confirmTask(task: TaskId): NetworkResult<Task> {
-        return withContext(defaultDispatcher) {
-            safeApiCall {
-                taskApiService.confirmTask(task)
+                taskApiService.setStatus(task)
             }
         }
     }
