@@ -62,15 +62,4 @@ fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task, taskStatus: Task
     ) {
         taskViewModel.showSmsDialog()
     }
-    MyButton(
-        stringResource(id = R.string.cancel_task),
-        visibility = task.actions.contains(TaskStatus.CANCEL)
-    ) {
-        taskViewModel.showCancelReasonDialog()
-    }
-    MyButton(
-        stringResource(id = R.string.call), visibility = taskStatus != TaskStatus.COMPLETE
-    ) {
-        taskViewModel.showCallVariantDialog()
-    }
 }
