@@ -4,10 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import kz.post.jcourier.R
 import kz.post.jcourier.data.model.task.Task
-import kz.post.jcourier.ui.component.dialogs.CallVariantDialog
-import kz.post.jcourier.ui.component.dialogs.CancelReasonAlertDialog
-import kz.post.jcourier.ui.component.dialogs.ErrorAlertDialog
-import kz.post.jcourier.ui.component.dialogs.InputTextAlertDialog
+import kz.post.jcourier.ui.component.dialogs.*
 import kz.post.jcourier.viewmodel.ErrorModel
 import kz.post.jcourier.viewmodel.TaskViewModel
 
@@ -17,9 +14,12 @@ fun TaskDialogs(
     isError: ErrorModel,
     task: Task,
     isSmsDialog: Boolean,
+    isLoading: Boolean,
     isCancelReasonDialog: Boolean,
     isCallVariantsDialog: Boolean
 ) {
+    if (isLoading)
+        LoadingAnimation()
     ErrorAlertDialog(
         show = isError.isError,
         onDismiss = taskViewModel::onDialogConfirm,

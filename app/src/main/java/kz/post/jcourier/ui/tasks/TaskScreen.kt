@@ -27,6 +27,7 @@ fun task(
 ) {
     val task = taskViewModel.uiState.task.value
     val isError by taskViewModel.uiState.isError
+    val isLoading by taskViewModel.uiState.isLoading
     val isSmsDialog by taskViewModel.uiState.isSmsDialog
     val isCancelReasonDialog by taskViewModel.uiState.isCancelReasonDialog
     val isCallVariantsDialog by taskViewModel.uiState.isCallVariantDialog
@@ -95,6 +96,7 @@ fun task(
             isError,
             task,
             isSmsDialog,
+            isLoading,
             isCancelReasonDialog,
             isCallVariantsDialog
         )

@@ -19,6 +19,7 @@ import kz.post.jcourier.data.repository.TaskRepository
 import javax.inject.Inject
 
 data class TaskState(
+    var isLoading: MutableState<Boolean> = mutableStateOf(false),
     var isError: MutableState<ErrorModel> = mutableStateOf(ErrorModel()),
     var isSmsDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCancelReasonDialog: MutableState<Boolean> = mutableStateOf(false),
@@ -45,42 +46,53 @@ class TaskViewModel @Inject constructor(
     }
 
     private fun getTask(id: Int) = viewModelScope.launch {
+        showLoadingDialog()
         taskRepository.getTaskById(id).onSuccess {
+            hideLoadingDialog()
             it.let {
                 uiState.task.value = it
             }
         }.onError { _, message ->
+            hideLoadingDialog()
             uiState.isError.value = ErrorModel(true, message)
         }
     }
 
     fun setStatus(taskId: Int, status : TaskStatus) = viewModelScope.launch {
+        showLoadingDialog()
         when (val result = taskRepository.setStatus(TaskStatusId(taskId, status))) {
             is NetworkResult.Success -> {
+                hideLoadingDialog()
                 result.data.let {
                     uiState.task.value = it
                 }
             }
             is NetworkResult.Error -> {
+                hideLoadingDialog()
                 uiState.isError.value.isError = true
             }
             else -> {
+                hideLoadingDialog()
                 uiState.isError.value.isError = true
             }
         }
     }
 
     private fun completeTask(taskId: Int, sms: String) = viewModelScope.launch {
+        showLoadingDialog()
         when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
             is NetworkResult.Success -> {
+                hideLoadingDialog()
                 result.data.let {
                     uiState.task.value = it
                 }
             }
             is NetworkResult.Error -> {
+                hideLoadingDialog()
                 uiState.isError.value.isError = true
             }
             else -> {
+                hideLoadingDialog()
                 uiState.isError.value.isError = true
             }
         }
@@ -93,11 +105,14 @@ class TaskViewModel @Inject constructor(
             } else {
                 cancelReasonOther
             }
+            showLoadingDialog()
             taskRepository.cancelTask(TaskIdReason(id, reason, otherReason)).onSuccess {
+                hideLoadingDialog()
                 it.let {
                     uiState.task.value = it
                 }
             }.onError { _, message ->
+                hideLoadingDialog()
                 uiState.isError.value = ErrorModel(true, message)
             }
         }
@@ -162,6 +177,13 @@ class TaskViewModel @Inject constructor(
         uiState.isError.value = ErrorModel()
     }
 
+    private fun showLoadingDialog(){
+        uiState.isLoading.value = true
+    }
+
+    private fun hideLoadingDialog(){
+        uiState.isLoading.value = false
+    }
     private fun getCancellationReason(reasonIndex: Int): CancelReasonDto {
         return arrayOf(
             CancelReasonDto.NA,
