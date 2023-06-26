@@ -3,9 +3,9 @@ package kz.post.jcourier.ui.tasks.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import kz.post.jcourier.R
+import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.ui.component.dialogs.*
-import kz.post.jcourier.viewmodel.ErrorModel
 import kz.post.jcourier.viewmodel.TaskViewModel
 
 @Composable

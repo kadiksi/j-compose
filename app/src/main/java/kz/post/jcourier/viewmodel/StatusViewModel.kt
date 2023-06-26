@@ -11,7 +11,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.post.jcourier.common.NetworkResult
+import kz.post.jcourier.common.onError
+import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.model.auth.TokenModel
+import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.shift.Shift
 import kz.post.jcourier.data.repository.ShiftRepository
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
@@ -19,7 +22,7 @@ import javax.inject.Inject
 
 data class StatusState(
     val shift: MutableState<Shift> = mutableStateOf(Shift.FREE),
-    var isError: MutableState<Boolean> = mutableStateOf(false),
+    var isError: MutableState<ErrorModel> = mutableStateOf(ErrorModel()),
 )
 
 @HiltViewModel
@@ -34,36 +37,26 @@ class StatusViewModel @Inject constructor(
     }
 
     fun setShift(shift: Shift) = viewModelScope.launch {
-        when (val result = loginRepository.setStatus(shift)) {
-            is NetworkResult.Success -> {
-                result.data.let {
-                    uiState.shift.value = it.status
-                    uiState.isError.value = false
-                }
+        loginRepository.setStatus(shift).onSuccess {
+            it.let {
+                uiState.shift.value = it.status
             }
-            is NetworkResult.Error -> {
-                uiState.isError.value = true
-            }
-            else -> {
-                uiState.isError.value = true
-            }
+        }.onError{_, message ->
+            uiState.isError.value = ErrorModel(true, message)
         }
     }
 
     private fun getCourierShift() = viewModelScope.launch {
-        when (val result = loginRepository.getStatus()) {
-            is NetworkResult.Success -> {
-                result.data.let {
-                    uiState.shift.value = it.status
-                    uiState.isError.value = false
-                }
+        loginRepository.getStatus().onSuccess {
+            it.let {
+                uiState.shift.value = it.status
             }
-            is NetworkResult.Error -> {
-                uiState.isError.value = true
-            }
-            else -> {
-                uiState.isError.value = true
-            }
+        }.onError{_, message ->
+            uiState.isError.value = ErrorModel(true, message)
         }
+    }
+
+    fun onDialogConfirm() {
+        uiState.isError.value = ErrorModel()
     }
 }

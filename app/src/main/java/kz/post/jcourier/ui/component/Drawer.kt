@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kz.post.jcourier.R
 import kz.post.jcourier.data.model.shift.Shift
 import kz.post.jcourier.data.model.shift.ShiftModel
+import kz.post.jcourier.ui.component.dialogs.ErrorAlertDialog
 import kz.post.jcourier.ui.component.switcher.CustomSwitch
 import kz.post.jcourier.viewmodel.StatusViewModel
 
@@ -47,6 +48,7 @@ fun Drawer(
     shiftViewModel: StatusViewModel = hiltViewModel()
 ) {
     val shift = shiftViewModel.uiState.shift.value
+    val isError by shiftViewModel.uiState.isError
 
     Column(
         modifier
@@ -108,5 +110,11 @@ fun Drawer(
                 )
             }
         }
+        ErrorAlertDialog(
+            show = isError.isError,
+            onDismiss = shiftViewModel::onDialogConfirm,
+            onConfirm = shiftViewModel::onDialogConfirm,
+            text = isError.text
+        )
     }
 }

@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSuccess
+import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.task.*
 import kz.post.jcourier.data.repository.TaskRepository
 import javax.inject.Inject
@@ -25,11 +26,6 @@ data class TaskState(
     var isCancelReasonDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCallVariantDialog: MutableState<Boolean> = mutableStateOf(false),
     var task: MutableState<Task> = mutableStateOf(Task()),
-)
-
-data class ErrorModel(
-    var isError: Boolean = false,
-    var text: String = ""
 )
 
 @HiltViewModel
