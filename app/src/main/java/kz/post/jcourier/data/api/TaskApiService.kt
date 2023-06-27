@@ -21,7 +21,7 @@ interface TaskApiService {
     suspend fun getArchiveTaskList(): Response<List<Task>>
 
     @GET("gw/jpost-courier/api/public/v1/task/{id}")
-    suspend fun getTaskById(@Path("id") id: Int): Response<Task>
+    suspend fun getTaskById(@Path("id") id: Long): Response<Task>
 
     @POST("gw/jpost-courier/api/public/v1/task/submit")
     suspend fun setStatus(@Body taskStatusId: TaskStatusId): Response<Task>

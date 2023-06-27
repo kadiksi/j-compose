@@ -41,7 +41,7 @@ class TaskViewModel @Inject constructor(
         args?.id?.let { getTask(it) }
     }
 
-    private fun getTask(id: Int) = viewModelScope.launch {
+    private fun getTask(id: Long) = viewModelScope.launch {
         showLoadingDialog()
         taskRepository.getTaskById(id).onSuccess {
             hideLoadingDialog()
@@ -54,7 +54,7 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun setStatus(taskId: Int, status : TaskStatus) = viewModelScope.launch {
+    fun setStatus(taskId: Long, status : TaskStatus) = viewModelScope.launch {
         showLoadingDialog()
         when (val result = taskRepository.setStatus(TaskStatusId(taskId, status))) {
             is NetworkResult.Success -> {
@@ -74,7 +74,7 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    private fun completeTask(taskId: Int, sms: String) = viewModelScope.launch {
+    private fun completeTask(taskId: Long, sms: String) = viewModelScope.launch {
         showLoadingDialog()
         when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
             is NetworkResult.Success -> {
@@ -94,7 +94,7 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    private fun cancelTask(id: Int, reason: CancelReasonDto, cancelReasonOther: String?) =
+    private fun cancelTask(id: Long, reason: CancelReasonDto, cancelReasonOther: String?) =
         viewModelScope.launch {
             val otherReason: String? = if (cancelReasonOther?.isEmpty() == true) {
                 null
@@ -113,7 +113,7 @@ class TaskViewModel @Inject constructor(
             }
         }
 
-    private fun taskCall(taskId: Int, variant: String) = viewModelScope.launch {
+    private fun taskCall(taskId: Long, variant: String) = viewModelScope.launch {
         Log.e("data",taskId.toString() + " "+ variant)
 //        when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
 //            is NetworkResult.Success -> {
@@ -130,17 +130,17 @@ class TaskViewModel @Inject constructor(
 //        }
     }
 
-    fun onConfirmWithSmsDialog(taskId: Int, sms: String) {
+    fun onConfirmWithSmsDialog(taskId: Long, sms: String) {
         dismissSmsDialog()
         completeTask(taskId, sms)
     }
 
-    fun onCallVariantDialog(taskId: Int, variant: String) {
+    fun onCallVariantDialog(taskId: Long, variant: String) {
         hideCallVariantDialog()
         taskCall(taskId, variant)
     }
 
-    fun onCancelTaskDialog(taskId: Int, reasonIndex: Int, cancelReasonOther: String?) {
+    fun onCancelTaskDialog(taskId: Long, reasonIndex: Int, cancelReasonOther: String?) {
         hideCancelReasonDialog()
         cancelTask(taskId, getCancellationReason(reasonIndex), cancelReasonOther)
     }

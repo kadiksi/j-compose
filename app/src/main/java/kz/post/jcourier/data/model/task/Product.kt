@@ -7,11 +7,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Keep
 data class Product(
-    var id: Int? = null,
-    var orderId: Int? = null,
-    var productId: Int? = null,
+    var id: Long? = null,
+    var orderId: Long? = null,
+    var productId: Long? = null,
     var name: String? = null,
-    var quantity: Int? = null,
+    var quantity: Long? = null,
     var delivered: Boolean? = null
 ) : Parcelable {
     override fun toString(): String {

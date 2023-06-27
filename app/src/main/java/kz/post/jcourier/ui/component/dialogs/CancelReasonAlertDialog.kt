@@ -18,9 +18,9 @@ import kz.post.jcourier.R
 fun CancelReasonAlertDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (taskId: Int, selectedIndex: Int, cancelReasonOther: String?) -> Unit,
+    onConfirm: (taskId: Long, selectedIndex: Int, cancelReasonOther: String?) -> Unit,
     text: String,
-    taskId: Int
+    taskId: Long
 ) {
     var showChooseError by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }

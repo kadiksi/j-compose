@@ -34,7 +34,7 @@ class TaskRepository @Inject constructor(
         }
     }
 
-    suspend fun getTaskById(id: Int): NetworkResult<Task> {
+    suspend fun getTaskById(id: Long): NetworkResult<Task> {
         return withContext(defaultDispatcher) {
             safeApiCall {
                 taskApiService.getTaskById(id)

@@ -41,8 +41,8 @@ class StatusViewModel @Inject constructor(
             it.let {
                 uiState.shift.value = it.status
             }
-        }.onError{_, message ->
-            uiState.isError.value = ErrorModel(true, message)
+        }.onError{code, message ->
+            uiState.isError.value = ErrorModel(true, message+"$code")
         }
     }
 
@@ -51,8 +51,8 @@ class StatusViewModel @Inject constructor(
             it.let {
                 uiState.shift.value = it.status
             }
-        }.onError{_, message ->
-            uiState.isError.value = ErrorModel(true, message)
+        }.onError{code, message ->
+            uiState.isError.value = ErrorModel(true, message+"$code")
         }
     }
 

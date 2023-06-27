@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Keep
 data class ContactTo(
-    var id: Int? = null,
+    var id: Long? = null,
     var name: String? = null,
     var phone: String? = null
 ) : Parcelable

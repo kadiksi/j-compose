@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Keep
 data class AddressTo(
-    var id: Int? = null,
-    var cityId: Int? = null,
+    var id: Long? = null,
+    var cityId: Long? = null,
     var address: String? = null,
     var point: Point? = null
 ) : Parcelable

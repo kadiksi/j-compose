@@ -14,9 +14,9 @@ import kz.post.jcourier.R
 fun InputTextAlertDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (taskId: Int, sms: String) -> Unit,
+    onConfirm: (taskId: Long, sms: String) -> Unit,
     text: String = stringResource(id = R.string.sms),
-    taskId: Int
+    taskId: Long
 ) {
     var inputText by remember { mutableStateOf("") }
     if (show) {

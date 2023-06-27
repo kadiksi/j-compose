@@ -1,5 +1,6 @@
 package kz.post.jcourier.common
 
+import org.json.JSONObject
 import retrofit2.Response
 
 abstract class BaseApiResponse {
@@ -12,6 +13,9 @@ abstract class BaseApiResponse {
                     return NetworkResult.Success(body)
                 }
             }
+            if (response.code() == 409) {
+                return error(" ${response.errorBody()!!.string()}", response.body())
+            }
             return error("${response.code()} ${response.message()}", response.body())
         } catch (e: Exception) {
             return error(e.message ?: e.toString(), null)
@@ -19,5 +23,5 @@ abstract class BaseApiResponse {
     }
 
     private fun <T> error(errorMessage: String, body: T?): NetworkResult<T> =
-        NetworkResult.Error("Api call failed $errorMessage", body)
+        NetworkResult.Error("Api call failed:  $errorMessage", body)
 }

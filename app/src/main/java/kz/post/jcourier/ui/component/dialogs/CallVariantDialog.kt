@@ -15,9 +15,9 @@ import kz.post.jcourier.R
 fun CallVariantDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (taskId: Int, sms: String) -> Unit,
+    onConfirm: (taskId: Long, sms: String) -> Unit,
     text: String = stringResource(id = R.string.sms),
-    taskId: Int
+    taskId: Long
 ) {
     if (show) {
         AlertDialog(

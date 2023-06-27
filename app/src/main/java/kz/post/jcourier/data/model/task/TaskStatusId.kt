@@ -4,6 +4,6 @@ import androidx.annotation.Keep
 
 @Keep
 class TaskStatusId(
-    val taskId: Int,
+    val taskId: Long,
     val event: TaskStatus
 )
