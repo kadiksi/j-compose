@@ -113,8 +113,17 @@ class TaskViewModel @Inject constructor(
             }
         }
 
-    private fun taskCall(taskId: Long, variant: String) = viewModelScope.launch {
-        Log.e("data",taskId.toString() + " "+ variant)
+    private fun taskCall(taskId: Long, direction: CallDto) = viewModelScope.launch {
+        showLoadingDialog()
+        taskRepository.callTask(TaskCallEvent(taskId = taskId, direction = direction)).onSuccess {
+            hideLoadingDialog()
+            it.let {
+                uiState.task.value = it
+            }
+        }.onError { _, message ->
+            hideLoadingDialog()
+            uiState.isError.value = ErrorModel(true, message)
+        }
 //        when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
 //            is NetworkResult.Success -> {
 //                result.data.let {
@@ -135,9 +144,9 @@ class TaskViewModel @Inject constructor(
         completeTask(taskId, sms)
     }
 
-    fun onCallVariantDialog(taskId: Long, variant: String) {
+    fun onCallVariantDialog(taskId: Long, direction: CallDto) {
         hideCallVariantDialog()
-        taskCall(taskId, variant)
+        taskCall(taskId, direction)
     }
 
     fun onCancelTaskDialog(taskId: Long, reasonIndex: Int, cancelReasonOther: String?) {

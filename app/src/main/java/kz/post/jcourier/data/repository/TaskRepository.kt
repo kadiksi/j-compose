@@ -6,10 +6,7 @@ import kotlinx.coroutines.withContext
 import kz.post.jcourier.common.BaseApiResponse
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.api.TaskApiService
-import kz.post.jcourier.data.model.task.Task
-import kz.post.jcourier.data.model.task.TaskStatusId
-import kz.post.jcourier.data.model.task.TaskIdReason
-import kz.post.jcourier.data.model.task.TaskIdSms
+import kz.post.jcourier.data.model.task.*
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -62,6 +59,13 @@ class TaskRepository @Inject constructor(
         return withContext(defaultDispatcher) {
             safeApiCall {
                 taskApiService.cancelTask(task)
+            }
+        }
+    }
+    suspend fun callTask(task: TaskCallEvent): NetworkResult<Task> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.callTask(task)
             }
         }
     }

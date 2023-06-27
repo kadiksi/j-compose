@@ -1,9 +1,6 @@
 package kz.post.jcourier.data.api
 
-import kz.post.jcourier.data.model.task.Task
-import kz.post.jcourier.data.model.task.TaskStatusId
-import kz.post.jcourier.data.model.task.TaskIdReason
-import kz.post.jcourier.data.model.task.TaskIdSms
+import kz.post.jcourier.data.model.task.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -33,4 +30,7 @@ interface TaskApiService {
     //Cancel task
     @POST("gw/jpost-courier/api/public/v1/task/cancel")
     suspend fun cancelTask(@Body task: TaskIdReason): Response<Task>
+
+    @POST("gw/jpost-courier/api/public/v1/event/call")
+    suspend fun callTask(@Body task: TaskCallEvent): Response<Task>
 }

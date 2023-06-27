@@ -9,13 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kz.post.jcourier.R
+import kz.post.jcourier.data.model.task.CallDto
 
 
 @Composable
 fun CallVariantDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (taskId: Long, sms: String) -> Unit,
+    onConfirm: (taskId: Long, direction: CallDto) -> Unit,
     text: String = stringResource(id = R.string.sms),
     taskId: Long
 ) {
@@ -30,7 +31,7 @@ fun CallVariantDialog(
                 Column {
                     Text(text)
                     Button(
-                        onClick = { onConfirm.invoke(taskId, "Clinet") },
+                        onClick = { onConfirm.invoke(taskId, CallDto.RECIPIENT) },
                         modifier = Modifier
                             .padding(top = 16.dp)
                             .fillMaxWidth()
@@ -38,7 +39,7 @@ fun CallVariantDialog(
                         Text(stringResource(id = R.string.clinet))
                     }
                     Button(
-                        onClick = { onConfirm.invoke(taskId, "Merchant") },
+                        onClick = { onConfirm.invoke(taskId, CallDto.SENDER) },
                         modifier = Modifier
                             .padding(top = 16.dp)
                             .fillMaxWidth()
