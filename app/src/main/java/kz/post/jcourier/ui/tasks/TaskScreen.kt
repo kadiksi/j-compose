@@ -48,7 +48,9 @@ fun task(
             cancelIcon = Icons.Filled.Close,
             onBackClicked = { navController.popBackStack() },
             onCallClicked = { taskViewModel.showCallVariantDialog() },
-            onCancelClicked = { taskViewModel.showCancelReasonDialog() })
+            onCancelClicked = { taskViewModel.showCancelReasonDialog() },
+            task = task
+        )
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top,
@@ -98,7 +100,8 @@ fun task(
             isSmsDialog,
             isLoading,
             isCancelReasonDialog,
-            isCallVariantsDialog
+            isCallVariantsDialog,
+            task.cancellationReasons
         )
     }
 }

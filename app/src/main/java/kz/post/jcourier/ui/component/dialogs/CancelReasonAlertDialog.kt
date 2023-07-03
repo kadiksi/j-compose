@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kz.post.jcourier.R
+import kz.post.jcourier.data.model.task.CancelReason
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -18,35 +19,40 @@ import kz.post.jcourier.R
 fun CancelReasonAlertDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (taskId: Long, selectedIndex: Int, cancelReasonOther: String?) -> Unit,
+    onConfirm: (taskId: Long, selectedIndex: Int, reason: String, cancelReasonOther: String?) -> Unit,
     text: String,
-    taskId: Long
+    taskId: Long,
+    cancellationReasonsList: ArrayList<CancelReason>,
 ) {
-    var showChooseError by remember { mutableStateOf(false) }
-    var expanded by remember { mutableStateOf(false) }
-    val cancellationReasons = stringArrayResource(id = R.array.cancellation_reason_list)
-
-    var selectedText by remember { mutableStateOf(cancellationReasons[0]) }
-    var selectedIndex by remember { mutableStateOf(0) }
-
-    var inputText by remember { mutableStateOf("") }
-    val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-        disabledBorderColor = if (inputText.isEmpty()) Color.Red else Color.Gray,
-    )
-
     if (show) {
+//        var showChooseError by remember { mutableStateOf(false) }
+        var expanded by remember { mutableStateOf(false) }
+        val cancellationReasons = cancellationReasonsList.map { it.description }
+
+        var selectedText by remember { mutableStateOf(cancellationReasons[0]) }
+        var selectedIndex by remember { mutableStateOf(0) }
+
+        var inputText by remember { mutableStateOf("") }
+        val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+            disabledBorderColor = if (inputText.isEmpty()) Color.Red else Color.Gray,
+        )
         AlertDialog(
             onDismissRequest = onDismiss,
             confirmButton = {
                 TextButton(onClick = {
                     if (selectedIndex == 0) {
-                        showChooseError = true
+//                        showChooseError = true
                         return@TextButton
                     }
-                    if(selectedIndex == 4 && inputText.trim().length < 3){
+                    if (selectedIndex == 4 && inputText.trim().length < 3) {
                         return@TextButton
                     }
-                    onConfirm.invoke(taskId, selectedIndex, inputText)
+                    onConfirm.invoke(
+                        taskId,
+                        selectedIndex,
+                        cancellationReasonsList[cancellationReasons.indexOf(selectedText)].reason,
+                        inputText
+                    )
                 })
                 { Text(text = stringResource(id = R.string.ok)) }
             },
@@ -91,29 +97,29 @@ fun CancelReasonAlertDialog(
                                         selectedText = item
                                         selectedIndex = cancellationReasons.indexOf(item)
                                         expanded = false
-                                        showChooseError = selectedIndex == 0
+//                                        showChooseError = selectedIndex == 0
                                     }
                                 )
                             }
                         }
                     }
-                    if (showChooseError) {
-                        Text(
-                            color = Color.Red,
-                            text = stringResource(id = R.string.choose_reason)
-                        )
-                    }
-                    if (selectedText == cancellationReasons[4]) {
-                        OutlinedTextField(
-                            colors = textFieldColors,
-                            isError = inputText.isEmpty(),
-                            value = inputText,
-                            onValueChange = { inputText = it },
-                            placeholder = {
-                                Text(stringResource(id = R.string.enter_cancellation_reason))
-                            },
-                        )
-                    }
+//                    if (showChooseError) {
+//                        Text(
+//                            color = Color.Red,
+//                            text = stringResource(id = R.string.choose_reason)
+//                        )
+//                    }
+//                    if (selectedText == cancellationReasons.last()) {
+//                        OutlinedTextField(
+//                            colors = textFieldColors,
+//                            isError = inputText.isEmpty(),
+//                            value = inputText,
+//                            onValueChange = { inputText = it },
+//                            placeholder = {
+//                                Text(stringResource(id = R.string.enter_cancellation_reason))
+//                            },
+//                        )
+//                    }
                 }
             },
         )

@@ -18,7 +18,7 @@ class TaskRepository @Inject constructor(
     suspend fun getTaskList(): NetworkResult<List<Task>> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.getTaskList()
+                taskApiService.getTaskList(TaskStatus.ACTIVE)
             }
         }
     }
@@ -26,7 +26,7 @@ class TaskRepository @Inject constructor(
     suspend fun getArchiveTaskList(): NetworkResult<List<Task>> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.getArchiveTaskList()
+                taskApiService.getArchiveTaskList(TaskStatus.COMPLETE)
             }
         }
     }
@@ -62,7 +62,7 @@ class TaskRepository @Inject constructor(
             }
         }
     }
-    suspend fun callTask(task: TaskCallEvent): NetworkResult<Task> {
+    suspend fun callTask(task: TaskCallEvent): NetworkResult<Boolean> {
         return withContext(defaultDispatcher) {
             safeApiCall {
                 taskApiService.callTask(task)

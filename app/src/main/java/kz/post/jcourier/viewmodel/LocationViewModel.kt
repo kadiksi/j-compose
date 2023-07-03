@@ -25,7 +25,7 @@ class LocationViewModel @Inject constructor(
 
         viewModelScope.launch {
             while (isActive) {
-                delay(50_000)
+                delay(250_000)
                 sendCoordinationUseCase.invoke()
             }
         }

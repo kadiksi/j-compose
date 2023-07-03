@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import kz.post.jcourier.R
+import kz.post.jcourier.data.model.task.Task
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +33,8 @@ fun TopBarWithActions(
     cancelIcon: ImageVector,
     onBackClicked: () -> Unit,
     onCallClicked: () -> Unit,
-    onCancelClicked: () -> Unit
+    onCancelClicked: () -> Unit,
+    task : Task
 ) {
     TopAppBar(
         title = {
@@ -49,8 +51,10 @@ fun TopBarWithActions(
             IconButton(onClick = { onCallClicked() }) {
                 Icon(callIcon, contentDescription = stringResource(id = R.string.call))
             }
-            IconButton(onClick = { onCancelClicked() }) {
-                Icon(cancelIcon, contentDescription = stringResource(id = R.string.cancel_task))
+            if(task.cancellationReasons.isNotEmpty()) {
+                IconButton(onClick = { onCancelClicked() }) {
+                    Icon(cancelIcon, contentDescription = stringResource(id = R.string.cancel_task))
+                }
             }
         }
     )
