@@ -3,10 +3,7 @@ package kz.post.jcourier.ui.tasks.components
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -62,4 +59,12 @@ fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task, taskStatus: Task
     ) {
         taskViewModel.showSmsDialog()
     }
+    if(task.cancellationReasons.isNotEmpty()) {
+        MyButton(
+            stringResource(id = R.string.cancel_task), visibility = task.actions.contains(TaskStatus.COMPLETE)
+        ) {
+            taskViewModel.showCancelReasonDialog()
+        }
+    }
+
 }

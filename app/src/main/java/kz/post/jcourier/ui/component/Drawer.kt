@@ -58,31 +58,14 @@ fun Drawer(
         Row(
             modifier = modifier.fillMaxWidth()
         ) {
-            Image(
-                painter = painterResource(R.drawable.baseline_error_24),
-                contentDescription = "Profile Icon",
-                modifier = Modifier.size(64.dp)
-            )
             Column(
                 modifier = Modifier
-                    .padding(start = 16.dp)
+                    .fillMaxWidth()
                     .align(Alignment.CenterVertically)
             ) {
-                Text(
-                    text = "name", style = TextStyle(
-                        fontWeight = FontWeight.Bold, fontSize = 20.sp
-                    )
-                )
-                Text(
-                    text = "address", style = TextStyle(
-                        color = Color.Gray, fontSize = 16.sp
-                    )
-                )
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp)
                 ) {
                     var isShift = shift == Shift.ON_SHIFT
                     CustomSwitch(checked = isShift) {

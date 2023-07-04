@@ -48,7 +48,7 @@ fun TaskCard(
                     .fillMaxWidth()
                     .padding(8.dp)
                     .weight(1f),
-                text = task.contactFrom?.companyName.toString()
+                text = task.contactFrom?.name.toString()
             )
         }
         Row {

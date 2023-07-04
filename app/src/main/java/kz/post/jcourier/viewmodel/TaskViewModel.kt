@@ -1,6 +1,7 @@
 package kz.post.jcourier.viewmodel
 
 import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +27,7 @@ data class TaskState(
     var isSmsDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCancelReasonDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCallVariantDialog: MutableState<Boolean> = mutableStateOf(false),
+    var fileList: MutableState<List<Uri>> = mutableStateOf(emptyList()),
     var task: MutableState<Task> = mutableStateOf(Task()),
 )
 
@@ -213,14 +215,5 @@ class TaskViewModel @Inject constructor(
 
     private fun hideLoadingDialog(){
         uiState.isLoading.value = false
-    }
-    private fun getCancellationReason(reasonIndex: Int): CancelReasonDto {
-        return arrayOf(
-            CancelReasonDto.NA,
-            CancelReasonDto.LDT,
-            CancelReasonDto.AG,
-            CancelReasonDto.FC,
-            CancelReasonDto.O
-        )[reasonIndex]
     }
 }

@@ -1,11 +1,21 @@
 package kz.post.jcourier.ui.component
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import kz.post.jcourier.R
 import kz.post.jcourier.data.model.task.Task
+import kz.post.jcourier.ui.tasks.components.chooseFile
+import kz.post.jcourier.utils.fileFromContentUri
+import kz.post.jcourier.viewmodel.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,12 +40,41 @@ fun TopBarWithActions(
     title: String = "",
     backArrowIcon: ImageVector,
     callIcon: ImageVector,
-    cancelIcon: ImageVector,
+    fileIcon: ImageVector,
     onBackClicked: () -> Unit,
     onCallClicked: () -> Unit,
-    onCancelClicked: () -> Unit,
-    task : Task
+    taskViewModel: TaskViewModel
 ) {
+    var selectedImageUris by remember {
+        taskViewModel.uiState.fileList
+    }
+
+    val context = LocalContext.current
+    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+        onResult = { uris ->
+            val newList = arrayListOf<Uri>()
+            newList.addAll(selectedImageUris)
+            newList.addAll(uris)
+            selectedImageUris = newList
+
+            newList.forEach {
+                taskViewModel.onAddImageFile(fileFromContentUri(context,it))
+            }
+        }
+    )
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Permission Accepted: Do something
+            chooseFile(multiplePhotoPickerLauncher)
+        } else {
+            // Permission Denied: Do something
+        }
+    }
+
+
     TopAppBar(
         title = {
             Text(
@@ -51,11 +90,21 @@ fun TopBarWithActions(
             IconButton(onClick = { onCallClicked() }) {
                 Icon(callIcon, contentDescription = stringResource(id = R.string.call))
             }
-            if(task.cancellationReasons.isNotEmpty()) {
-                IconButton(onClick = { onCancelClicked() }) {
-                    Icon(cancelIcon, contentDescription = stringResource(id = R.string.cancel_task))
+                IconButton(onClick = { when (PackageManager.PERMISSION_GRANTED) {
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) -> {
+                        // Some works that require permission
+                        chooseFile(multiplePhotoPickerLauncher)
+                    }
+                    else -> {
+                        launcher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }
                 }
-            }
+                }) {
+                    Icon(fileIcon, contentDescription = stringResource(id = R.string.update_files))
+                }
         }
     )
 }

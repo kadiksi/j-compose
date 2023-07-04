@@ -28,8 +28,8 @@ fun HomeScreen(startLocation: () -> Unit) {
             gesturesEnabled = drawerState.isOpen,
             drawerContent = {
                 ModalDrawerSheet {
-                    Text("Drawer title", modifier = Modifier.padding(16.dp))
-                    Divider()
+//                    Text("Drawer title", modifier = Modifier.padding(16.dp))
+//                    Divider()
                     Drawer(
                         onDestinationClicked = { route ->
                             scope.launch {

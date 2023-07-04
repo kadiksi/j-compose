@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Close
@@ -45,11 +46,10 @@ fun task(
         TopBarWithActions(title = stringResource(R.string.task_id, taskId!!),
             backArrowIcon = Icons.Filled.ArrowBack,
             callIcon = Icons.Filled.Call,
-            cancelIcon = Icons.Filled.Close,
+            fileIcon = Icons.Filled.Add,
             onBackClicked = { navController.popBackStack() },
             onCallClicked = { taskViewModel.showCallVariantDialog() },
-            onCancelClicked = { taskViewModel.showCancelReasonDialog() },
-            task = task
+            taskViewModel = taskViewModel
         )
         Column(
             modifier = Modifier.fillMaxSize(),
