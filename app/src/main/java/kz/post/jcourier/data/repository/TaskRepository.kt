@@ -7,6 +7,8 @@ import kz.post.jcourier.common.BaseApiResponse
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.api.TaskApiService
 import kz.post.jcourier.data.model.task.*
+import okhttp3.MultipartBody
+import retrofit2.http.Part
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -26,7 +28,7 @@ class TaskRepository @Inject constructor(
     suspend fun getArchiveTaskList(): NetworkResult<List<Task>> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.getArchiveTaskList(TaskStatus.COMPLETE)
+                taskApiService.getTaskList(TaskStatus.COMPLETE)
             }
         }
     }
@@ -66,6 +68,17 @@ class TaskRepository @Inject constructor(
         return withContext(defaultDispatcher) {
             safeApiCall {
                 taskApiService.callTask(task)
+            }
+        }
+    }
+
+    suspend fun uploadFiles(
+        taskId: Long,
+        file: List<MultipartBody.Part>,
+    ): NetworkResult<Boolean> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.uploadFiles(taskId, file)
             }
         }
     }

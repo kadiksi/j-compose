@@ -1,22 +1,23 @@
 package kz.post.jcourier.viewmodel
 
-import android.util.Log
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kz.post.jcourier.R
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.task.*
 import kz.post.jcourier.data.repository.TaskRepository
+import kz.post.jcourier.utils.toMultipart
+import okhttp3.MultipartBody
+import java.io.File
 import javax.inject.Inject
 
 data class TaskState(
@@ -74,23 +75,17 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    private fun completeTask(taskId: Long, sms: String) = viewModelScope.launch {
+    private fun completeTask(context: Context, taskId: Long, sms: String) = viewModelScope.launch {
         showLoadingDialog()
-        when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
-            is NetworkResult.Success -> {
-                hideLoadingDialog()
-                result.data.let {
-                    uiState.task.value = it
-                }
+        taskRepository.completeTask(TaskIdSms(taskId, sms)).onSuccess {
+            hideLoadingDialog()
+            it.let {
+                uiState.task.value = it
             }
-            is NetworkResult.Error -> {
-                hideLoadingDialog()
-                uiState.isError.value.isError = true
-            }
-            else -> {
-                hideLoadingDialog()
-                uiState.isError.value.isError = true
-            }
+            uploadFiles(context, taskId)
+        }.onError { task, message ->
+            hideLoadingDialog()
+            uiState.isError.value.isError = true
         }
     }
 
@@ -121,24 +116,52 @@ class TaskViewModel @Inject constructor(
             hideLoadingDialog()
             uiState.isError.value = ErrorModel(true, message)
         }
-//        when (val result = taskRepository.completeTask(TaskIdSms(taskId, sms))) {
-//            is NetworkResult.Success -> {
-//                result.data.let {
-//                    uiState.task.value = it
-//                }
-//            }
-//            is NetworkResult.Error -> {
-//                uiState.isError.value.isError = true
-//            }
-//            else -> {
-//                uiState.isError.value.isError = true
-//            }
-//        }
     }
 
-    fun onConfirmWithSmsDialog(taskId: Long, sms: String) {
+    private val _images = MutableLiveData<List<File>>(listOf())
+    val images: LiveData<List<File>> get() = _images
+
+    fun uploadFiles(context: Context, taskId: Long) = viewModelScope.launch {
+        val parts = getParts(context)
+        showLoadingDialog()
+        taskRepository.uploadFiles(taskId, parts).onSuccess {
+            onRemoveImagesFromMemory()
+            hideLoadingDialog()
+        }.onError { _, message ->
+            hideLoadingDialog()
+            uiState.isError.value = ErrorModel(true, message)
+        }
+    }
+
+    private fun getParts(context: Context): List<MultipartBody.Part>{
+        val list =  ArrayList<MultipartBody.Part>()
+        _images.value?.forEach {
+            it.toMultipart(context, "file", "photo.jpg")?.let { it1 -> list.add(it1) }
+        }
+        return list
+    }
+    fun onRemoveImageFile(file: File) {
+        val imageFiles = _images.value ?: return
+        _images.value = imageFiles.filter { it != file }
+        file.delete()
+    }
+
+    fun onAddImageFile(file: File) {
+        val imageFiles = _images.value?.toMutableList() ?: mutableListOf()
+        imageFiles.add(file)
+
+        _images.value = imageFiles
+    }
+
+    private fun onRemoveImagesFromMemory() {
+        val imageFiles = _images.value
+        imageFiles?.forEach { it.delete() }
+        _images.value = listOf()
+    }
+
+    fun onConfirmWithSmsDialog(context: Context,taskId: Long, sms: String) {
         dismissSmsDialog()
-        completeTask(taskId, sms)
+        completeTask(context, taskId, sms)
     }
 
     fun onCallVariantDialog(taskId: Long, direction: CallDto) {
@@ -168,6 +191,11 @@ class TaskViewModel @Inject constructor(
     }
 
     fun showSmsDialog() {
+        val list = _images.value ?: emptyList()
+        if(list.size <= 5){
+            uiState.isError.value = ErrorModel(true, "Choose min 5 photo")
+            return
+        }
         uiState.isSmsDialog.value = true
     }
 

@@ -1,22 +1,15 @@
 package kz.post.jcourier.data.api
 
 import kz.post.jcourier.data.model.task.*
+import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface TaskApiService {
 
     //active tasks
     @GET("gw/jpost-courier/api/public/v1/task")
     suspend fun getTaskList(@Query("status") status: TaskStatus): Response<List<Task>>
-
-    //archive tasks
-    @GET("gw/jpost-courier/api/public/v1/task/complete")
-    suspend fun getArchiveTaskList(@Query("status") status: TaskStatus): Response<List<Task>>
 
     @GET("gw/jpost-courier/api/public/v1/task/{id}")
     suspend fun getTaskById(@Path("id") id: Long): Response<Task>
@@ -34,4 +27,11 @@ interface TaskApiService {
 
     @POST("gw/jpost-courier/api/public/v1/event/call")
     suspend fun callTask(@Body task: TaskCallEvent): Response<Boolean>
+
+    @Multipart
+    @POST("gw/jpost-courier/api/public/v1/event/upload")
+    suspend fun uploadFiles(
+        @Query("taskId") taskId: Long,
+        @Part file: List<MultipartBody.Part>,
+    ): Response<Boolean>
 }

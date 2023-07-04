@@ -59,7 +59,7 @@ fun task(
             TaskAddress(task)
             ViewDivider()
             TaskSenderView(task)
-            TaskFileView()
+            TaskFileView(taskViewModel)
             if (task.product?.isNotEmpty() == true) {
                 TextView(
                     stringResource(R.string.product_list), MaterialTheme.typography.titleLarge
@@ -85,7 +85,7 @@ fun task(
                 task.histories?.forEach {
                     it.action?.let { it1 ->
                         TextView(
-                            it1, MaterialTheme.typography.labelLarge,
+                            it1+" - ${it.createdDate}", MaterialTheme.typography.labelLarge,
                             topPaddign = 0.dp,
                             bottomPaddign = 0.dp
                         )

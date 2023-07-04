@@ -1,10 +1,17 @@
 package kz.post.jcourier.ui.tasks.components
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -21,15 +28,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
 import coil.compose.AsyncImage
 import kz.post.jcourier.R
+import kz.post.jcourier.data.model.task.Task
+import kz.post.jcourier.utils.fileFromContentUri
+import kz.post.jcourier.utils.toMultipart
+import kz.post.jcourier.viewmodel.TaskViewModel
+import java.io.File
+
 
 @Composable
-fun TaskFileView(
-) {
+fun TaskFileView(taskViewModel: TaskViewModel) {
     var selectedImageUris by remember {
         mutableStateOf<List<Uri>>(emptyList())
     }
+    val context = LocalContext.current
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris ->
@@ -37,9 +51,12 @@ fun TaskFileView(
             newList.addAll(selectedImageUris)
             newList.addAll(uris)
             selectedImageUris = newList
+
+            newList.forEach {
+                taskViewModel.onAddImageFile(fileFromContentUri(context,it))
+            }
         }
     )
-    val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
