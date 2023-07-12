@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import kz.post.jcourier.R
@@ -40,7 +41,6 @@ fun TopBarWithActions(
     title: String = "",
     backArrowIcon: ImageVector,
     callIcon: ImageVector,
-    fileIcon: ImageVector,
     onBackClicked: () -> Unit,
     onCallClicked: () -> Unit,
     taskViewModel: TaskViewModel
@@ -70,7 +70,7 @@ fun TopBarWithActions(
             // Permission Accepted: Do something
             chooseFile(multiplePhotoPickerLauncher)
         } else {
-            // Permission Denied: Do something
+            chooseFile(multiplePhotoPickerLauncher)
         }
     }
 
@@ -103,7 +103,7 @@ fun TopBarWithActions(
                     }
                 }
                 }) {
-                    Icon(fileIcon, contentDescription = stringResource(id = R.string.update_files))
+                    Icon(painterResource(id = R.drawable.baseline_insert_drive_file_24), contentDescription = stringResource(id = R.string.update_files))
                 }
         }
     )

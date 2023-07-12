@@ -30,13 +30,13 @@ android {
         targetSdk = AppConfig.targetSdk
         versionCode = AppConfig.versionCode
         versionName = AppConfig.versionName
-        resValue("string", AppConfig.appName, "JCourier")
         testInstrumentationRunner = AppConfig.androidTestInstrumentation
         multiDexEnabled = true
     }
 
     buildTypes {
         getByName("release") {
+            resValue("string", AppConfig.appName, "JCourier 2.0")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -47,6 +47,7 @@ android {
         }
         getByName("debug") {
             initWith(buildTypes.getByName("debug"))
+            resValue("string", AppConfig.appName, "JCourier 2.0 Test")
             isMinifyEnabled = false
             isDebuggable = true
         }

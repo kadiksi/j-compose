@@ -14,7 +14,11 @@ abstract class BaseApiResponse {
                 }
             }
             if (response.code() == 409) {
-                return error(" ${response.errorBody()!!.string()}", response.body())
+                return error(JSONObject(response.errorBody()!!.string()).getString("description"), response.body())
+            }
+            if (response.code() == 403) {
+                return NetworkResult.Error(JSONObject(response.errorBody()!!.string()).getString("description"), response.body())
+//                return error(" ${response.errorBody()!!.string()}", response.body())
             }
             return error("${response.code()} ${response.message()}", response.body())
         } catch (e: Exception) {
@@ -23,5 +27,5 @@ abstract class BaseApiResponse {
     }
 
     private fun <T> error(errorMessage: String, body: T?): NetworkResult<T> =
-        NetworkResult.Error("Api call failed:  $errorMessage", body)
+        NetworkResult.Error(errorMessage, body)
 }

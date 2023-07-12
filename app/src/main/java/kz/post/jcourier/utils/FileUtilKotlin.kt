@@ -4,11 +4,12 @@ import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import java.io.*
+import java.util.*
 
 fun fileFromContentUri(context: Context, contentUri: Uri): File {
     // Preparing Temp file name
     val fileExtension = getFileExtension(context, contentUri)
-    val fileName = "temp_file" + if (fileExtension != null) ".$fileExtension" else ""
+    val fileName = "${Date().time}_temp_file" + if (fileExtension != null) ".$fileExtension" else ""
 
     // Creating Temp file
     val tempFile = File(context.cacheDir, fileName)

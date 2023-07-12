@@ -45,7 +45,7 @@ private val screens = listOf(
 fun Drawer(
     modifier: Modifier = Modifier,
     onDestinationClicked: (route: String) -> Unit,
-    shiftViewModel: StatusViewModel = hiltViewModel()
+    shiftViewModel: StatusViewModel
 ) {
     val shift = shiftViewModel.uiState.shift.value
     val isError by shiftViewModel.uiState.isError
@@ -56,12 +56,13 @@ fun Drawer(
             .padding(start = 16.dp, top = 24.dp)
     ) {
         Row(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.CenterVertically)
             ) {
                 Box(
                     modifier = Modifier

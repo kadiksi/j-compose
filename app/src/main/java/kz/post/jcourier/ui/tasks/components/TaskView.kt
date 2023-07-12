@@ -25,15 +25,15 @@ fun TaskAddress(task: Task) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            task.addressFrom?.address?.let {
+            task.contactFrom?.name?.let {
                 TextView(
-                    stringResource(R.string.from_address, it),
+                    stringResource(R.string.from_contact, it),
                     bottomPaddign = 8.dp
                 )
             }
             task.addressTo?.address?.let {
                 TextView(
-                    stringResource(R.string.to_address, it),
+                    stringResource(R.string.from_address, it),
                     topPaddign = 8.dp
                 )
             }
@@ -64,14 +64,14 @@ fun TaskSenderView(task: Task) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            task.contactFrom?.name?.let {
-                TextView(
-                    stringResource(R.string.from_contact, it),
-                )
-            }
             task.contactTo?.name?.let {
                 TextView(
                     stringResource(R.string.to_contact, it),
+                )
+            }
+            task.addressTo?.address?.let {
+                TextView(
+                    stringResource(R.string.to_address, it),
                 )
             }
         }

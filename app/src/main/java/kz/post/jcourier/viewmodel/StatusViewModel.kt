@@ -32,27 +32,23 @@ class StatusViewModel @Inject constructor(
 
     var uiState by mutableStateOf(StatusState())
 
-    init {
-        getCourierShift()
-    }
-
     fun setShift(shift: Shift) = viewModelScope.launch {
         loginRepository.setStatus(shift).onSuccess {
             it.let {
                 uiState.shift.value = it.status
             }
         }.onError{code, message ->
-            uiState.isError.value = ErrorModel(true, message+"$code")
+            uiState.isError.value = ErrorModel(true, message)
         }
     }
 
-    private fun getCourierShift() = viewModelScope.launch {
+    fun getCourierShift() = viewModelScope.launch {
         loginRepository.getStatus().onSuccess {
             it.let {
                 uiState.shift.value = it.status
             }
         }.onError{code, message ->
-            uiState.isError.value = ErrorModel(true, message+"$code")
+            uiState.isError.value = ErrorModel(true, message)
         }
     }
 

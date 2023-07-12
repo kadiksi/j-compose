@@ -1,5 +1,6 @@
 package kz.post.jcourier.ui.tasks
 
+import android.text.format.DateUtils
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +21,7 @@ import androidx.navigation.NavController
 import kz.post.jcourier.R
 import kz.post.jcourier.ui.component.TopBarWithActions
 import kz.post.jcourier.ui.tasks.components.*
+import kz.post.jcourier.utils.toeDateTimeFormat
 import kz.post.jcourier.viewmodel.TaskViewModel
 
 @Composable
@@ -38,15 +40,14 @@ fun task(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        val taskId = if (task.id != null) {
-            task.id
+        val orderId = if (task.orderId != null) {
+            task.orderId
         } else {
             ""
         }
-        TopBarWithActions(title = stringResource(R.string.task_id, taskId!!),
+        TopBarWithActions(title = stringResource(R.string.task_id, orderId!!),
             backArrowIcon = Icons.Filled.ArrowBack,
             callIcon = Icons.Filled.Call,
-            fileIcon = Icons.Filled.Add,
             onBackClicked = { navController.popBackStack() },
             onCallClicked = { taskViewModel.showCallVariantDialog() },
             taskViewModel = taskViewModel
@@ -85,7 +86,7 @@ fun task(
                 task.histories?.forEach {
                     it.action?.let { it1 ->
                         TextView(
-                            it1+" - ${it.createdDate}", MaterialTheme.typography.labelLarge,
+                            it1+" - ${toeDateTimeFormat(it.createdDate)}", MaterialTheme.typography.labelLarge,
                             topPaddign = 0.dp,
                             bottomPaddign = 0.dp
                         )

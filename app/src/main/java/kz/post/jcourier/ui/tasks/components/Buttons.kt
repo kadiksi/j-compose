@@ -45,26 +45,27 @@ fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task, taskStatus: Task
         taskViewModel.setStatus(task.id!!, TaskStatus.PICK_UP)
     }
     MyButton(
-        stringResource(id = R.string.delivered), visibility = task.actions.contains(TaskStatus.DELIVER)
+        stringResource(id = R.string.delivered),
+        visibility = task.actions.contains(TaskStatus.DELIVER)
     ) {
         taskViewModel.setStatus(task.id!!, TaskStatus.DELIVER)
     }
     MyButton(
-        stringResource(id = R.string.confirm), visibility = task.actions.contains(TaskStatus.CONFIRM)
+        stringResource(id = R.string.confirm),
+        visibility = task.actions.contains(TaskStatus.CONFIRM)
     ) {
         taskViewModel.setStatus(task.id!!, TaskStatus.CONFIRM)
     }
     MyButton(
-        stringResource(id = R.string.complete), visibility = task.actions.contains(TaskStatus.COMPLETE)
+        stringResource(id = R.string.complete),
+        visibility = task.actions.contains(TaskStatus.COMPLETE)
     ) {
         taskViewModel.showSmsDialog()
     }
-    if(task.cancellationReasons.isNotEmpty()) {
-        MyButton(
-            stringResource(id = R.string.cancel_task), visibility = task.actions.contains(TaskStatus.COMPLETE)
-        ) {
-            taskViewModel.showCancelReasonDialog()
-        }
+    MyButton(
+        stringResource(id = R.string.cancel_task),
+        visibility = task.cancellationReasons.isNotEmpty()
+    ) {
+        taskViewModel.showCancelReasonDialog()
     }
-
 }

@@ -37,7 +37,7 @@ class ChatActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    ToolbarWidget(getString(R.string.app_name)) {
+                    ToolbarWidget(getString(R.string.app_name_jcourier)) {
                         Column(Modifier.fillMaxSize()) {
                             MainContainer()
                         }
@@ -120,7 +120,7 @@ fun sendMessage(text: String, state: LazyListState, scope: CoroutineScope) {
 fun DefaultPreview() {
     val context = LocalContext.current;
     JTheme {
-        ToolbarWidget(context.getString(R.string.app_name)) {
+        ToolbarWidget(context.getString(R.string.app_name_jcourier)) {
             Column(Modifier.fillMaxSize()) {
                 MainContainer()
             }

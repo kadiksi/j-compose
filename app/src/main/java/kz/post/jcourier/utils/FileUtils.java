@@ -259,7 +259,7 @@ public class FileUtils {
     public static File createExternalFile(Context context, String fileName) {
         File directory = new File(
                 Environment.getExternalStorageDirectory(),
-                context.getString(R.string.app_name));
+                context.getString(R.string.app_name_jcourier));
 
         if (!directory.exists()) {
             if (!directory.mkdirs()) {

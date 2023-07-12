@@ -19,7 +19,9 @@ import kz.post.jcourier.data.repository.TaskRepository
 import kz.post.jcourier.utils.toMultipart
 import okhttp3.MultipartBody
 import java.io.File
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 data class TaskState(
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
@@ -59,35 +61,29 @@ class TaskViewModel @Inject constructor(
 
     fun setStatus(taskId: Long, status : TaskStatus) = viewModelScope.launch {
         showLoadingDialog()
-        when (val result = taskRepository.setStatus(TaskStatusId(taskId, status))) {
-            is NetworkResult.Success -> {
-                hideLoadingDialog()
-                result.data.let {
-                    uiState.task.value = it
-                }
+        taskRepository.setStatus(TaskStatusId(taskId, status)).onSuccess {
+            hideLoadingDialog()
+            it.let {
+                uiState.task.value = it
             }
-            is NetworkResult.Error -> {
-                hideLoadingDialog()
-                uiState.isError.value.isError = true
-            }
-            else -> {
-                hideLoadingDialog()
-                uiState.isError.value.isError = true
-            }
+        }.onError { task, message ->
+            hideLoadingDialog()
+            uiState.isError.value = ErrorModel(true, message)
         }
     }
 
-    private fun completeTask(context: Context, taskId: Long, sms: String) = viewModelScope.launch {
+    private fun completeTask(taskId: Long, sms: String) = viewModelScope.launch {
         showLoadingDialog()
         taskRepository.completeTask(TaskIdSms(taskId, sms)).onSuccess {
             hideLoadingDialog()
             it.let {
                 uiState.task.value = it
+                onRemoveImagesFromMemory()
             }
-            uploadFiles(context, taskId)
+//            uploadFiles(context, taskId)
         }.onError { task, message ->
             hideLoadingDialog()
-            uiState.isError.value.isError = true
+            uiState.isError.value = ErrorModel(true, message)
         }
     }
 
@@ -123,11 +119,11 @@ class TaskViewModel @Inject constructor(
     private val _images = MutableLiveData<List<File>>(listOf())
     val images: LiveData<List<File>> get() = _images
 
-    fun uploadFiles(context: Context, taskId: Long) = viewModelScope.launch {
+    fun uploadFiles(context: Context, taskId: Long, sms: String) = viewModelScope.launch {
         val parts = getParts(context)
         showLoadingDialog()
         taskRepository.uploadFiles(taskId, parts).onSuccess {
-            onRemoveImagesFromMemory()
+            completeTask(taskId, sms)
             hideLoadingDialog()
         }.onError { _, message ->
             hideLoadingDialog()
@@ -138,7 +134,7 @@ class TaskViewModel @Inject constructor(
     private fun getParts(context: Context): List<MultipartBody.Part>{
         val list =  ArrayList<MultipartBody.Part>()
         _images.value?.forEach {
-            it.toMultipart(context, "file", "photo.jpg")?.let { it1 -> list.add(it1) }
+            it.toMultipart(context, "file", "${Date().time}_photo.jpg")?.let { it1 -> list.add(it1) }
         }
         return list
     }
@@ -163,7 +159,7 @@ class TaskViewModel @Inject constructor(
 
     fun onConfirmWithSmsDialog(context: Context,taskId: Long, sms: String) {
         dismissSmsDialog()
-        completeTask(context, taskId, sms)
+        uploadFiles(context, taskId, sms)
     }
 
     fun onCallVariantDialog(taskId: Long, direction: CallDto) {
@@ -171,7 +167,7 @@ class TaskViewModel @Inject constructor(
         taskCall(taskId, direction)
     }
 
-    fun onCancelTaskDialog(taskId: Long, reasonIndex: Int, reason: String, cancelReasonOther: String?) {
+    fun onCancelTaskDialog(taskId: Long, reason: String, cancelReasonOther: String?) {
         hideCancelReasonDialog()
         cancelTask(taskId, reason, cancelReasonOther)
     }
@@ -194,7 +190,7 @@ class TaskViewModel @Inject constructor(
 
     fun showSmsDialog() {
         val list = _images.value ?: emptyList()
-        if(list.size <= 5){
+        if(list.size < 5){
             uiState.isError.value = ErrorModel(true, "Choose min 5 photo")
             return
         }

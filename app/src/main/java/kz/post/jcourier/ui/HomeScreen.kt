@@ -6,13 +6,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import kz.post.jcourier.ui.component.Drawer
 import kz.post.jcourier.ui.navigation.MainNavHost
+import kz.post.jcourier.viewmodel.StatusViewModel
 
 @Composable
-fun HomeScreen(startLocation: () -> Unit) {
+fun HomeScreen(
+    startLocation: () -> Unit
+) {
+    val shiftViewModel: StatusViewModel = hiltViewModel()
     val navController = rememberNavController()
     Surface {
         val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -22,6 +27,7 @@ fun HomeScreen(startLocation: () -> Unit) {
                 drawerState.open()
             }
         }
+        shiftViewModel.getCourierShift()
 //        startLocation.invoke()
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -39,7 +45,8 @@ fun HomeScreen(startLocation: () -> Unit) {
                                 "home"
                                 launchSingleTop = true
                             }
-                        }
+                        },
+                        shiftViewModel = shiftViewModel
                     )
                 }
             }

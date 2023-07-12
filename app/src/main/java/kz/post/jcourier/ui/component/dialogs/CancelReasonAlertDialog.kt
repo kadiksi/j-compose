@@ -19,7 +19,7 @@ import kz.post.jcourier.data.model.task.CancelReason
 fun CancelReasonAlertDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (taskId: Long, selectedIndex: Int, reason: String, cancelReasonOther: String?) -> Unit,
+    onConfirm: (taskId: Long, reason: String, cancelReasonOther: String?) -> Unit,
     text: String,
     taskId: Long,
     cancellationReasonsList: ArrayList<CancelReason>,
@@ -40,16 +40,15 @@ fun CancelReasonAlertDialog(
             onDismissRequest = onDismiss,
             confirmButton = {
                 TextButton(onClick = {
-                    if (selectedIndex == 0) {
-//                        showChooseError = true
-                        return@TextButton
-                    }
-                    if (selectedIndex == 4 && inputText.trim().length < 3) {
-                        return@TextButton
-                    }
+//                    if (selectedIndex == 0) {
+////                        showChooseError = true
+//                        return@TextButton
+//                    }
+//                    if (selectedIndex == 4 && inputText.trim().length < 3) {
+//                        return@TextButton
+//                    }
                     onConfirm.invoke(
                         taskId,
-                        selectedIndex,
                         cancellationReasonsList[cancellationReasons.indexOf(selectedText)].reason,
                         inputText
                     )
