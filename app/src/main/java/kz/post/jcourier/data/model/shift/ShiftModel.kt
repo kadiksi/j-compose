@@ -7,6 +7,7 @@ data class ShiftModel(
     val status: Shift,
 )
 
+@Keep
 enum class Shift {
     ON_SHIFT,
     FREE

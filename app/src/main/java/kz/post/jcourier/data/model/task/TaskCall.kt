@@ -8,6 +8,7 @@ class TaskCallEvent(
     val direction: CallDto,
 )
 
+@Keep
 enum class CallDto {
     SENDER, RECIPIENT
 }

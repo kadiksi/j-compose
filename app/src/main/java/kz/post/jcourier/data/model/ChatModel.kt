@@ -2,8 +2,6 @@ package kz.post.jcourier.data.model
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import kz.post.jcourier.app.BOT
-import kz.post.jcourier.app.USER
 
 data class ChatModel(val value: String, val type: String, val from: String)
 
