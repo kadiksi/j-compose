@@ -1,14 +1,15 @@
 package kz.post.jcourier.ui.tasks
 
-import android.text.format.DateUtils
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ import kz.post.jcourier.ui.tasks.components.*
 import kz.post.jcourier.utils.toeDateTimeFormat
 import kz.post.jcourier.viewmodel.TaskViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun task(
     navController: NavController, taskViewModel: TaskViewModel = hiltViewModel()
@@ -34,7 +36,16 @@ fun task(
     val isSmsDialog by taskViewModel.uiState.isSmsDialog
     val isCancelReasonDialog by taskViewModel.uiState.isCancelReasonDialog
     val isCallVariantsDialog by taskViewModel.uiState.isCallVariantDialog
+    val isRefreshing = taskViewModel.uiState.isRefreshing.value
+    val swipeRefreshState = rememberPullRefreshState(isRefreshing, {
+        taskViewModel.getTask()
+    })
 
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(swipeRefreshState)
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -45,64 +56,68 @@ fun task(
         } else {
             ""
         }
-        TopBarWithActions(title = stringResource(R.string.task_id, orderId!!),
+        TopBarWithActions(
+            title = stringResource(R.string.task_id, orderId!!),
             backArrowIcon = Icons.Filled.ArrowBack,
             callIcon = Icons.Filled.Call,
             onBackClicked = { navController.popBackStack() },
             onCallClicked = { taskViewModel.showCallVariantDialog() },
             taskViewModel = taskViewModel
         )
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start
-        ) {
-            TaskAddress(task)
-            ViewDivider()
-            TaskSenderView(task)
-            TaskFileView(taskViewModel)
-            if (task.product?.isNotEmpty() == true) {
-                TextView(
-                    stringResource(R.string.product_list), MaterialTheme.typography.titleLarge
-                )
-                task.product?.forEach {
-                    it.name?.let { it1 ->
-                        TextView(
-                            it1, MaterialTheme.typography.labelLarge,
-                            topPaddign = 0.dp,
-                            bottomPaddign = 0.dp
-                        )
-                    }
-                }
-            }
-            task.status?.let {
-                TaskOptionButtons(taskViewModel, task, it)
-            }
 
-            if (task.histories?.isNotEmpty() == true) {
-                TextView(
-                    stringResource(R.string.history), MaterialTheme.typography.titleLarge
-                )
-                task.histories?.forEach {
-                    it.action?.let { it1 ->
-                        TextView(
-                            it1+" - ${toeDateTimeFormat(it.createdDate)}", MaterialTheme.typography.labelLarge,
-                            topPaddign = 0.dp,
-                            bottomPaddign = 0.dp
-                        )
+            Column(
+                modifier = Modifier.fillMaxSize().pullRefresh(swipeRefreshState),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start
+            ) {
+                TaskAddress(task)
+                ViewDivider()
+                TaskSenderView(task)
+                TaskFileView(taskViewModel)
+                if (task.product?.isNotEmpty() == true) {
+                    TextView(
+                        stringResource(R.string.product_list), MaterialTheme.typography.titleLarge
+                    )
+                    task.product?.forEach {
+                        it.name?.let { it1 ->
+                            TextView(
+                                it1, MaterialTheme.typography.labelLarge,
+                                topPaddign = 0.dp,
+                                bottomPaddign = 0.dp
+                            )
+                        }
                     }
                 }
+                task.status?.let {
+                    TaskOptionButtons(taskViewModel, task, it)
+                }
+
+                if (task.histories?.isNotEmpty() == true) {
+                    TextView(
+                        stringResource(R.string.history), MaterialTheme.typography.titleLarge
+                    )
+                    task.histories?.forEach {
+                        it.action?.let { it1 ->
+                            TextView(
+                                it1 + " - ${toeDateTimeFormat(it.createdDate)}",
+                                MaterialTheme.typography.labelLarge,
+                                topPaddign = 0.dp,
+                                bottomPaddign = 0.dp
+                            )
+                        }
+                    }
+                }
+                TaskDialogs(
+                    taskViewModel,
+                    isError,
+                    task,
+                    isSmsDialog,
+                    isLoading,
+                    isCancelReasonDialog,
+                    isCallVariantsDialog,
+                    task.cancellationReasons
+                )
             }
         }
-        TaskDialogs(
-            taskViewModel,
-            isError,
-            task,
-            isSmsDialog,
-            isLoading,
-            isCancelReasonDialog,
-            isCallVariantsDialog,
-            task.cancellationReasons
-        )
     }
 }

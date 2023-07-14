@@ -42,6 +42,8 @@ class MapViewModel @Inject constructor(
         when (val result = taskRepository.getTaskList()) {
             is NetworkResult.Success -> {
                 result.data.let {
+                    if(it.isEmpty())
+                        return@launch
                     uiState.taskList.value = it
                     uiState.cameraPositionState.value =
                         CameraPosition.fromLatLngZoom(

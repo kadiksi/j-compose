@@ -86,7 +86,7 @@ fun activeTaskList(
             }
             PullRefreshIndicator(
                 isRefreshing, swipeRefreshState, Modifier.align(Alignment.TopCenter)
-            ) // 3
+            )
         }
     }
 }

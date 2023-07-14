@@ -31,6 +31,7 @@ data class TaskState(
     var isCallVariantDialog: MutableState<Boolean> = mutableStateOf(false),
     var fileList: MutableState<List<Uri>> = mutableStateOf(emptyList()),
     var task: MutableState<Task> = mutableStateOf(Task()),
+    var isRefreshing: MutableState<Boolean> = mutableStateOf(false)
 )
 
 @HiltViewModel
@@ -43,19 +44,21 @@ class TaskViewModel @Inject constructor(
     private val args = savedStateHandle.get<Task>("task")
 
     init {
-        args?.id?.let { getTask(it) }
+        getTask()
     }
 
-    private fun getTask(id: Long) = viewModelScope.launch {
-        showLoadingDialog()
-        taskRepository.getTaskById(id).onSuccess {
-            hideLoadingDialog()
-            it.let {
-                uiState.task.value = it
+    fun getTask() = viewModelScope.launch {
+        args?.id?.let {
+            showLoadingDialog()
+            taskRepository.getTaskById(it).onSuccess {
+                hideLoadingDialog()
+                it.let {
+                    uiState.task.value = it
+                }
+            }.onError { _, message ->
+                hideLoadingDialog()
+                uiState.isError.value = ErrorModel(true, message)
             }
-        }.onError { _, message ->
-            hideLoadingDialog()
-            uiState.isError.value = ErrorModel(true, message)
         }
     }
 
