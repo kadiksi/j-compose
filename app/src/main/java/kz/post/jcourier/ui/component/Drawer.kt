@@ -1,24 +1,17 @@
 package kz.post.jcourier.ui.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import kz.post.jcourier.R
 import kz.post.jcourier.data.model.shift.Shift
-import kz.post.jcourier.data.model.shift.ShiftModel
 import kz.post.jcourier.ui.component.dialogs.ErrorAlertDialog
 import kz.post.jcourier.ui.component.switcher.CustomSwitch
 import kz.post.jcourier.viewmodel.StatusViewModel
@@ -47,7 +40,7 @@ fun Drawer(
     onDestinationClicked: (route: String) -> Unit,
     shiftViewModel: StatusViewModel
 ) {
-    val shift = shiftViewModel.uiState.shift.value
+    val courierModel = shiftViewModel.uiState.shift.value
     val isError by shiftViewModel.uiState.isError
 
     Column(
@@ -64,11 +57,13 @@ fun Drawer(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Box(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    var isShift = shift == Shift.ON_SHIFT
+                    Text(courierModel.info ?: "", modifier = Modifier.padding(2.dp))
+                    Divider()
+                    var isShift = courierModel.status == Shift.ON_SHIFT
                     CustomSwitch(checked = isShift) {
                         if (isShift) {
                             shiftViewModel.setShift(Shift.FREE)

@@ -4,10 +4,10 @@ import androidx.annotation.Keep
 
 @Keep
 data class CourierModel(
-    val id: String,
-    val userId: String,
-    val cityId: String,
-    val info: String,
-    val status: Shift,
-    val rating: String,
+    val id: String? = null,
+    val userId: String? = null,
+    val cityId: String? = null,
+    val info: String? = null,
+    val status: Shift? = null,
+    val rating: String? = null,
 )

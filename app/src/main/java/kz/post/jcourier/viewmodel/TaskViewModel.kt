@@ -9,8 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kz.post.jcourier.R
-import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.model.error.ErrorModel
@@ -29,7 +27,7 @@ data class TaskState(
     var isSmsDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCancelReasonDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCallVariantDialog: MutableState<Boolean> = mutableStateOf(false),
-    var fileList: MutableState<List<Uri>> = mutableStateOf(emptyList()),
+    var fileList: MutableState<MutableList<File>> = mutableStateOf(mutableListOf()),
     var task: MutableState<Task> = mutableStateOf(Task()),
     var isRefreshing: MutableState<Boolean> = mutableStateOf(false)
 )
@@ -50,11 +48,9 @@ class TaskViewModel @Inject constructor(
     fun getTask() = viewModelScope.launch {
         args?.id?.let {
             showLoadingDialog()
-            taskRepository.getTaskById(it).onSuccess {
+            taskRepository.getTaskById(it).onSuccess { task ->
                 hideLoadingDialog()
-                it.let {
-                    uiState.task.value = it
-                }
+                uiState.task.value = task
             }.onError { _, message ->
                 hideLoadingDialog()
                 uiState.isError.value = ErrorModel(true, message)
@@ -69,7 +65,7 @@ class TaskViewModel @Inject constructor(
             it.let {
                 uiState.task.value = it
             }
-        }.onError { task, message ->
+        }.onError { _, message ->
             hideLoadingDialog()
             uiState.isError.value = ErrorModel(true, message)
         }
@@ -84,7 +80,7 @@ class TaskViewModel @Inject constructor(
                 onRemoveImagesFromMemory()
             }
 //            uploadFiles(context, taskId)
-        }.onError { task, message ->
+        }.onError { _, message ->
             hideLoadingDialog()
             uiState.isError.value = ErrorModel(true, message)
         }
@@ -122,7 +118,7 @@ class TaskViewModel @Inject constructor(
     private val _images = MutableLiveData<List<File>>(listOf())
     val images: LiveData<List<File>> get() = _images
 
-    fun uploadFiles(context: Context, taskId: Long, sms: String) = viewModelScope.launch {
+    private fun uploadFiles(context: Context, taskId: Long, sms: String) = viewModelScope.launch {
         val parts = getParts(context)
         showLoadingDialog()
         taskRepository.uploadFiles(taskId, parts).onSuccess {
@@ -141,16 +137,18 @@ class TaskViewModel @Inject constructor(
         }
         return list
     }
-    fun onRemoveImageFile(file: File) {
+    fun onRemoveImageFile(index: Int) {
         val imageFiles = _images.value ?: return
+        val file = imageFiles[index]
         _images.value = imageFiles.filter { it != file }
+        uiState.fileList.value = _images.value?.toMutableList() ?: mutableListOf()
         file.delete()
     }
 
     fun onAddImageFile(file: File) {
         val imageFiles = _images.value?.toMutableList() ?: mutableListOf()
         imageFiles.add(file)
-
+        uiState.fileList.value = imageFiles
         _images.value = imageFiles
     }
 

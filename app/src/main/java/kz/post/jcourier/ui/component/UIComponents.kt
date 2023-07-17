@@ -13,10 +13,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import kz.post.jcourier.R
-import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.ui.tasks.components.chooseFile
 import kz.post.jcourier.utils.fileFromContentUri
 import kz.post.jcourier.viewmodel.TaskViewModel
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,13 +53,14 @@ fun TopBarWithActions(
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris ->
-            val newList = arrayListOf<Uri>()
-            newList.addAll(selectedImageUris)
-            newList.addAll(uris)
+            val newList = arrayListOf<File>()
+            uris.forEach{
+                newList.add(fileFromContentUri(context,it))
+            }
             selectedImageUris = newList
 
             newList.forEach {
-                taskViewModel.onAddImageFile(fileFromContentUri(context,it))
+                taskViewModel.onAddImageFile(it)
             }
         }
     )

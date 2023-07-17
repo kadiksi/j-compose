@@ -37,6 +37,7 @@
     <string name="update_files">Загрузить файлы</string>
     <string name="archive_orders">Архивные заказы</string>
     <string name="no_task">Нет тасков</string>
+    <string name="delate">Удалить</string>
 
     <string-array name="cancellation_reason_list">
         <item>Выбрать</item>
