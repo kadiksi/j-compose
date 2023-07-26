@@ -28,7 +28,7 @@ fun TaskCard(
         .width(IntrinsicSize.Max), onClick = {
         navController.navigate(
             DrawerScreens.Settings.route,
-            "task" to task
+            "taskId" to task.id
         )
     }
     ) {

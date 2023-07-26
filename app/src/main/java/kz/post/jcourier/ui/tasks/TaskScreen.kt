@@ -88,9 +88,7 @@ fun task(
                         }
                     }
                 }
-                task.status?.let {
-                    TaskOptionButtons(taskViewModel, task, it)
-                }
+                TaskOptionButtons(taskViewModel, task)
 
                 if (task.histories?.isNotEmpty() == true) {
                     TextView(

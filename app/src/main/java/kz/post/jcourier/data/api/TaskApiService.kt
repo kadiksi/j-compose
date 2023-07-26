@@ -32,6 +32,7 @@ interface TaskApiService {
     @POST("gw/jpost-courier/api/public/v1/event/upload")
     suspend fun uploadFiles(
         @Query("taskId") taskId: Long,
+        @Query("type") type: FileType,
         @Part file: List<MultipartBody.Part>,
     ): Response<Boolean>
 }

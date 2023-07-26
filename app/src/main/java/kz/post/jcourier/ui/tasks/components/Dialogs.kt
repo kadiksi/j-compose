@@ -19,7 +19,7 @@ fun TaskDialogs(
     isLoading: Boolean,
     isCancelReasonDialog: Boolean,
     isCallVariantsDialog: Boolean,
-    cancellationReasons2: ArrayList<CancelReason>,
+    cancellationReasons2: ArrayList<CancelReason>?,
 ) {
     if (isLoading)
         LoadingAnimation()

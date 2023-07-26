@@ -39,14 +39,14 @@ class TaskViewModel @Inject constructor(
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(TaskState())
-    private val args = savedStateHandle.get<Task>("task")
+    private val args = savedStateHandle.get<Long>("taskId")
 
     init {
         getTask()
     }
 
     fun getTask() = viewModelScope.launch {
-        args?.id?.let {
+        args?.let {
             showLoadingDialog()
             taskRepository.getTaskById(it).onSuccess { task ->
                 hideLoadingDialog()
@@ -118,11 +118,23 @@ class TaskViewModel @Inject constructor(
     private val _images = MutableLiveData<List<File>>(listOf())
     val images: LiveData<List<File>> get() = _images
 
-    private fun uploadFiles(context: Context, taskId: Long, sms: String) = viewModelScope.launch {
+    private fun uploadFiles(context: Context, taskId: Long, sms: String, type: FileType) = viewModelScope.launch {
         val parts = getParts(context)
         showLoadingDialog()
-        taskRepository.uploadFiles(taskId, parts).onSuccess {
+        taskRepository.uploadFiles(taskId, type, parts).onSuccess {
             completeTask(taskId, sms)
+            hideLoadingDialog()
+        }.onError { _, message ->
+            hideLoadingDialog()
+            uiState.isError.value = ErrorModel(true, message)
+        }
+    }
+
+    private fun uploadFiles(context: Context, taskId: Long, status : TaskStatus, type: FileType) = viewModelScope.launch {
+        val parts = getParts(context)
+        showLoadingDialog()
+        taskRepository.uploadFiles(taskId, type, parts).onSuccess {
+            setStatus(taskId, status)
             hideLoadingDialog()
         }.onError { _, message ->
             hideLoadingDialog()
@@ -160,7 +172,7 @@ class TaskViewModel @Inject constructor(
 
     fun onConfirmWithSmsDialog(context: Context,taskId: Long, sms: String) {
         dismissSmsDialog()
-        uploadFiles(context, taskId, sms)
+        uploadFiles(context, taskId, sms, FileType.MERCHANT)
     }
 
     fun onCallVariantDialog(taskId: Long, direction: CallDto) {
@@ -196,6 +208,15 @@ class TaskViewModel @Inject constructor(
             return
         }
         uiState.isSmsDialog.value = true
+    }
+
+    fun uploadPickUpFiles(taskId: Long, context: Context) {
+        val list = _images.value ?: emptyList()
+        if(list.size < 1){
+            uiState.isError.value = ErrorModel(true, "Choose min 5 photo")
+            return
+        }
+        uploadFiles(context,taskId, TaskStatus.PICK_UP, FileType.CUSTOMER)
     }
 
     fun dismissSmsDialog() {

@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import kz.post.jcourier.R
+import kz.post.jcourier.data.model.task.TaskStatus
 import kz.post.jcourier.ui.tasks.components.chooseFile
 import kz.post.jcourier.utils.fileFromContentUri
 import kz.post.jcourier.viewmodel.TaskViewModel
@@ -48,14 +49,16 @@ fun TopBarWithActions(
     var selectedImageUris by remember {
         taskViewModel.uiState.fileList
     }
-
+    val task by remember {
+        taskViewModel.uiState.task
+    }
     val context = LocalContext.current
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris ->
             val newList = arrayListOf<File>()
-            uris.forEach{
-                newList.add(fileFromContentUri(context,it))
+            uris.forEach {
+                newList.add(fileFromContentUri(context, it))
             }
             selectedImageUris = newList
 
@@ -91,21 +94,26 @@ fun TopBarWithActions(
             IconButton(onClick = { onCallClicked() }) {
                 Icon(callIcon, contentDescription = stringResource(id = R.string.call))
             }
-                IconButton(onClick = { when (PackageManager.PERMISSION_GRANTED) {
+            if(task.actions.contains(TaskStatus.PICK_UP) ||
+                task.actions.contains(TaskStatus.COMPLETE))
+            IconButton(onClick = {
+                when (PackageManager.PERMISSION_GRANTED) {
                     ContextCompat.checkSelfPermission(
                         context,
                         Manifest.permission.READ_EXTERNAL_STORAGE
                     ) -> {
-                        // Some works that require permission
                         chooseFile(multiplePhotoPickerLauncher)
                     }
                     else -> {
                         launcher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                     }
                 }
-                }) {
-                    Icon(painterResource(id = R.drawable.baseline_insert_drive_file_24), contentDescription = stringResource(id = R.string.update_files))
-                }
+            }) {
+                Icon(
+                    painterResource(id = R.drawable.baseline_insert_drive_file_24),
+                    contentDescription = stringResource(id = R.string.update_files)
+                )
+            }
         }
     )
 }

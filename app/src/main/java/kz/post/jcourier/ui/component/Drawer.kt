@@ -61,8 +61,9 @@ fun Drawer(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Text(courierModel.info ?: "", modifier = Modifier.padding(2.dp))
+                    Text("${courierModel.firstname} ${courierModel.lastname}", modifier = Modifier.padding(2.dp))
                     Divider()
+                    Text("${courierModel.phone}", modifier = Modifier.padding(2.dp))
                     var isShift = courierModel.status == Shift.ON_SHIFT
                     CustomSwitch(checked = isShift) {
                         if (isShift) {

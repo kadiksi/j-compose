@@ -22,9 +22,9 @@ fun CancelReasonAlertDialog(
     onConfirm: (taskId: Long, reason: String, cancelReasonOther: String?) -> Unit,
     text: String,
     taskId: Long,
-    cancellationReasonsList: ArrayList<CancelReason>,
+    cancellationReasonsList: ArrayList<CancelReason>?,
 ) {
-    if (show) {
+    if (show && !cancellationReasonsList.isNullOrEmpty()) {
 //        var showChooseError by remember { mutableStateOf(false) }
         var expanded by remember { mutableStateOf(false) }
         val cancellationReasons = cancellationReasonsList.map { it.description }

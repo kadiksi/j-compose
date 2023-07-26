@@ -20,7 +20,7 @@ data class Task(
     var product: ArrayList<Product>? = arrayListOf(),
     var histories: ArrayList<TaskHistory>? = arrayListOf(),
     var actions: ArrayList<TaskStatus> = arrayListOf(),
-    var cancellationReasons: ArrayList<CancelReason> = arrayListOf(),
+    var cancellationReasons: ArrayList<CancelReason>? = arrayListOf(),
 
 ) : Parcelable
 @Keep

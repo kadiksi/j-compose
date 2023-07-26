@@ -7,8 +7,10 @@ import kz.post.jcourier.common.BaseApiResponse
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.api.TaskApiService
 import kz.post.jcourier.data.model.task.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import retrofit2.http.Part
+import okhttp3.RequestBody.Companion.toRequestBody
+import com.google.gson.Gson
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -74,11 +76,12 @@ class TaskRepository @Inject constructor(
 
     suspend fun uploadFiles(
         taskId: Long,
+        type: FileType,
         file: List<MultipartBody.Part>,
     ): NetworkResult<Boolean> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.uploadFiles(taskId, file)
+                taskApiService.uploadFiles(taskId, type, file)
             }
         }
     }

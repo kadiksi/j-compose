@@ -10,4 +10,7 @@ data class CourierModel(
     val info: String? = null,
     val status: Shift? = null,
     val rating: String? = null,
+    val firstname: String? = null,
+    val lastname: String? = null,
+    val phone: String? = null,
 )

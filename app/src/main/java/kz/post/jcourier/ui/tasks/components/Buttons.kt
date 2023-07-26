@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kz.post.jcourier.R
@@ -32,8 +33,8 @@ fun MyButton(text: String, visibility: Boolean = true, onClick: () -> Unit) {
 }
 
 @Composable
-fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task, taskStatus: TaskStatus) {
-
+fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task) {
+    val context = LocalContext.current
     MyButton(
         stringResource(id = R.string.start), visibility = task.actions.contains(TaskStatus.ON_WAY)
     ) {
@@ -42,7 +43,8 @@ fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task, taskStatus: Task
     MyButton(
         stringResource(id = R.string.take), visibility = task.actions.contains(TaskStatus.PICK_UP)
     ) {
-        taskViewModel.setStatus(task.id!!, TaskStatus.PICK_UP)
+        taskViewModel.uploadPickUpFiles(task.id!!, context)
+//        taskViewModel.setStatus(task.id!!, TaskStatus.PICK_UP)
     }
     MyButton(
         stringResource(id = R.string.delivered),
@@ -64,7 +66,7 @@ fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task, taskStatus: Task
     }
     MyButton(
         stringResource(id = R.string.cancel_task),
-        visibility = task.cancellationReasons.isNotEmpty()
+        visibility = task.cancellationReasons?.isNotEmpty() == true
     ) {
         taskViewModel.showCancelReasonDialog()
     }
