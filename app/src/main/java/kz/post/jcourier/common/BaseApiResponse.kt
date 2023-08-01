@@ -18,7 +18,6 @@ abstract class BaseApiResponse {
             }
             if (response.code() == 403) {
                 return NetworkResult.Error(JSONObject(response.errorBody()!!.string()).getString("description"), response.body())
-//                return error(" ${response.errorBody()!!.string()}", response.body())
             }
             return error("${response.code()} ${response.message()}", response.body())
         } catch (e: Exception) {

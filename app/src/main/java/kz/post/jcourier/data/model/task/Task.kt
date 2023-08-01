@@ -13,16 +13,37 @@ data class Task(
     var serviceId: Long? = null,
     var orderId: Long? = null,
     var routeId: Long? = null,
-    var addressTo: AddressTo? = AddressTo(),
-    var addressFrom: AddressFrom? = AddressFrom(),
-    var contactTo: ContactTo? = ContactTo(),
+    var addressTo: Address? = Address(),
+    var addressFrom: Address? = Address(),
+    var contactTo: ContactFrom? = ContactFrom(),
     var contactFrom: ContactFrom? = ContactFrom(),
     var product: ArrayList<Product>? = arrayListOf(),
     var histories: ArrayList<TaskHistory>? = arrayListOf(),
     var actions: ArrayList<TaskStatus> = arrayListOf(),
     var cancellationReasons: ArrayList<CancelReason>? = arrayListOf(),
 
-) : Parcelable
+    ) : Parcelable {
+    fun getAddress(address: Address?): String {
+        var text = ""
+        address?.address?.let {
+            text += it
+        }
+        address?.building?.let {
+            text += " $it"
+        }
+        address?.flat?.let {
+            text += " кв.$it"
+        }
+        address?.entrance?.let {
+            text += " Подъезд: $it"
+        }
+        address?.floor?.let {
+            text += " этаж: $it"
+        }
+        return text
+    }
+}
+
 @Keep
 enum class TaskStatus {
     ACTIVE,

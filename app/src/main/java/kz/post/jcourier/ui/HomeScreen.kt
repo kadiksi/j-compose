@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import kz.post.jcourier.ui.component.Drawer
 import kz.post.jcourier.ui.navigation.MainNavHost
+import kz.post.jcourier.viewmodel.LoginViewModel
 import kz.post.jcourier.viewmodel.StatusViewModel
 
 @Composable
@@ -18,6 +19,8 @@ fun HomeScreen(
     startLocation: () -> Unit
 ) {
     val shiftViewModel: StatusViewModel = hiltViewModel()
+    val loginViewModel: LoginViewModel = hiltViewModel()
+
     val navController = rememberNavController()
     Surface {
         val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -26,6 +29,9 @@ fun HomeScreen(
             scope.launch {
                 drawerState.open()
             }
+        }
+        if (!shiftViewModel.isLogin.value.isLogin) {
+            loginViewModel.logOut()
         }
         shiftViewModel.getCourierShift()
 //        startLocation.invoke()

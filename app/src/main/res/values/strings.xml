@@ -9,16 +9,18 @@
     <string name="settings">Настройки</string>
     <string name="exit">Выход</string>
     <string name="task_id">Номер заказа: %1s</string>
-    <string name="from_address">Адрес от: \n %1s</string>
-    <string name="to_address">Адрес доставки: \n %1s</string>
+    <string name="from_address">Адрес забора:</string>
+    <string name="to_address">Адрес доставки:</string>
     <string name="from_contact">Отправитель: %1s</string>
-    <string name="to_contact">Получатель: %1s</string>
+    <string name="from_company">Отправитель:</string>
+    <string name="planed_date">Плановая дата доставки: </string>
+    <string name="to_contact">Получатель:</string>
     <string name="product_list">Товар</string>
     <string name="history">История</string>
     <string name="start">Начать</string>
     <string name="take">Забрать товар</string>
     <string name="login">Войти</string>
-    <string name="delivered">Доставил</string>
+    <string name="delivered">Доставляю</string>
     <string name="confirm">Отправить код подтверждения</string>
     <string name="complete">Завершить</string>
     <string name="error">Ошибка</string>
@@ -38,13 +40,18 @@
     <string name="archive_orders">Архивные заказы</string>
     <string name="no_task">Нет тасков</string>
     <string name="delate">Удалить</string>
+    <string name="quantity">Количество</string>
+    <string name="merchant_comment">Коментарий продавца</string>
+    <string name="customer_comment">Коментарий покупателя</string>
+    <string name="size">Размер</string>
+    <string name="price">Цена</string>
 
-    <string-array name="cancellation_reason_list">
-        <item>Выбрать</item>
-        <item>Нет в наличии</item>
-        <item>Некорректная цена</item>
-        <item>Товар с витрины</item>
-        <item>Другое</item>
+    <string-array name="statuses">
+        <item>Новый</item>
+        <item>Еду</item>
+        <item>Забрал</item>
+        <item>Доставляю</item>
+        <item>Приехал к получателю</item>
     </string-array>
 
 

@@ -15,6 +15,7 @@ import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.shift.CourierModel
 import kz.post.jcourier.data.model.shift.Shift
 import kz.post.jcourier.data.repository.ShiftRepository
+import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import javax.inject.Inject
 
 data class StatusState(
@@ -25,9 +26,15 @@ data class StatusState(
 @HiltViewModel
 class StatusViewModel @Inject constructor(
     private val loginRepository: ShiftRepository,
+    val isLogin: MutableState<IsLogin>,
+    private val sharedPreferencesProvider: SharedPreferencesProvider,
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(StatusState())
+
+    init {
+        isLogin.value = IsLogin(true)
+    }
 
     fun setShift(shift: Shift) = viewModelScope.launch {
         loginRepository.setStatus(shift).onSuccess {
@@ -40,11 +47,17 @@ class StatusViewModel @Inject constructor(
     }
 
     fun getCourierShift() = viewModelScope.launch {
+        isLogin.value = IsLogin(true)
         loginRepository.getStatus().onSuccess {
             it.let {
                 uiState.shift.value = it
             }
         }.onError{code, message ->
+            if(message.contains("401")) {
+                isLogin.value = IsLogin(false)
+                sharedPreferencesProvider.cleanup()
+                onDialogConfirm()
+            }
             uiState.isError.value = ErrorModel(true, message)
         }
     }

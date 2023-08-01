@@ -172,7 +172,7 @@ class TaskViewModel @Inject constructor(
 
     fun onConfirmWithSmsDialog(context: Context,taskId: Long, sms: String) {
         dismissSmsDialog()
-        uploadFiles(context, taskId, sms, FileType.MERCHANT)
+        uploadFiles(context, taskId, sms, FileType.CUSTOMER)
     }
 
     fun onCallVariantDialog(taskId: Long, direction: CallDto) {
@@ -212,11 +212,11 @@ class TaskViewModel @Inject constructor(
 
     fun uploadPickUpFiles(taskId: Long, context: Context) {
         val list = _images.value ?: emptyList()
-        if(list.size < 1){
+        if(list.size < 5){
             uiState.isError.value = ErrorModel(true, "Choose min 5 photo")
             return
         }
-        uploadFiles(context,taskId, TaskStatus.PICK_UP, FileType.CUSTOMER)
+        uploadFiles(context,taskId, TaskStatus.PICK_UP, FileType.MERCHANT)
     }
 
     fun dismissSmsDialog() {
