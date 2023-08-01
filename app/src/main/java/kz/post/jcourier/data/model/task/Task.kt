@@ -28,17 +28,14 @@ data class Task(
         address?.address?.let {
             text += it
         }
-        address?.building?.let {
-            text += " $it"
-        }
         address?.flat?.let {
-            text += " кв.$it"
+            text += ", кв.$it"
         }
         address?.entrance?.let {
-            text += " Подъезд: $it"
+            text += ", подъезд: $it"
         }
         address?.floor?.let {
-            text += " этаж: $it"
+            text += ", этаж: $it"
         }
         return text
     }

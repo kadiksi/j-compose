@@ -19,11 +19,18 @@ fun ProductViews(task: Task) {
         task.product?.forEach {
             it.name?.let { it1 ->
                 TextView(
-                    "$it1 ${stringResource(id = R.string.quantity)}: ${it.quantity}",
+                    it1,
                     MaterialTheme.typography.labelLarge,
                     topPaddign = 0.dp,
                     bottomPaddign = 0.dp,
                     fontWeight = FontWeight.Bold
+                )
+                TextView(
+                    "${stringResource(id = R.string.quantity)}: ${it.quantity}",
+                    MaterialTheme.typography.labelMedium,
+                    topPaddign = 0.dp,
+                    bottomPaddign = 0.dp,
+                    startPaddign = 24.dp
                 )
                 TextView(
                     "${stringResource(id = R.string.size)}: ${it.toSizeInfo()}",
@@ -34,6 +41,13 @@ fun ProductViews(task: Task) {
                 )
                 TextView(
                     "${stringResource(id = R.string.price)}: ${it.price}",
+                    MaterialTheme.typography.labelMedium,
+                    topPaddign = 0.dp,
+                    bottomPaddign = 0.dp,
+                    startPaddign = 24.dp
+                )
+                TextView(
+                    "${stringResource(id = R.string.weight)}: ${it.weight}",
                     MaterialTheme.typography.labelMedium,
                     topPaddign = 0.dp,
                     bottomPaddign = 0.dp,

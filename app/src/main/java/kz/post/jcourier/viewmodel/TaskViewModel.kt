@@ -136,6 +136,7 @@ class TaskViewModel @Inject constructor(
         taskRepository.uploadFiles(taskId, type, parts).onSuccess {
             setStatus(taskId, status)
             hideLoadingDialog()
+            onRemoveImagesFromMemory()
         }.onError { _, message ->
             hideLoadingDialog()
             uiState.isError.value = ErrorModel(true, message)
@@ -204,7 +205,7 @@ class TaskViewModel @Inject constructor(
     fun showSmsDialog() {
         val list = _images.value ?: emptyList()
         if(list.size < 5){
-            uiState.isError.value = ErrorModel(true, "Choose min 5 photo")
+            uiState.isError.value = ErrorModel(true, "Выберите минимум 5 фото")
             return
         }
         uiState.isSmsDialog.value = true
@@ -213,7 +214,7 @@ class TaskViewModel @Inject constructor(
     fun uploadPickUpFiles(taskId: Long, context: Context) {
         val list = _images.value ?: emptyList()
         if(list.size < 5){
-            uiState.isError.value = ErrorModel(true, "Choose min 5 photo")
+            uiState.isError.value = ErrorModel(true, "Выберите минимум 5 фото")
             return
         }
         uploadFiles(context,taskId, TaskStatus.PICK_UP, FileType.MERCHANT)

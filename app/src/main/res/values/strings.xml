@@ -45,6 +45,7 @@
     <string name="customer_comment">Коментарий покупателя</string>
     <string name="size">Размер</string>
     <string name="price">Цена</string>
+    <string name="weight">Вес</string>
 
     <string-array name="statuses">
         <item>Новый</item>
