@@ -13,6 +13,7 @@ data class Task(
     var serviceId: Long? = null,
     var orderId: Long? = null,
     var routeId: Long? = null,
+    var finalRoute: Boolean? = null,
     var addressTo: Address? = Address(),
     var addressFrom: Address? = Address(),
     var contactTo: ContactFrom? = ContactFrom(),
@@ -29,13 +30,19 @@ data class Task(
             text += it
         }
         address?.flat?.let {
-            text += ", кв.$it"
+            if (it.isNotEmpty()) {
+                text += ", кв.$it"
+            }
         }
         address?.entrance?.let {
-            text += ", подъезд: $it"
+            if (it.isNotEmpty()) {
+                text += ", подъезд: $it"
+            }
         }
         address?.floor?.let {
-            text += ", этаж: $it"
+            if (it.isNotEmpty()) {
+                text += ", этаж: $it"
+            }
         }
         return text
     }

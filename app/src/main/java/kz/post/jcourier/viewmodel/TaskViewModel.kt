@@ -71,7 +71,15 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    private fun completeTask(taskId: Long, sms: String) = viewModelScope.launch {
+    fun completeWithFiles(taskId: Long, sms: String?){
+        val list = _images.value ?: emptyList()
+        if(list.size < 5){
+            uiState.isError.value = ErrorModel(true, "Выберите минимум 5 фото")
+            return
+        }
+        completeTask(taskId, sms)
+    }
+    fun completeTask(taskId: Long, sms: String?) = viewModelScope.launch {
         showLoadingDialog()
         taskRepository.completeTask(TaskIdSms(taskId, sms)).onSuccess {
             hideLoadingDialog()
@@ -169,6 +177,7 @@ class TaskViewModel @Inject constructor(
         val imageFiles = _images.value
         imageFiles?.forEach { it.delete() }
         _images.value = listOf()
+        uiState.fileList.value = _images.value?.toMutableList() ?: mutableListOf()
     }
 
     fun onConfirmWithSmsDialog(context: Context,taskId: Long, sms: String) {

@@ -5,5 +5,5 @@ import androidx.annotation.Keep
 @Keep
 class TaskIdSms(
     val taskId: Long,
-    val smsCode: String
+    val smsCode: String?
 )

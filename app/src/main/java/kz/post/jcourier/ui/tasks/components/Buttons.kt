@@ -54,7 +54,7 @@ fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task) {
     }
     MyButton(
         stringResource(id = R.string.confirm),
-        visibility = task.actions.contains(TaskStatus.CONFIRM)
+        visibility = task.actions.contains(TaskStatus.CONFIRM) && task.finalRoute == true
     ) {
         taskViewModel.setStatus(task.id!!, TaskStatus.CONFIRM)
     }
@@ -62,7 +62,10 @@ fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task) {
         stringResource(id = R.string.complete),
         visibility = task.actions.contains(TaskStatus.COMPLETE)
     ) {
-        taskViewModel.showSmsDialog()
+        if(task.finalRoute == true)
+            taskViewModel.showSmsDialog()
+        else
+            taskViewModel.completeWithFiles(task.id!!, null)
     }
     MyButton(
         stringResource(id = R.string.cancel_task),

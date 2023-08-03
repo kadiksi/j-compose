@@ -47,6 +47,7 @@ class StatusViewModel @Inject constructor(
     }
 
     fun getCourierShift() = viewModelScope.launch {
+        onDialogConfirm()
         isLogin.value = IsLogin(true)
         loginRepository.getStatus().onSuccess {
             it.let {
