@@ -42,16 +42,12 @@ class MapViewModel @Inject constructor(
         when (val result = taskRepository.getTaskList()) {
             is NetworkResult.Success -> {
                 result.data.let {
-                    if(it.isEmpty())
+                    if (it.isEmpty())
                         return@launch
                     uiState.taskList.value = it
-                    uiState.cameraPositionState.value =
-                        CameraPosition.fromLatLngZoom(
-                            LatLng(
-                                it.first().addressTo?.point?.latetude!!.toDouble(),
-                                it.last().addressTo?.point?.latetude!!
-                            ), 5.8f
-                        )
+                    getValidPoint(it)?.let { position ->
+                        uiState.cameraPositionState.value = position
+                    }
                 }
             }
             is NetworkResult.Error -> {
@@ -61,5 +57,19 @@ class MapViewModel @Inject constructor(
                 uiState.isError.value = true
             }
         }
+    }
+
+    private fun getValidPoint(tasks: List<Task>): CameraPosition? {
+        tasks.forEach {
+            if (it.addressTo?.point?.latitude != null) {
+                return CameraPosition.fromLatLngZoom(
+                    LatLng(
+                        it.addressTo?.point?.latitude!!.toDouble(),
+                        it.addressTo?.point?.longitude!!
+                    ), 5.8f
+                )
+            }
+        }
+        return null
     }
 }

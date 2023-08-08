@@ -12,6 +12,6 @@ data class Point(
     var createdDate: String?,
     var lastModifiedBy: Long?,
     var lastModifiedDate: String?,
-    var longetude: Double? = null,
-    var latetude: Double? = null
+    var longitude: Double? = null,
+    var latitude: Double? = null
 ) : Parcelable
