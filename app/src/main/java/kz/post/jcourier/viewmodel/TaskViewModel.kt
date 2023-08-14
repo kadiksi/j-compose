@@ -1,7 +1,7 @@
 package kz.post.jcourier.viewmodel
 
 import android.content.Context
-import android.net.Uri
+import android.os.CountDownTimer
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,10 +10,13 @@ import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.post.jcourier.common.onError
+import kz.post.jcourier.common.onSmsError
 import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.task.*
 import kz.post.jcourier.data.repository.TaskRepository
+import kz.post.jcourier.utils.parseDateTime
+import kz.post.jcourier.utils.toMinSec
 import kz.post.jcourier.utils.toMultipart
 import okhttp3.MultipartBody
 import java.io.File
@@ -29,7 +32,8 @@ data class TaskState(
     var isCallVariantDialog: MutableState<Boolean> = mutableStateOf(false),
     var fileList: MutableState<MutableList<File>> = mutableStateOf(mutableListOf()),
     var task: MutableState<Task> = mutableStateOf(Task()),
-    var isRefreshing: MutableState<Boolean> = mutableStateOf(false)
+    var isRefreshing: MutableState<Boolean> = mutableStateOf(false),
+    var timer: MutableState<SmsTimer> = mutableStateOf(SmsTimer()),
 )
 
 @HiltViewModel
@@ -64,10 +68,19 @@ class TaskViewModel @Inject constructor(
             hideLoadingDialog()
             it.let {
                 uiState.task.value = it
+                if(it.actions.contains(TaskStatus.CONFIRM) && it.finalRoute == true){
+                    setTimer(it.nextSendTime)
+                }
             }
         }.onError { _, message ->
             hideLoadingDialog()
             uiState.isError.value = ErrorModel(true, message)
+        }.onSmsError { _, message, date ->
+            hideLoadingDialog()
+            uiState.isError.value = ErrorModel(true, message)
+            if(uiState.task.value.actions.contains(TaskStatus.CONFIRM) && uiState.task.value.finalRoute == true){
+                setTimer(parseDateTime(date))
+            }
         }
     }
 
@@ -243,5 +256,26 @@ class TaskViewModel @Inject constructor(
 
     private fun hideLoadingDialog(){
         uiState.isLoading.value = false
+    }
+    private fun setTimer(nextSendTime: Date?) {
+        nextSendTime?.let { it2 ->
+            uiState.timer.value = SmsTimer(canSendSms = false)
+            startTimer(it2)
+        }
+    }
+
+    var timer: CountDownTimer? = null
+    private fun startTimer(endDate: Date) {
+        timer = object : CountDownTimer(endDate.time - Date().time, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                val time = toMinSec(Date(millisUntilFinished))
+                uiState.timer.value = SmsTimer(time,false)
+            }
+
+            override fun onFinish() {
+                uiState.timer.value = SmsTimer("", true)
+            }
+        }.start()
     }
 }

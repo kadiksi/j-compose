@@ -3,6 +3,8 @@ package kz.post.jcourier.data.model.task
 import android.os.Parcelable
 import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Parcelize
 @Keep
@@ -14,6 +16,7 @@ data class Task(
     var orderId: Long? = null,
     var routeId: Long? = null,
     var finalRoute: Boolean? = null,
+    var nextSendTime: Date? = null,
     var addressTo: Address? = Address(),
     var addressFrom: Address? = Address(),
     var contactTo: ContactFrom? = ContactFrom(),

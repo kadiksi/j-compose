@@ -12,6 +12,7 @@
     <string name="from_address">Адрес забора:</string>
     <string name="to_address">Адрес доставки:</string>
     <string name="from_contact">Отправитель: %1s</string>
+    <string name="retry_send">Отправить код подтверждения повторно можно через: %1s</string>
     <string name="from_company">Отправитель:</string>
     <string name="planed_date">Плановая дата доставки: </string>
     <string name="to_contact">Получатель:</string>
