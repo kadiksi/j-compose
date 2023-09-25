@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Keep
 data class LocationPoint(
-    var longetude: Double,
-    var latetude: Double
+    var longitude: Double,
+    var latitude: Double
 ) : Parcelable

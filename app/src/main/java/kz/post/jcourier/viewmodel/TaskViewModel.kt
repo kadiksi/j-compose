@@ -44,6 +44,7 @@ class TaskViewModel @Inject constructor(
 
     var uiState by mutableStateOf(TaskState())
     private val args = savedStateHandle.get<Long>("taskId")
+    private var timer: CountDownTimer? = null
 
     init {
         getTask()
@@ -92,7 +93,8 @@ class TaskViewModel @Inject constructor(
         }
         completeTask(taskId, sms)
     }
-    fun completeTask(taskId: Long, sms: String?) = viewModelScope.launch {
+    
+    private fun completeTask(taskId: Long, sms: String?) = viewModelScope.launch {
         showLoadingDialog()
         taskRepository.completeTask(TaskIdSms(taskId, sms)).onSuccess {
             hideLoadingDialog()
@@ -137,7 +139,6 @@ class TaskViewModel @Inject constructor(
     }
 
     private val _images = MutableLiveData<List<File>>(listOf())
-    val images: LiveData<List<File>> get() = _images
 
     private fun uploadFiles(context: Context, taskId: Long, sms: String, type: FileType) = viewModelScope.launch {
         val parts = getParts(context)
@@ -264,7 +265,6 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    var timer: CountDownTimer? = null
     private fun startTimer(endDate: Date) {
         timer = object : CountDownTimer(endDate.time - Date().time, 1000) {
 

@@ -27,6 +27,7 @@ data class StatusState(
 class StatusViewModel @Inject constructor(
     private val loginRepository: ShiftRepository,
     val isLogin: MutableState<IsLogin>,
+    val user: MutableState<CourierModel>,
     private val sharedPreferencesProvider: SharedPreferencesProvider,
 ) : ViewModel(), LifecycleObserver {
 
@@ -39,6 +40,7 @@ class StatusViewModel @Inject constructor(
     fun setShift(shift: Shift) = viewModelScope.launch {
         loginRepository.setStatus(shift).onSuccess {
             it.let {
+                user.value = it
                 uiState.shift.value = it
             }
         }.onError{code, message ->
@@ -51,6 +53,7 @@ class StatusViewModel @Inject constructor(
         isLogin.value = IsLogin(true)
         loginRepository.getStatus().onSuccess {
             it.let {
+                user.value = it
                 uiState.shift.value = it
             }
         }.onError{code, message ->

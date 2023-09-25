@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kz.post.jcourier.data.model.shift.CourierModel
 import kz.post.jcourier.viewmodel.IsLogin
 import javax.inject.Singleton
 
@@ -15,5 +16,10 @@ object ViewModelModule {
 
     @Singleton
     @Provides
-    fun provideMySingleton(): MutableState<IsLogin> = mutableStateOf(IsLogin(false))
+    fun provideLogin(): MutableState<IsLogin> = mutableStateOf(IsLogin(false))
+
+    @Singleton
+    @Provides
+    fun provideUser(): MutableState<CourierModel> = mutableStateOf(CourierModel())
+
 }
