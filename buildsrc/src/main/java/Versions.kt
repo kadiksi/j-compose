@@ -29,7 +29,7 @@ object Versions {
     const val material = "1.4.0"
     const val playCore = "1.10.0"
     const val playCoreKtx = "1.8.1"
-    const val servicesAuth = "19.2.0"
+    const val servicesAuth = "20.39.15"
     const val servicesAuthPhone = "17.5.1"
 
     //network

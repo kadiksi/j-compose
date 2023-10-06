@@ -30,7 +30,6 @@ private val screens = listOf(
     DrawerScreens.Map,
     DrawerScreens.Notifications,
     DrawerScreens.Statistic,
-    DrawerScreens.Settings,
     DrawerScreens.Exit
 )
 

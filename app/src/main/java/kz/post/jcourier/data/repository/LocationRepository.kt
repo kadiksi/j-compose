@@ -23,7 +23,7 @@ class LocationRepository @Inject constructor(
             safeApiCall {
                 locationApiService.setLocation(
                     LocationModel(
-                        toFormatLocalSimpleDateTime(Date()), LocationPoint(longitude, latitude)
+                        toFormatLocalSimpleDateTime(Date()), LocationPoint(latitude, longitude)
                     )
                 )
             }

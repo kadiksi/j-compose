@@ -42,10 +42,10 @@ private val firebaseBom = "com.google.firebase:firebase-bom:${Versions.firebase}
 private val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx"
 private val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx"
 private val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-ktx"
-private val googleMap = "com.google.maps.android:maps-utils-ktx:${Versions.googleMap}"
-private val playCore = "com.google.android.play:core:${Versions.playCore}"
-private val playCoreKtx = "com.google.android.play:core-ktx:${Versions.playCoreKtx}"
-private val servicesAuth = "com.google.android.gms:play-services-auth:${Versions.servicesAuth}"
+private val googleMap = "com.google.maps.android:maps-utils-ktx:2.2.0"
+private val playCore = "com.google.android.play:core:1.10.0"
+private val playCoreKtx = "com.google.android.play:core-ktx:1.8.1"
+private val servicesAuth = "com.google.android.gms:play-services-auth:20.39.15"
 private val servicesAuthPhone =
     "com.google.android.gms:play-services-auth-api-phone:${Versions.servicesAuthPhone}"
 
