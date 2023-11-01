@@ -21,7 +21,8 @@ sealed class DrawerScreens(val title: Int, val route: String) {
     object Map : DrawerScreens(R.string.map, "map")
     object Notifications : DrawerScreens(R.string.notifications, "notifications")
     object Statistic : DrawerScreens(R.string.archive_orders, "statistic")
-    object Settings : DrawerScreens(R.string.settings, "settings")
+    object TaskInfo : DrawerScreens(R.string.active_orders, "task_info")
+    object AddCameraPhoto : DrawerScreens(R.string.camera, "camera_photo")
     object Exit : DrawerScreens(R.string.exit, "exit")
 }
 

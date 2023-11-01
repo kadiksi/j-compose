@@ -3,7 +3,7 @@ object AppConfig {
     const val applicationId = "kz.post.jcourier"
     const val compileSdk = 31
     const val minSdk = 21
-    const val targetSdk = 33
+    const val targetSdk = 34
     const val versionCode = 12
     const val versionName = "1.12"
     const val androidTestInstrumentation = "androidx.test.runner.AndroidJUnitRunner"

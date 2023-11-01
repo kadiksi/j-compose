@@ -1,6 +1,8 @@
 package kz.post.jcourier.viewmodel
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.CountDownTimer
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -8,6 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kz.post.jcourier.ui.component.filepicker.photocapture.CameraState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSmsError
@@ -15,6 +21,8 @@ import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.task.*
 import kz.post.jcourier.data.repository.TaskRepository
+import kz.post.jcourier.ui.component.filepicker.photocapture.SavePhotoToGalleryUseCase
+import kz.post.jcourier.utils.fileFromContentUri
 import kz.post.jcourier.utils.parseDateTime
 import kz.post.jcourier.utils.toMinSec
 import kz.post.jcourier.utils.toMultipart
@@ -30,6 +38,7 @@ data class TaskState(
     var isSmsDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCancelReasonDialog: MutableState<Boolean> = mutableStateOf(false),
     var isCallVariantDialog: MutableState<Boolean> = mutableStateOf(false),
+    var isChooseFileDialog: MutableState<Boolean> = mutableStateOf(false),
     var fileList: MutableState<MutableList<File>> = mutableStateOf(mutableListOf()),
     var task: MutableState<Task> = mutableStateOf(Task()),
     var isRefreshing: MutableState<Boolean> = mutableStateOf(false),
@@ -39,12 +48,35 @@ data class TaskState(
 @HiltViewModel
 class TaskViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
+    private val savePhotoToGalleryUseCase: SavePhotoToGalleryUseCase,
+    @ApplicationContext private val context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(TaskState())
     private val args = savedStateHandle.get<Long>("taskId")
     private var timer: CountDownTimer? = null
+
+    private val _state = MutableStateFlow(CameraState())
+    val state = _state.asStateFlow()
+
+    fun storePhotoInGallery(bitmap: Bitmap) {
+        viewModelScope.launch {
+            val uri = savePhotoToGalleryUseCase.call(bitmap)
+            updateCapturedPhotoState(bitmap, uri)
+        }
+    }
+    private fun updateCapturedPhotoState(updatedPhoto: Bitmap?, uri: Uri?) {
+//        _state.value.capturedImage?.recycle()
+        _state.value = _state.value.copy(capturedImage = updatedPhoto)
+        uri?.let {
+            onAddImageFile(fileFromContentUri(context, it))
+        }
+    }
+
+    fun clearPhoto(){
+        _state.value = CameraState()
+    }
 
     init {
         getTask()
@@ -215,6 +247,14 @@ class TaskViewModel @Inject constructor(
 
     fun hideCallVariantDialog() {
         uiState.isCallVariantDialog.value = false
+    }
+
+    fun showChooseFileDialog() {
+        uiState.isChooseFileDialog.value = true
+    }
+
+    fun hideChooseFileDialog() {
+        uiState.isChooseFileDialog.value = false
     }
 
     fun showCancelReasonDialog() {

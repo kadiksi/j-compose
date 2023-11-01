@@ -36,7 +36,7 @@ fun CallVariantDialog(
                             .padding(top = 16.dp)
                             .fillMaxWidth()
                     ) {
-                        Text(stringResource(id = R.string.clinet))
+                        Text(stringResource(id = R.string.client))
                     }
                     Button(
                         onClick = { onConfirm.invoke(taskId, CallDto.SENDER) },

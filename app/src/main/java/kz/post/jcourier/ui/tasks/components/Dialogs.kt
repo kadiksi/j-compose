@@ -1,8 +1,8 @@
 package kz.post.jcourier.ui.tasks.components
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import kz.post.jcourier.R
 import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.task.CancelReason
@@ -19,7 +19,9 @@ fun TaskDialogs(
     isLoading: Boolean,
     isCancelReasonDialog: Boolean,
     isCallVariantsDialog: Boolean,
+    isChooseFileDialog: Boolean,
     cancellationReasons2: ArrayList<CancelReason>?,
+    navController: NavHostController,
 ) {
     if (isLoading)
         LoadingAnimation()
@@ -50,6 +52,12 @@ fun TaskDialogs(
             onConfirm = taskViewModel::onCallVariantDialog,
             taskId = it,
             text = ""
+        )
+        ChooseFileDialog(
+            show = isChooseFileDialog,
+            onDismiss = taskViewModel::hideChooseFileDialog,
+            taskViewModel = taskViewModel,
+            navController = navController,
         )
     }
 }

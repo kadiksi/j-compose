@@ -35,18 +35,20 @@
     <string name="a_point">A: %1$s</string>
     <string name="b_point">B: %1$s</string>
     <string name="call">Звонок</string>
-    <string name="clinet">Клиент</string>
+    <string name="client">Клиент</string>
     <string name="merchant">Продавец</string>
     <string name="update_files">Загрузить файлы</string>
     <string name="archive_orders">Архивные заказы</string>
     <string name="no_task">Нет тасков</string>
-    <string name="delate">Удалить</string>
+    <string name="delete">Удалить</string>
     <string name="quantity">Количество</string>
     <string name="merchant_comment">Коментарий продавца</string>
     <string name="customer_comment">Коментарий покупателя</string>
     <string name="size">Размер</string>
     <string name="price">Цена</string>
     <string name="weight">Вес</string>
+    <string name="gallery">Галерея</string>
+    <string name="camera">Камера</string>
 
     <string-array name="statuses">
         <item>Новый</item>

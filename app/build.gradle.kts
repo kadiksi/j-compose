@@ -150,7 +150,12 @@ dependencies {
     implementation (platform("com.google.firebase:firebase-bom:32.1.0"))
     implementation ("com.google.firebase:firebase-analytics-ktx")
     implementation ("com.google.firebase:firebase-messaging")
+    //Camera
+    implementation ("androidx.camera:camera-view:1.3.0-rc01")
+    implementation ("androidx.camera:camera-lifecycle:1.3.0-rc01")
+    implementation ("androidx.camera:camera-camera2:1.3.0-rc01")
+    implementation ("androidx.camera:camera-extensions:1.3.0-rc01")
+    implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+
 }
-//kapt {
-//    correctErrorTypes = true
-//}

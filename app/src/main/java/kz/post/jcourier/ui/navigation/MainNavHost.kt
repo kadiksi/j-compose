@@ -10,8 +10,10 @@ import kz.post.jcourier.ui.archive.homeArchive
 import kz.post.jcourier.ui.component.DrawerScreens
 import kz.post.jcourier.ui.ActiveOrders
 import kz.post.jcourier.ui.Map
+import kz.post.jcourier.ui.component.filepicker.CameraMainScreen
 import kz.post.jcourier.ui.tasks.task
 import kz.post.jcourier.viewmodel.LoginViewModel
+import kz.post.jcourier.viewmodel.TaskViewModel
 
 @Composable
 fun MainNavHost(
@@ -20,6 +22,7 @@ fun MainNavHost(
     loginViewModel: LoginViewModel = hiltViewModel(),
     startLocation: () -> Unit
 ) {
+
     NavHost(
         navController = navController,
         startDestination = DrawerScreens.ActiveOrders.route
@@ -55,10 +58,13 @@ fun MainNavHost(
                 }
             )
         }
-        composable(DrawerScreens.Settings.route) {
+        composable(DrawerScreens.TaskInfo.route) {
             task(
                 navController,
             )
+        }
+        composable(DrawerScreens.AddCameraPhoto.route) {
+            CameraMainScreen(navController)
         }
         composable(DrawerScreens.Exit.route) {
             loginViewModel.logOut()

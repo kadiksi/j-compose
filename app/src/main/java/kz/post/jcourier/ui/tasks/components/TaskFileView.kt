@@ -4,16 +4,13 @@ import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,7 +56,7 @@ fun TaskFileView(taskViewModel: TaskViewModel) {
                         ) {
                             Icon(
                                 Icons.Filled.Delete,
-                                contentDescription = stringResource(id = R.string.delate),
+                                contentDescription = stringResource(id = R.string.delete),
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)
                                     .size(18.dp),

@@ -1,6 +1,8 @@
 package kz.post.jcourier.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import java.io.*
@@ -43,4 +45,13 @@ private fun copy(source: InputStream, target: OutputStream) {
     while (source.read(buf).also { length = it } > 0) {
         target.write(buf, 0, length)
     }
+}
+
+fun Bitmap.rotateBitmap(rotationDegrees: Int): Bitmap {
+    val matrix = Matrix().apply {
+        postRotate(-rotationDegrees.toFloat())
+        postScale(-1f, -1f)
+    }
+
+    return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
 }
