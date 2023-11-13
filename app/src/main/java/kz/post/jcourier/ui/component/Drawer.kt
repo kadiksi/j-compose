@@ -24,6 +24,7 @@ sealed class DrawerScreens(val title: Int, val route: String) {
     object TaskInfo : DrawerScreens(R.string.active_orders, "task_info")
     object AddCameraPhoto : DrawerScreens(R.string.camera, "camera_photo")
     object Exit : DrawerScreens(R.string.exit, "exit")
+    object Politics : DrawerScreens(R.string.policy, "policy")
 }
 
 private val screens = listOf(
@@ -31,7 +32,8 @@ private val screens = listOf(
     DrawerScreens.Map,
     DrawerScreens.Notifications,
     DrawerScreens.Statistic,
-    DrawerScreens.Exit
+    DrawerScreens.Exit,
+    DrawerScreens.Politics
 )
 
 @Composable

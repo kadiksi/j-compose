@@ -21,6 +21,7 @@
     <string name="start">Начать</string>
     <string name="take">Забрать товар</string>
     <string name="login">Войти</string>
+    <string name="policy">Политика конфиденциальности</string>
     <string name="delivered">Доставляю</string>
     <string name="confirm">Отправить код подтверждения</string>
     <string name="complete">Завершить</string>

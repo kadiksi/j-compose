@@ -1,5 +1,8 @@
 package kz.post.jcourier.ui.login
 
+import android.service.autofill.OnClickAction
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,12 +12,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kz.post.jcourier.R
@@ -86,6 +92,17 @@ fun LoginScreen(
         ) {
             Text(stringResource(id = R.string.login))
         }
+        val uriHandler = LocalUriHandler.current
+        Text(
+            text = stringResource(id = R.string.policy),
+            color = Color.Blue,
+            modifier = Modifier
+                .clickable {
+                    uriHandler.openUri("https://jpost.kz/private-policy/")
+                }
+                .padding(16.dp)
+                .fillMaxWidth()
+        )
         ErrorAlertDialog(
             show = isError,
             onDismiss = viewModel::onDialogDismiss,
