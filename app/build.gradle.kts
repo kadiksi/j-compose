@@ -37,17 +37,19 @@ android {
     buildTypes {
         getByName("release") {
             resValue("string", AppConfig.appName, "JCourier 2.0")
+            resValue ("string", AppConfig.googleMapsApiKey, "AIzaSyAjcLq-ey9-EQylNW70IftHyrSAKqHJyRQ")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             isMinifyEnabled = true
             isShrinkResources = false
-            isDebuggable = false
+            isDebuggable = true
         }
         getByName("debug") {
             initWith(buildTypes.getByName("debug"))
             resValue("string", AppConfig.appName, "JCourier 2.0 Test")
+            resValue ("string", AppConfig.googleMapsApiKey, "AIzaSyAjcLq-ey9-EQylNW70IftHyrSAKqHJyRQ")
             isMinifyEnabled = false
             isDebuggable = true
         }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import kz.post.jcourier.common.BaseApiResponse
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.api.LoginApiService
+import kz.post.jcourier.data.model.auth.ChangePasswordModel
 import kz.post.jcourier.data.model.auth.LoginModel
 import kz.post.jcourier.data.model.auth.TokenModelData
 import javax.inject.Inject
@@ -22,6 +23,26 @@ class LoginRepository @Inject constructor(
                     LoginModel(
                         phone,
                         password
+                    )
+                )
+            }
+        }
+    }
+
+    suspend fun changePassword(
+        login: String,
+        currentPassword: String,
+        password: String,
+        passwordConfirmation: String
+    ): NetworkResult<TokenModelData> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                loginApiService.passwordChangeGetTokens(
+                    ChangePasswordModel(
+                        login = login,
+                        password = password,
+                        current_password = currentPassword,
+                        password_confirmation = passwordConfirmation
                     )
                 )
             }

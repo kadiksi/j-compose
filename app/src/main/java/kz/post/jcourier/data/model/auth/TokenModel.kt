@@ -11,6 +11,12 @@ data class TokenModelData(
 @Keep
 data class TokenModel(
     var tokens: Tokens?,
+
+    var status: Int?,
+    var error: String?,
+    var message: String?,
+    var requestId: String?,
+    var hostname: String?
 )
 
 @Keep

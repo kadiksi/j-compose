@@ -50,6 +50,11 @@
     <string name="weight">Вес</string>
     <string name="gallery">Галерея</string>
     <string name="camera">Камера</string>
+    <string name="confirm_password">Подтвердить пароль</string>
+    <string name="password">Пароль</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="change_password">Изменить пароль</string>
+    <string name="phone">Телефон</string>
 
     <string-array name="statuses">
         <item>Новый</item>

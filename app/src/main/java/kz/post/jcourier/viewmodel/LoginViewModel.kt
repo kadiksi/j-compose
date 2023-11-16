@@ -1,6 +1,5 @@
 package kz.post.jcourier.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,16 +19,20 @@ import javax.inject.Inject
 data class LoginState(
     val user: MutableState<TokenModel?> = mutableStateOf(null),
     var isError: MutableState<Boolean> = mutableStateOf(false),
+    var isPassIncorrect: MutableState<Boolean> = mutableStateOf(false),
 )
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
     private val sharedPreferencesProvider: SharedPreferencesProvider,
-    val isLogin: MutableState<IsLogin>
+    val isLogin: MutableState<IsLogin>,
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(LoginState())
+
+    var login: String = ""
+    var password: String =""
 
     init {
         viewModelScope.launch {
@@ -43,15 +46,51 @@ class LoginViewModel @Inject constructor(
         when (val result = loginRepository.login(getValidPhone(phone), password)) {
             is NetworkResult.Success -> {
                 result.data.data?.let {
-                    sharedPreferencesProvider.setUserData(it)
-                    uiState.user.value = it
-                    uiState.isError.value = false
-                    isLogin.value = IsLogin(true)
+                    if(result.data.data?.error.equals("PASSWORD_EXPIRED")){
+                        login = getValidPhone(phone)
+                        this@LoginViewModel.password = password
+                        uiState.isPassIncorrect.value = true
+                    } else {
+                        saveUserData(it)
+                    }
                 }
             }
             is NetworkResult.Error -> {
                 uiState.isError.value = true
             }
+            else -> {
+                uiState.isError.value = true
+            }
+        }
+    }
+
+    private fun saveUserData(it: TokenModel) {
+        uiState.isPassIncorrect.value = false
+        sharedPreferencesProvider.setUserData(it)
+        uiState.user.value = it
+        uiState.isError.value = false
+        isLogin.value = IsLogin(true)
+    }
+
+    fun changePassword(
+        newPassword: String,
+        passwordConfirmation: String
+    ) = viewModelScope.launch {
+        if (newPassword.length <= 2)
+            return@launch
+        when (val result = loginRepository.changePassword(
+            login, password,  newPassword, passwordConfirmation
+        )) {
+            is NetworkResult.Success -> {
+                result.data.data?.let {
+                    saveUserData(it)
+                }
+            }
+
+            is NetworkResult.Error -> {
+                uiState.isError.value = true
+            }
+
             else -> {
                 uiState.isError.value = true
             }

@@ -4,10 +4,11 @@ object AppConfig {
     const val compileSdk = 31
     const val minSdk = 21
     const val targetSdk = 34
-    const val versionCode = 20
-    const val versionName = "1.20"
+    const val versionCode = 21
+    const val versionName = "1.21"
     const val androidTestInstrumentation = "androidx.test.runner.AndroidJUnitRunner"
     const val proguardConsumerRules =  "consumer-rules.pro"
     const val dimension = "default"
     const val appName = "app_name_jcourier"
+    const val googleMapsApiKey = "google_maps_api_key"
 }

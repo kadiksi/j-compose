@@ -1,7 +1,5 @@
 package kz.post.jcourier.ui.login
 
-import android.service.autofill.OnClickAction
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +18,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kz.post.jcourier.R
@@ -32,7 +29,7 @@ import kz.post.jcourier.viewmodel.LoginViewModel
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel()
 ) {
-    var emailText by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
     val isError by viewModel.uiState.isError
@@ -43,14 +40,14 @@ fun LoginScreen(
             .verticalScroll(rememberScrollState())
     ) {
         OutlinedTextField(
-            value = emailText,
+            value = phone,
             onValueChange = {
                 if (it.length > 10) {
                     return@OutlinedTextField
                 }
-                emailText = it
+                phone = it
             },
-            label = { Text("Phone") },
+            label = { Text(text = stringResource(id = R.string.phone)) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Phone
             ),
@@ -63,7 +60,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = passwordText,
             onValueChange = { passwordText = it },
-            label = { Text("Password") },
+            label = { Text(text = stringResource(id = R.string.password)) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password
             ),
@@ -85,7 +82,7 @@ fun LoginScreen(
         )
 
         Button(
-            onClick = { viewModel.login(emailText, passwordText) },
+            onClick = { viewModel.login(phone, passwordText) },
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
