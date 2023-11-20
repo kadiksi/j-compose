@@ -44,7 +44,7 @@ android {
             )
             isMinifyEnabled = true
             isShrinkResources = false
-            isDebuggable = true
+            isDebuggable = false
         }
         getByName("debug") {
             initWith(buildTypes.getByName("debug"))
