@@ -6,15 +6,18 @@ import android.net.Uri
 import android.os.CountDownTimer
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Job
 import kz.post.jcourier.ui.component.filepicker.photocapture.CameraState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSmsError
 import kz.post.jcourier.common.onSuccess
@@ -43,6 +46,8 @@ data class TaskState(
     var task: MutableState<Task> = mutableStateOf(Task()),
     var isRefreshing: MutableState<Boolean> = mutableStateOf(false),
     var timer: MutableState<SmsTimer> = mutableStateOf(SmsTimer()),
+
+    var isRefreshCanceledTask: MutableState<Boolean> = mutableStateOf(false),
 )
 
 @HiltViewModel
@@ -54,7 +59,8 @@ class TaskViewModel @Inject constructor(
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(TaskState())
-    private val args = savedStateHandle.get<Long>("taskId")
+    private val taskId = savedStateHandle.get<Long>("taskId")
+    private val isRead = savedStateHandle.get<Boolean>("isRead")
     private var timer: CountDownTimer? = null
 
     private val _state = MutableStateFlow(CameraState())
@@ -83,13 +89,26 @@ class TaskViewModel @Inject constructor(
     }
 
     fun getTask() = viewModelScope.launch {
-        args?.let {
+        taskId?.let {
             showLoadingDialog()
             taskRepository.getTaskById(it).onSuccess { task ->
                 hideLoadingDialog()
                 uiState.task.value = task
+                if(isRead != true){
+                    makeAsRead()
+                }
             }.onError { _, message ->
                 hideLoadingDialog()
+                uiState.isError.value = ErrorModel(true, message)
+            }
+        }
+    }
+
+    private fun makeAsRead() = viewModelScope.launch {
+        taskId?.let {
+            taskRepository.markAsRead(it).onSuccess { _ ->
+                uiState.isRefreshCanceledTask.value = true
+            }.onError { _, message ->
                 uiState.isError.value = ErrorModel(true, message)
             }
         }
@@ -317,5 +336,9 @@ class TaskViewModel @Inject constructor(
                 uiState.timer.value = SmsTimer("", true)
             }
         }.start()
+    }
+
+    fun onGetCanceledTask() {
+        uiState.isRefreshCanceledTask.value = false
     }
 }

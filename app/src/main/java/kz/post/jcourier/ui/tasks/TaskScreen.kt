@@ -20,15 +20,18 @@ import androidx.navigation.NavHostController
 import kz.post.jcourier.R
 import kz.post.jcourier.ui.component.TopBarWithActions
 import kz.post.jcourier.ui.tasks.components.*
+import kz.post.jcourier.viewmodel.CanceledTasksViewModel
 import kz.post.jcourier.viewmodel.TaskViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun task(
-    navController: NavHostController, taskViewModel: TaskViewModel = hiltViewModel()
+    navController: NavHostController, taskViewModel: TaskViewModel = hiltViewModel(),
+    canceledTaskViewModel: CanceledTasksViewModel
 ) {
     val task = taskViewModel.uiState.task.value
     val isError by taskViewModel.uiState.isError
+    val isRefreshCanceledTask by taskViewModel.uiState.isRefreshCanceledTask
     val isLoading by taskViewModel.uiState.isLoading
     val isSmsDialog by taskViewModel.uiState.isSmsDialog
     val isCancelReasonDialog by taskViewModel.uiState.isCancelReasonDialog
@@ -54,11 +57,15 @@ fun task(
             } else {
                 ""
             }
+            if(isRefreshCanceledTask){
+                canceledTaskViewModel.refresh()
+                taskViewModel.onGetCanceledTask()
+            }
             TopBarWithActions(
                 title = stringResource(R.string.task_id, orderId!!),
                 backArrowIcon = Icons.Filled.ArrowBack,
                 callIcon = Icons.Filled.Call,
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = { navController.navigateUp() },
                 onCallClicked = { taskViewModel.showCallVariantDialog() },
                 onChooseFileClicked = { taskViewModel.showChooseFileDialog() },
                 taskViewModel = taskViewModel

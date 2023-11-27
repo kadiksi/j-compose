@@ -60,5 +60,6 @@ enum class TaskStatus {
     DELIVER,
     CONFIRM,
     COMPLETE,
+    FOR_CANCELLATION,
     CANCEL
 }

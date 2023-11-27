@@ -11,15 +11,17 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import kz.post.jcourier.ui.component.Drawer
 import kz.post.jcourier.ui.navigation.MainNavHost
+import kz.post.jcourier.viewmodel.CanceledTasksViewModel
 import kz.post.jcourier.viewmodel.LoginViewModel
 import kz.post.jcourier.viewmodel.StatusViewModel
 
 @Composable
 fun HomeScreen(
-    startLocation: () -> Unit
+    startLocation:  Unit,
+    shiftViewModel: StatusViewModel,
+    loginViewModel: LoginViewModel,
+    canceledTaskViewModel: CanceledTasksViewModel
 ) {
-    val shiftViewModel: StatusViewModel = hiltViewModel()
-    val loginViewModel: LoginViewModel = hiltViewModel()
 
     val navController = rememberNavController()
     Surface {
@@ -27,13 +29,14 @@ fun HomeScreen(
         val scope = rememberCoroutineScope()
         val openDrawer = {
             scope.launch {
+                shiftViewModel.getCourierShift()
+                canceledTaskViewModel.refresh()
                 drawerState.open()
             }
         }
         if (!shiftViewModel.isLogin.value.isLogin) {
             loginViewModel.logOut()
         }
-        shiftViewModel.getCourierShift()
 //        startLocation.invoke()
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -52,12 +55,16 @@ fun HomeScreen(
                                 launchSingleTop = true
                             }
                         },
-                        shiftViewModel = shiftViewModel
+                        shiftViewModel = shiftViewModel,
+                        canceledTaskViewModel = canceledTaskViewModel
                     )
                 }
             }
         ) {
-            MainNavHost(navController, openDrawer, startLocation = startLocation)
+            MainNavHost(
+                navController, openDrawer, startLocation = startLocation,
+                canceledTaskViewModel = canceledTaskViewModel
+            )
         }
     }
 }

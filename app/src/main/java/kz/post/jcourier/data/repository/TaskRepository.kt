@@ -35,10 +35,26 @@ class TaskRepository @Inject constructor(
         }
     }
 
+    suspend fun getForCancellation(): NetworkResult<ForCancel> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.getForCancellation()
+            }
+        }
+    }
+
     suspend fun getTaskById(id: Long): NetworkResult<Task> {
         return withContext(defaultDispatcher) {
             safeApiCall {
                 taskApiService.getTaskById(id)
+            }
+        }
+    }
+
+    suspend fun markAsRead(id: Long): NetworkResult<Unit> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.markAsRead(id)
             }
         }
     }

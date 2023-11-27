@@ -20,17 +20,19 @@ import kz.post.jcourier.ui.archive.homeArchive
 import kz.post.jcourier.ui.component.DrawerScreens
 import kz.post.jcourier.ui.ActiveOrders
 import kz.post.jcourier.ui.Map
+import kz.post.jcourier.ui.canceledtasks.canceledTasks
 import kz.post.jcourier.ui.component.filepicker.CameraMainScreen
 import kz.post.jcourier.ui.tasks.task
+import kz.post.jcourier.viewmodel.CanceledTasksViewModel
 import kz.post.jcourier.viewmodel.LoginViewModel
-import kz.post.jcourier.viewmodel.TaskViewModel
 
 @Composable
 fun MainNavHost(
     navController: NavHostController,
     openDrawer: () -> Job,
     loginViewModel: LoginViewModel = hiltViewModel(),
-    startLocation: () -> Unit
+    canceledTaskViewModel: CanceledTasksViewModel,
+    startLocation: Unit
 ) {
 
     NavHost(
@@ -39,7 +41,7 @@ fun MainNavHost(
     )
     {
         composable(DrawerScreens.ActiveOrders.route) {
-            startLocation.invoke()
+            startLocation
             ActiveOrders(
                 navController,
                 openDrawer = {
@@ -55,10 +57,14 @@ fun MainNavHost(
                 }
             )
         }
-        composable(DrawerScreens.Notifications.route) {
-//                    Settings(
-//                        navController
-//                    )
+        composable(DrawerScreens.CanceledTasks.route) {
+            canceledTasks(
+                navController,
+                openDrawer = {
+                    openDrawer()
+                },
+                canceledTaskViewModel,
+            )
         }
         composable(DrawerScreens.Statistic.route) {
             homeArchive(
@@ -71,6 +77,7 @@ fun MainNavHost(
         composable(DrawerScreens.TaskInfo.route) {
             task(
                 navController,
+                canceledTaskViewModel = canceledTaskViewModel
             )
         }
         composable(DrawerScreens.AddCameraPhoto.route) {

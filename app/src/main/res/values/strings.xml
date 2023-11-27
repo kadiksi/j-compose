@@ -5,7 +5,7 @@
 
     <string name="active_orders">Активные заказы</string>
     <string name="map">Карта</string>
-    <string name="notifications">Уведомления</string>
+    <string name="canceled_task">Отмененные заказы</string>
     <string name="settings">Настройки</string>
     <string name="exit">Выход</string>
     <string name="task_id">Номер заказа: %1s</string>
