@@ -94,7 +94,7 @@ class TaskViewModel @Inject constructor(
             taskRepository.getTaskById(it).onSuccess { task ->
                 hideLoadingDialog()
                 uiState.task.value = task
-                if(isRead != true){
+                if(isRead != null && isRead != true){
                     makeAsRead()
                 }
             }.onError { _, message ->
@@ -131,14 +131,16 @@ class TaskViewModel @Inject constructor(
             hideLoadingDialog()
             uiState.isError.value = ErrorModel(true, message)
             if(uiState.task.value.actions.contains(TaskStatus.CONFIRM) && uiState.task.value.finalRoute == true){
-                setTimer(parseDateTime(date))
+                if(date != "null") {
+                    setTimer(parseDateTime(date))
+                }
             }
         }
     }
 
     fun completeWithFiles(taskId: Long, sms: String?){
         val list = _images.value ?: emptyList()
-        if(list.size < 5){
+        if(list.size < 5 && uiState.task.value.orderType != OrderType.SUPERMARKET){
             uiState.isError.value = ErrorModel(true, "Выберите минимум 5 фото")
             return
         }
@@ -286,7 +288,7 @@ class TaskViewModel @Inject constructor(
 
     fun showSmsDialog() {
         val list = _images.value ?: emptyList()
-        if(list.size < 5){
+        if(list.size < 5 && uiState.task.value.orderType != OrderType.SUPERMARKET){
             uiState.isError.value = ErrorModel(true, "Выберите минимум 5 фото")
             return
         }
@@ -295,8 +297,11 @@ class TaskViewModel @Inject constructor(
 
     fun uploadPickUpFiles(taskId: Long, context: Context) {
         val list = _images.value ?: emptyList()
-        if(list.size < 5){
+        if(list.size < 5 && uiState.task.value.orderType != OrderType.SUPERMARKET){
             uiState.isError.value = ErrorModel(true, "Выберите минимум 5 фото")
+            return
+        } else if (list.size < 3 && uiState.task.value.orderType == OrderType.SUPERMARKET){
+            uiState.isError.value = ErrorModel(true, "Выберите минимум 3 фото")
             return
         }
         uploadFiles(context,taskId, TaskStatus.PICK_UP, FileType.MERCHANT)

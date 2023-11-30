@@ -4,18 +4,28 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import kz.post.jcourier.R
 import kz.post.jcourier.data.model.task.Task
+import kz.post.jcourier.ui.map.mdel.MapCoordinate
+import kz.post.jcourier.ui.map.mdel.MapType
+import kz.post.jcourier.utils.openMap
 import kz.post.jcourier.utils.toDateTimeFormat
 import kz.post.jcourier.utils.toTimeFormat
 
 @Composable
 fun TaskSenderAddress(task: Task) {
-    Box(
+    val context = LocalContext.current
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(
@@ -24,7 +34,7 @@ fun TaskSenderAddress(task: Task) {
             )
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().weight(8f),
         ) {
             TextViewAnnotated(
                 R.string.from_address, task.getAddress(task.addressFrom),
@@ -48,6 +58,24 @@ fun TaskSenderAddress(task: Task) {
                 )
             }
         }
+        Column(
+            modifier = Modifier.fillMaxWidth().weight(2f),
+        ) {
+            IconButton(onClick = {
+                task.addressFrom?.point?.longitude?.let {
+                    val mapType = MapCoordinate(
+                        MapType.TwoGis, task.addressTo?.point?.latitude!!,
+                        it
+                    )
+                    context.openMap(mapType)
+                }
+            }) {
+                Icon(
+                    ImageVector.vectorResource(R.drawable.road_to_24),
+                    contentDescription = stringResource(id = R.string.call)
+                )
+            }
+        }
     }
 }
 
@@ -62,7 +90,8 @@ fun ViewDivider() {
 
 @Composable
 fun TaskClientView(task: Task) {
-    Box(
+    val context = LocalContext.current
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(
@@ -72,7 +101,7 @@ fun TaskClientView(task: Task) {
             )
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().weight(8f),
         ) {
             TextViewAnnotated(
                 R.string.to_address,
@@ -94,6 +123,24 @@ fun TaskClientView(task: Task) {
                 TextViewAnnotated(
                     R.string.customer_comment,
                     it,
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth().weight(2f),
+        ) {
+            IconButton(onClick = {
+                task.addressTo?.point?.longitude?.let {
+                    val mapType = MapCoordinate(
+                        MapType.TwoGis, task.addressTo?.point?.latitude!!,
+                        it
+                    )
+                    context.openMap(mapType)
+                }
+            }) {
+                Icon(
+                    ImageVector.vectorResource(R.drawable.road_to_24),
+                    contentDescription = stringResource(id = R.string.call)
                 )
             }
         }

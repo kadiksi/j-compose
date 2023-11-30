@@ -1,8 +1,11 @@
 package kz.post.jcourier.ui.component
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import kz.post.jcourier.R
@@ -31,12 +34,12 @@ fun TopBar(title: String = "", buttonIcon: ImageVector, onButtonClicked: () -> U
 fun TopBarWithActions(
     title: String = "",
     backArrowIcon: ImageVector,
-    callIcon: ImageVector,
     onBackClicked: () -> Unit,
     onCallClicked: () -> Unit,
     onChooseFileClicked: () -> Unit,
     taskViewModel: TaskViewModel
 ) {
+    val context = LocalContext.current
     val task by remember {
         taskViewModel.uiState.task
     }
@@ -54,7 +57,7 @@ fun TopBarWithActions(
         },
         actions = {
             IconButton(onClick = { onCallClicked() }) {
-                Icon(callIcon, contentDescription = stringResource(id = R.string.call))
+                Icon(Icons.Filled.Call, contentDescription = stringResource(id = R.string.call))
             }
             if(task.actions.contains(TaskStatus.PICK_UP) ||
                 task.actions.contains(TaskStatus.COMPLETE))

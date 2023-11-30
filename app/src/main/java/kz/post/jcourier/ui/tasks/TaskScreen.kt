@@ -6,7 +6,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
@@ -64,7 +63,6 @@ fun task(
             TopBarWithActions(
                 title = stringResource(R.string.task_id, orderId!!),
                 backArrowIcon = Icons.Filled.ArrowBack,
-                callIcon = Icons.Filled.Call,
                 onBackClicked = { navController.navigateUp() },
                 onCallClicked = { taskViewModel.showCallVariantDialog() },
                 onChooseFileClicked = { taskViewModel.showChooseFileDialog() },

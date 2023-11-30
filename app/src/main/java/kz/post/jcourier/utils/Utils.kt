@@ -1,7 +1,9 @@
 package kz.post.jcourier.utils
 
 import android.Manifest
+import android.R.attr.label
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -10,6 +12,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.SystemClock
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +20,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kz.post.jcourier.R
+import kz.post.jcourier.ui.map.mdel.MapCoordinate
+import kz.post.jcourier.ui.map.mdel.MapType
+
 
 fun String.addCharAtIndex(char: Char, index: Int) =
     StringBuilder(this).apply { insert(index, char) }.toString()
@@ -137,4 +143,20 @@ class SafeDialogButtonClickListener(
 
 fun Activity.openGpsSettingsActivity() {
     startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+}
+
+fun Context.openMap(mapCoordinate: MapCoordinate): AlertDialog? {
+    val format = "geo:0,0?q=" + mapCoordinate.latitude.toString() + "," + mapCoordinate.longitude.toString() + "( title )"
+
+    val uri: Uri = Uri.parse(format)
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    val packageManager: PackageManager = packageManager
+    val activities = packageManager.queryIntentActivities(intent, 0)
+    val isIntentSafe: Boolean = activities.size > 0
+    if (isIntentSafe) {
+        startActivity(intent)
+    } else {
+        Toast.makeText(this, "Попробуйте установить карту через PlayMarket", Toast.LENGTH_SHORT).show()
+    }
+    return null
 }

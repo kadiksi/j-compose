@@ -25,7 +25,7 @@ data class Task(
     var histories: ArrayList<TaskHistory>? = arrayListOf(),
     var actions: ArrayList<TaskStatus> = arrayListOf(),
     var cancellationReasons: ArrayList<CancelReason>? = arrayListOf(),
-
+    var orderType: OrderType? = null,
     ) : Parcelable {
     fun getAddress(address: Address?): String {
         var text = ""
@@ -62,4 +62,10 @@ enum class TaskStatus {
     COMPLETE,
     FOR_CANCELLATION,
     CANCEL
+}
+
+@Keep
+enum class OrderType {
+    SUPERMARKET,
+    GOODS,
 }

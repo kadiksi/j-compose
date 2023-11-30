@@ -8,7 +8,7 @@
     <string name="canceled_task">Отмененные заказы</string>
     <string name="settings">Настройки</string>
     <string name="exit">Выход</string>
-    <string name="task_id">Номер заказа: %1s</string>
+    <string name="task_id">№: %1s</string>
     <string name="from_address">Адрес забора:</string>
     <string name="to_address">Адрес доставки:</string>
     <string name="from_contact">Отправитель: %1s</string>
