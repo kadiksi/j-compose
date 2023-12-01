@@ -64,7 +64,7 @@ fun TaskSenderAddress(task: Task) {
             IconButton(onClick = {
                 task.addressFrom?.point?.longitude?.let {
                     val mapType = MapCoordinate(
-                        MapType.TwoGis, task.addressTo?.point?.latitude!!,
+                        MapType.TwoGis, task.addressFrom?.point?.latitude!!,
                         it
                     )
                     context.openMap(mapType)
