@@ -33,6 +33,12 @@ fun Context.hasPermissionAccessFineLocation(): Boolean {
     ) == PackageManager.PERMISSION_GRANTED
 }
 
+fun Context.hasPermissionAccessPushNotification(): Boolean {
+    return ContextCompat.checkSelfPermission(
+        this, Manifest.permission.POST_NOTIFICATIONS
+    ) == PackageManager.PERMISSION_GRANTED
+}
+
 fun Context.isGpsEnabled(): Boolean {
     val manager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
     return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -40,6 +46,10 @@ fun Context.isGpsEnabled(): Boolean {
 val locationPermissions = arrayOf(
     Manifest.permission.ACCESS_FINE_LOCATION,
     Manifest.permission.ACCESS_COARSE_LOCATION,
+)
+
+val pushNotificationPermissions = arrayOf(
+    Manifest.permission.POST_NOTIFICATIONS,
 )
 
 fun Activity.openAppSettingsActivity(requestCode: Int) {
@@ -81,6 +91,36 @@ inline fun Activity?.requestLocationPermission(
                 .show()
         }
         else -> launcher.launch(locationPermissions)
+    }
+
+    return null
+}
+
+inline fun Activity?.requestNotificationPermission(
+    launcher: ActivityResultLauncher<Array<String>>,
+    settingsAppRequestCode: Int,
+    onPermissionGranted: () -> Unit,
+): AlertDialog? {
+    if (this == null || isFinishing) return null
+
+    when {
+//        hasPermissionAccessPushNotification() -> {
+//            if (isGpsEnabled()) onPermissionGranted.invoke()
+//            else return showEnableGpsDialog(this)
+//        }
+        ActivityCompat.shouldShowRequestPermissionRationale(
+            this,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) -> {
+            return AlertDialog.Builder(this)
+                .setTitle("Трубуется доступ к Уведомлениям")
+                .setMessage("Перейдите в \"Настройки\", чтобы предоставить доступ к Уведомлениям")
+                .setSafePositiveButton(this, R.string.settings) { _, _ ->
+                    openAppSettingsActivity(settingsAppRequestCode)
+                }
+                .show()
+        }
+        else -> launcher.launch(pushNotificationPermissions)
     }
 
     return null

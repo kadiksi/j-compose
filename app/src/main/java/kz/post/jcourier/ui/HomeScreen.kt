@@ -7,6 +7,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import kz.post.jcourier.ui.component.Drawer
@@ -20,10 +21,10 @@ fun HomeScreen(
     startLocation:  Unit,
     shiftViewModel: StatusViewModel,
     loginViewModel: LoginViewModel,
-    canceledTaskViewModel: CanceledTasksViewModel
+    canceledTaskViewModel: CanceledTasksViewModel,
+    navController: NavHostController
 ) {
 
-    val navController = rememberNavController()
     Surface {
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
