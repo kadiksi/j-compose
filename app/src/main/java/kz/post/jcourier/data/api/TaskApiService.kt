@@ -12,7 +12,7 @@ interface TaskApiService {
     suspend fun getTaskList(@Query("status") status: TaskStatus): Response<List<Task>>
 
     @GET("gw/jpost-courier/api/public/v1/notification/for-cancel")
-    suspend fun getForCancellation(): Response<ForCancel>
+    suspend fun getForCancellation(@Query("sort") sort: List<String>): Response<ForCancel>
 
     @GET("gw/jpost-courier/api/public/v1/task/{id}")
     suspend fun getTaskById(@Path("id") id: Long): Response<Task>

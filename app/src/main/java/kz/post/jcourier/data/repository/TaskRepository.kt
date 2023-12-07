@@ -35,10 +35,10 @@ class TaskRepository @Inject constructor(
         }
     }
 
-    suspend fun getForCancellation(): NetworkResult<ForCancel> {
+    suspend fun getForCancellation(sort: List<String>): NetworkResult<ForCancel> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.getForCancellation()
+                taskApiService.getForCancellation(sort)
             }
         }
     }

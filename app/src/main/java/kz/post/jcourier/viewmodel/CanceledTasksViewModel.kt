@@ -22,7 +22,7 @@ data class CanceledTasksState(
     var taskList: MutableState<List<CanceledNotification>> = mutableStateOf(emptyList()),
     var isRefreshing: MutableState<Boolean> = mutableStateOf(false),
     var canceledTaskCount: MutableState<Int> = mutableIntStateOf(0),
-//    var sort: MutableState<List<String>> = mutableStateOf(listOf("createdDate", "DESC")),
+    var sort: MutableState<List<String>> = mutableStateOf(listOf("createdDate", "DESC")),
 )
 
 @HiltViewModel
@@ -42,7 +42,7 @@ class CanceledTasksViewModel @Inject constructor(
 
     private fun getCanceledNotificationList() = viewModelScope.launch {
         uiState.isRefreshing.value = true
-        taskRepository.getForCancellation().onSuccess {
+        taskRepository.getForCancellation(uiState.sort.value).onSuccess {
             uiState.isRefreshing.value = false
             it.let {
                 uiState.taskList.value = it.content
