@@ -9,10 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSuccess
-import kz.post.jcourier.data.model.error.ErrorModel
 import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.data.repository.TaskRepository
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
@@ -61,4 +59,30 @@ class HomeViewModel @Inject constructor(
         }
 
     }
+
+
+//    var paginationState by mutableStateOf(ScreenState())
+//
+//    private val paginator = DefaultPaginator(
+//        initialKey = paginationState.page,
+//        onLoadUpdated = {
+//            paginationState = paginationState.copy(isLoading = it)
+//        },
+//        onRequest = { nextPage ->
+//            taskRepository.getTaskList().getItems(nextPage, 20)
+//        },
+//        getNextKey = {
+//            paginationState.page + 1
+//        },
+//        onError = {
+//            paginationState = paginationState.copy(error = it?.localizedMessage)
+//        },
+//        onSuccess = { items, newKey ->
+//            paginationState = paginationState.copy(
+//                items = paginationState.items + items,
+//                page = newKey,
+//                endReached = items.isEmpty()
+//            )
+//        }
+//    )
 }

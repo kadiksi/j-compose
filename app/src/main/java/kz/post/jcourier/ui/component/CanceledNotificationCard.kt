@@ -37,6 +37,7 @@ fun CanceledNotificationCard(
         .width(IntrinsicSize.Max), onClick = {
         navController.navigate(
             DrawerScreens.TaskInfo.route, "taskId" to notification.taskId,
+            "notificationId" to notification.id,
             "isRead" to notification.isRead
         )
     }) {

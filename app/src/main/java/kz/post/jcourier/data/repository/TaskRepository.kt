@@ -7,10 +7,7 @@ import kz.post.jcourier.common.BaseApiResponse
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.api.TaskApiService
 import kz.post.jcourier.data.model.task.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import com.google.gson.Gson
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -35,10 +32,15 @@ class TaskRepository @Inject constructor(
         }
     }
 
-    suspend fun getForCancellation(sort: List<String>): NetworkResult<ForCancel> {
+    suspend fun getForCancellation(
+        page: Int,
+        size: Int,
+        sortIsRead: String,
+        sortCreatedDate: String
+    ): NetworkResult<ForCancel> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.getForCancellation(sort)
+                taskApiService.getForCancellation(page, size, sortIsRead, sortCreatedDate)
             }
         }
     }
@@ -51,10 +53,10 @@ class TaskRepository @Inject constructor(
         }
     }
 
-    suspend fun markAsRead(id: Long): NetworkResult<Unit> {
+    suspend fun markAsRead(notificationId: Long): NetworkResult<Unit> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.markAsRead(id)
+                taskApiService.markAsRead(notificationId)
             }
         }
     }

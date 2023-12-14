@@ -6,18 +6,15 @@ import android.net.Uri
 import android.os.CountDownTimer
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Job
 import kz.post.jcourier.ui.component.filepicker.photocapture.CameraState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSmsError
 import kz.post.jcourier.common.onSuccess
@@ -60,11 +57,16 @@ class TaskViewModel @Inject constructor(
 
     var uiState by mutableStateOf(TaskState())
     private val taskId = savedStateHandle.get<Long>("taskId")
+    private val notificationId = savedStateHandle.get<Long>("notificationId")
     private val isRead = savedStateHandle.get<Boolean>("isRead")
     private var timer: CountDownTimer? = null
 
     private val _state = MutableStateFlow(CameraState())
     val state = _state.asStateFlow()
+
+    init {
+        getTask()
+    }
 
     fun storePhotoInGallery(bitmap: Bitmap) {
         viewModelScope.launch {
@@ -84,10 +86,6 @@ class TaskViewModel @Inject constructor(
         _state.value = CameraState()
     }
 
-    init {
-        getTask()
-    }
-
     fun getTask() = viewModelScope.launch {
         taskId?.let {
             showLoadingDialog()
@@ -105,7 +103,7 @@ class TaskViewModel @Inject constructor(
     }
 
     private fun makeAsRead() = viewModelScope.launch {
-        taskId?.let {
+        notificationId?.let {
             taskRepository.markAsRead(it).onSuccess { _ ->
                 uiState.isRefreshCanceledTask.value = true
             }.onError { _, message ->

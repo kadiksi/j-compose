@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import kz.post.jcourier.BuildConfig
 import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.api.LocationApiService
 import kz.post.jcourier.data.repository.LocationRepository
@@ -96,18 +97,6 @@ class SendCoordinationUseCase @Inject constructor(
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    fun isAbleToSend(): Boolean {
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-        val currentTime = Time(hour, minute)
-
-        return currentTime >= startTime &&
-                currentTime < finishTime &&
-                hasGrantedPermission() &&
-                context.isGpsEnabled()
-    }
-
     private suspend fun onLocationChanged(accuracy: Int?, latitude: Double?, longitude: Double?) {
         if (accuracy == null || latitude == null || longitude == null) return
 
@@ -126,6 +115,8 @@ class SendCoordinationUseCase @Inject constructor(
 //        ) return
 
         isSendLocationBusy.set(true)
+        if(BuildConfig.DEBUG)
+            return
         locationRepository
             .setLocation(location.latitude, location.longitude)
             .onSuccess {
