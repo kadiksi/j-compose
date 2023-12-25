@@ -14,6 +14,7 @@ import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.model.auth.TokenModel
 import kz.post.jcourier.data.repository.LoginRepository
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
+import kz.post.jcourier.firebase.IsNotification
 import javax.inject.Inject
 
 data class LoginState(
@@ -27,6 +28,7 @@ class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
     private val sharedPreferencesProvider: SharedPreferencesProvider,
     val isLogin: MutableState<IsLogin>,
+    val isNotification: MutableState<IsNotification>,
 ) : ViewModel(), LifecycleObserver {
 
     var uiState by mutableStateOf(LoginState())

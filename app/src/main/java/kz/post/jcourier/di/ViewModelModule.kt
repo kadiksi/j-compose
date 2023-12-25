@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kz.post.jcourier.data.model.shift.CourierModel
+import kz.post.jcourier.firebase.IsNotification
 import kz.post.jcourier.viewmodel.IsLogin
 import javax.inject.Singleton
 
@@ -21,5 +22,9 @@ object ViewModelModule {
     @Singleton
     @Provides
     fun provideUser(): MutableState<CourierModel> = mutableStateOf(CourierModel())
+
+    @Singleton
+    @Provides
+    fun provideNotification(): MutableState<IsNotification> = mutableStateOf(IsNotification(false))
 
 }

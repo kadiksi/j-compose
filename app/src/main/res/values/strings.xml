@@ -55,6 +55,7 @@
     <string name="new_password">Новый пароль</string>
     <string name="change_password">Изменить пароль</string>
     <string name="phone">Телефон</string>
+    <string name="open">Открыть</string>
 
     <string-array name="statuses">
         <item>Новый</item>

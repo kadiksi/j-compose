@@ -59,30 +59,4 @@ class HomeViewModel @Inject constructor(
         }
 
     }
-
-
-//    var paginationState by mutableStateOf(ScreenState())
-//
-//    private val paginator = DefaultPaginator(
-//        initialKey = paginationState.page,
-//        onLoadUpdated = {
-//            paginationState = paginationState.copy(isLoading = it)
-//        },
-//        onRequest = { nextPage ->
-//            taskRepository.getTaskList().getItems(nextPage, 20)
-//        },
-//        getNextKey = {
-//            paginationState.page + 1
-//        },
-//        onError = {
-//            paginationState = paginationState.copy(error = it?.localizedMessage)
-//        },
-//        onSuccess = { items, newKey ->
-//            paginationState = paginationState.copy(
-//                items = paginationState.items + items,
-//                page = newKey,
-//                endReached = items.isEmpty()
-//            )
-//        }
-//    )
 }
