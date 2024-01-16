@@ -48,7 +48,7 @@ android {
         }
         getByName("debug") {
             initWith(buildTypes.getByName("debug"))
-            resValue("string", AppConfig.appName, "JCourier 2.0 Test")
+            resValue("string", AppConfig.appName, "JCourier 2.0 Debug")
             resValue ("string", AppConfig.googleMapsApiKey, "AIzaSyAjcLq-ey9-EQylNW70IftHyrSAKqHJyRQ")
             isMinifyEnabled = false
             isDebuggable = true

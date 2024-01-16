@@ -17,6 +17,7 @@ import kz.post.jcourier.R
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import kz.post.jcourier.viewmodel.HomeViewModel
 import kz.post.jcourier.viewmodel.NotificationViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -37,20 +38,19 @@ class JCourierFirebaseMessagingService : FirebaseMessagingService() {
     lateinit var isNotification: MutableState<IsNotification>
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.e("onMessageReceived", remoteMessage.toString())
+        Timber.e(remoteMessage.toString())
         val not = remoteMessage.notification
         val data = remoteMessage.data
         val rawData = remoteMessage.rawData
         val id = data["taskId"]
         val intent = Intent(this, EntryPointActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Optional: Clear the activity stack
-        intent.putExtra("taskId", id) // Add any data you need
-        val i2d = id?.substring(10, id.length-1)?.toLong()
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.putExtra("taskId", id)
         isNotification.value = IsNotification(
             true,
             remoteMessage.notification!!.title,
             remoteMessage.notification!!.body,
-            i2d
+            id?.toLong()
         )
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,
