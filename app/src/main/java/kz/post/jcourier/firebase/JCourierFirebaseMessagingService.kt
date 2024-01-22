@@ -61,7 +61,9 @@ class JCourierFirebaseMessagingService : FirebaseMessagingService() {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(remoteMessage.notification!!.title)
                 .setContentText(remoteMessage.notification!!.body)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(remoteMessage.notification!!.body))
                 .setContentIntent(pendingIntent) // Set the intent to be triggered on notification click
                 .setAutoCancel(true)
 
@@ -70,7 +72,6 @@ class JCourierFirebaseMessagingService : FirebaseMessagingService() {
 
         // Set additional notification properties if needed
         val notificationManager = NotificationManagerCompat.from(this)
-        val notificationId = System.currentTimeMillis().toInt()
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
@@ -78,7 +79,7 @@ class JCourierFirebaseMessagingService : FirebaseMessagingService() {
         ) {
             return
         }
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationManager.notify(System.currentTimeMillis().toInt(), notificationBuilder.build())
 
     }
 
