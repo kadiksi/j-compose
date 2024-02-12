@@ -26,6 +26,7 @@ data class Task(
     var actions: ArrayList<TaskStatus> = arrayListOf(),
     var cancellationReasons: ArrayList<CancelReason>? = arrayListOf(),
     var orderType: OrderType? = null,
+    var totalWeight: Double? = null,
     ) : Parcelable {
     fun getAddress(address: Address?): String {
         var text = ""

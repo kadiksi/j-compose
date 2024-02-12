@@ -8,14 +8,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kz.post.jcourier.R
+import kz.post.jcourier.data.model.task.Product
 import kz.post.jcourier.data.model.task.Task
+import java.util.ArrayList
 
 @Composable
 fun ProductViews(task: Task) {
     if (task.product?.isNotEmpty() == true) {
-        TextView(
-            stringResource(R.string.product_list), MaterialTheme.typography.titleLarge
-        )
+        task.totalWeight?.let { stringResource(R.string.product_list, it) }?.let {
+            TextView(
+                it, MaterialTheme.typography.titleLarge
+            )
+        }
         task.product?.forEach {
             it.name?.let { it1 ->
                 TextView(

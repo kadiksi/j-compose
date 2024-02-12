@@ -85,7 +85,7 @@ fun canceledTasks(
                 ) {
                     items(
                         items = taskList,
-                        key = { it.taskId }
+                        key = { it.createdDate }
                     ) {
                         CanceledNotificationCard(navController, it)
                     }

@@ -17,7 +17,7 @@
     <string name="from_company">Отправитель:</string>
     <string name="planed_date">Плановая дата доставки: </string>
     <string name="to_contact">Получатель:</string>
-    <string name="product_list">Товар</string>
+    <string name="product_list">Товары (%1s кг)</string>
     <string name="history">История</string>
     <string name="start">Начать</string>
     <string name="take">Забрать товар</string>

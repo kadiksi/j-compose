@@ -16,7 +16,7 @@ data class Product(
 
     var length: String? = null,
     var width: String? = null,
-    var weight: String? = null,
+    var weight: Double? = null,
     var height: String? = null,
     var price: String? = null,
     var barcode: String? = null,
