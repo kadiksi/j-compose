@@ -115,8 +115,8 @@ class SendCoordinationUseCase @Inject constructor(
 //        ) return
 
         isSendLocationBusy.set(true)
-        if(BuildConfig.DEBUG)
-            return
+//        if(BuildConfig.DEBUG)
+//            return
         locationRepository
             .setLocation(location.latitude, location.longitude)
             .onSuccess {

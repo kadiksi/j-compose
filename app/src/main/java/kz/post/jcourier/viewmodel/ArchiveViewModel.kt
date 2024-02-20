@@ -9,7 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kz.post.jcourier.common.NetworkResult
+import kz.post.jcourier.common.onError
+import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.model.task.Task
 import kz.post.jcourier.data.repository.TaskRepository
 import javax.inject.Inject
@@ -36,21 +37,14 @@ class ArchiveViewModel @Inject constructor(
 
     private fun getTaskList() = viewModelScope.launch {
         uiState.isRefreshing.value = true
-        when (val result = taskRepository.getArchiveTaskList()) {
-            is NetworkResult.Success -> {
-                uiState.isRefreshing.value = false
-                result.data.let {
-                    uiState.taskList.value = it
-                }
+        taskRepository.getArchiveTaskList().onSuccess {
+            uiState.isRefreshing.value = false
+            it.let {
+                uiState.taskList.value = it
             }
-            is NetworkResult.Error -> {
-                uiState.isError.value = true
-                uiState.isRefreshing.value = false
-            }
-            else -> {
-                uiState.isError.value = true
-                uiState.isRefreshing.value = false
-            }
+        }.onError{ code, message ->
+            uiState.isError.value = true
+            uiState.isRefreshing.value = false
         }
     }
 }

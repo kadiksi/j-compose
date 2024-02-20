@@ -26,20 +26,22 @@ sealed class DrawerScreens(val title: Int, val route: String) {
     object ActiveOrders : DrawerScreens(R.string.active_orders, "active_orders")
     object Map : DrawerScreens(R.string.map, "map")
     object CanceledTasks : DrawerScreens(R.string.canceled_task, "canceled_task")
-    object Statistic : DrawerScreens(R.string.archive_orders, "statistic")
+    object Archive : DrawerScreens(R.string.archive_orders, "archive")
     object TaskInfo : DrawerScreens(R.string.active_orders, "task_info")
     object AddCameraPhoto : DrawerScreens(R.string.camera, "camera_photo")
     object Exit : DrawerScreens(R.string.exit, "exit")
     object Politics : DrawerScreens(R.string.policy, "policy")
+    object Statistics : DrawerScreens(R.string.statistics, "statistics")
 }
 
 private val screens = listOf(
     DrawerScreens.ActiveOrders,
     DrawerScreens.Map,
     DrawerScreens.CanceledTasks,
-    DrawerScreens.Statistic,
+    DrawerScreens.Archive,
+    DrawerScreens.Statistics,
+    DrawerScreens.Politics,
     DrawerScreens.Exit,
-    DrawerScreens.Politics
 )
 
 @Composable
@@ -110,11 +112,11 @@ fun Drawer(
                 if (screen.route == DrawerScreens.CanceledTasks.route) {
                     Text(
                         modifier = Modifier
-                            .background(Orange500, RoundedCornerShape(46.dp))
-                            .padding(8.dp),
+                            .background(Orange500, RoundedCornerShape(36.dp))
+                            .padding(4.dp),
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleSmall,
                         text = canceledTaskCount.value.toString()
                     )
                 }

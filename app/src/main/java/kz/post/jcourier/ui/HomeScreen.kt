@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +40,10 @@ fun HomeScreen(
     canceledTaskViewModel: CanceledTasksViewModel,
     navController: NavHostController
 ) {
+
+    LaunchedEffect(true) {
+        shiftViewModel.getCourierShift()
+    }
 
     Surface {
         val drawerState = rememberDrawerState(DrawerValue.Closed)

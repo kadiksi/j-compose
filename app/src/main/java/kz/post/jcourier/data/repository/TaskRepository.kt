@@ -103,4 +103,12 @@ class TaskRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun getStatistics(dateFrom: String, dateTo: String): NetworkResult<String> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                taskApiService.getStatistics(dateFrom, dateTo)
+            }
+        }
+    }
 }

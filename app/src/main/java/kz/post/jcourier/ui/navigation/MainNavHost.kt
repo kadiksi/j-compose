@@ -22,6 +22,7 @@ import kz.post.jcourier.ui.ActiveOrders
 import kz.post.jcourier.ui.Map
 import kz.post.jcourier.ui.canceledtasks.canceledTasks
 import kz.post.jcourier.ui.component.filepicker.CameraMainScreen
+import kz.post.jcourier.ui.statistics.statisticsArchive
 import kz.post.jcourier.ui.tasks.task
 import kz.post.jcourier.viewmodel.CanceledTasksViewModel
 import kz.post.jcourier.viewmodel.LoginViewModel
@@ -66,9 +67,16 @@ fun MainNavHost(
                 canceledTaskViewModel,
             )
         }
-        composable(DrawerScreens.Statistic.route) {
+        composable(DrawerScreens.Archive.route) {
             homeArchive(
                 navController,
+                openDrawer = {
+                    openDrawer()
+                }
+            )
+        }
+        composable(DrawerScreens.Statistics.route) {
+            statisticsArchive(
                 openDrawer = {
                     openDrawer()
                 }

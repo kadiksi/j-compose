@@ -41,6 +41,10 @@
     <string name="merchant">Продавец</string>
     <string name="update_files">Загрузить файлы</string>
     <string name="archive_orders">Архивные заказы</string>
+    <string name="statistics">Статистика</string>
+    <string name="statistics_amount">Количество исполненных заказов: %1s</string>
+    <string name="statistics_date_from">с: %1s</string>
+    <string name="statistics_date_to">по: %1s</string>
     <string name="no_task">Нет тасков</string>
     <string name="delete">Удалить</string>
     <string name="quantity">Количество</string>
