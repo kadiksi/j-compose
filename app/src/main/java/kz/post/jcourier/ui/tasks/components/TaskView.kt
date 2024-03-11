@@ -34,7 +34,9 @@ fun TaskSenderAddress(task: Task) {
             )
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().weight(8f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(8f),
         ) {
             TextViewAnnotated(
                 R.string.from_address, task.getAddress(task.addressFrom),
@@ -51,6 +53,13 @@ fun TaskSenderAddress(task: Task) {
                     topPaddign = 2.dp
                 )
             }
+            task.contactFrom?.workSchedule?.let {
+                if (it.isNotEmpty()) {
+                    TextViewAnnotated(
+                        R.string.working_schedule, task.contactFrom!!.getSchedule(),
+                    )
+                }
+            }
             task.addressFrom?.comment?.let {
                 TextViewAnnotated(
                     R.string.merchant_comment,
@@ -59,7 +68,9 @@ fun TaskSenderAddress(task: Task) {
             }
         }
         Column(
-            modifier = Modifier.fillMaxWidth().weight(2f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(2f),
         ) {
             IconButton(onClick = {
                 task.addressFrom?.point?.longitude?.let {
@@ -101,7 +112,9 @@ fun TaskClientView(task: Task) {
             )
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().weight(8f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(8f),
         ) {
             TextViewAnnotated(
                 R.string.to_address,
@@ -127,7 +140,9 @@ fun TaskClientView(task: Task) {
             }
         }
         Column(
-            modifier = Modifier.fillMaxWidth().weight(2f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(2f),
         ) {
             IconButton(onClick = {
                 task.addressTo?.point?.longitude?.let {

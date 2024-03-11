@@ -15,4 +15,17 @@ data class ContactFrom(
     var phone: String? = null,
     var dateFrom: Date? = null,
     var dateTo: Date? = null,
-) : Parcelable
+    var workingTime: ArrayList<WorkingTime>? = null,
+    var workSchedule: ArrayList<WorkSchedule>? = null,
+) : Parcelable {
+
+    fun getSchedule(): String {
+        if (workSchedule.isNullOrEmpty())
+            return ""
+        var schedule = ""
+        workSchedule?.forEach {
+            schedule += "${it.days} \n${it.workTimeInterval} \nПерерыв: ${it.breakTimeInterval}\n\n"
+        }
+        return schedule.trim()
+    }
+}
