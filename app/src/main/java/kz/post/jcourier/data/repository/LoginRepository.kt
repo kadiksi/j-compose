@@ -8,6 +8,7 @@ import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.data.api.LoginApiService
 import kz.post.jcourier.data.model.auth.ChangePasswordModel
 import kz.post.jcourier.data.model.auth.LoginModel
+import kz.post.jcourier.data.model.auth.RefreshToken
 import kz.post.jcourier.data.model.auth.TokenModelData
 import javax.inject.Inject
 
@@ -53,6 +54,14 @@ class LoginRepository @Inject constructor(
         return withContext(defaultDispatcher) {
             safeApiCall {
                 loginApiService.sendToken(token)
+            }
+        }
+    }
+
+    suspend fun refreshToken(token: String): NetworkResult<TokenModelData> {
+        return withContext(defaultDispatcher) {
+            safeApiCall {
+                loginApiService.refreshToken(RefreshToken(token))
             }
         }
     }

@@ -79,7 +79,7 @@ class SharedPreferencesProviderImpl constructor(
     }
 
     override fun hasSavedCredentials(): Boolean =
-        !login.isNullOrBlank() && !password.isNullOrBlank()
+        !login.isNullOrBlank() && !password.isNullOrBlank() && !refreshToken.isNullOrBlank()
 
     override var login: String?
         get() = sharedPreferences.getString(LOGIN, null)

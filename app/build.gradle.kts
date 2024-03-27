@@ -160,5 +160,5 @@ dependencies {
     implementation ("androidx.camera:camera-extensions:1.3.0-rc01")
     implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
     implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
-
+    implementation ("androidx.biometric:biometric:1.2.0-alpha05")
 }

@@ -17,7 +17,6 @@ import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import javax.inject.Inject
 
 data class HomeState(
-    var isError: MutableState<Boolean> = mutableStateOf(false),
     var taskList: MutableState<List<Task>> = mutableStateOf(emptyList()),
     var isRefreshing: MutableState<Boolean> = mutableStateOf(false)
 )
@@ -50,11 +49,10 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }.onError{code, message ->
-            uiState.isError.value = true
             uiState.isRefreshing.value = false
             if(message.contains("401")) {
                 isLogin.value = IsLogin(false)
-                sharedPreferencesProvider.cleanup()
+//                sharedPreferencesProvider.cleanup()
             }
         }
 

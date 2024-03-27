@@ -63,6 +63,12 @@
     <string name="phone">Телефон</string>
     <string name="open">Открыть</string>
 
+    <string name="fingerprint_touch_scanner">Коснитесь сканера отпечатков</string>
+    <string name="touch_id">Touch Id</string>
+    <string name="fingerprint_prompt_description">Отсканируйте свой отпечаток пальца для входа в приложение</string>
+    <string name="touch_id_enroll">На вашем устройстве не установлен Touch ID. Вы можете установить его в настройках телефона</string>
+    <string name="login_with_touch_id">Вход по отпечатку пальца</string>
+
     <string-array name="statuses">
         <item>Новый</item>
         <item>Еду</item>

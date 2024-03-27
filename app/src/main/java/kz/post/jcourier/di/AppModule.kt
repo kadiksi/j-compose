@@ -123,7 +123,7 @@ object RestNetwork {
         okHttpClient.readTimeout(60, TimeUnit.SECONDS)
         okHttpClient.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         okHttpClient.addInterceptor(authInterceptor)
-        okHttpClient.authenticator(tokenAuthenticator)
+//        okHttpClient.authenticator(tokenAuthenticator)
         return okHttpClient.build();
     }
 //

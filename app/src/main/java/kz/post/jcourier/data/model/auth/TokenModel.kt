@@ -26,6 +26,11 @@ data class Tokens(
 )
 
 @Keep
+data class RefreshToken(
+    var token: String? = null,
+)
+
+@Keep
 data class Auth(
     var token: String? = null,
     var issued: String? = null,

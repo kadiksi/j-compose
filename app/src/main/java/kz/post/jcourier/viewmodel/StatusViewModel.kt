@@ -59,7 +59,7 @@ class StatusViewModel @Inject constructor(
         }.onError{code, message ->
             if(message.contains("401")) {
                 isLogin.value = IsLogin(false)
-                sharedPreferencesProvider.cleanup()
+//                sharedPreferencesProvider.cleanup()
                 onDialogConfirm()
             }
             uiState.isError.value = ErrorModel(true, message)

@@ -1,5 +1,6 @@
 package kz.post.jcourier.data.interceptors
 
+import androidx.compose.runtime.MutableState
 import com.google.gson.Gson
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -9,6 +10,7 @@ import kz.post.jcourier.data.model.auth.TokenModelData
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import kz.post.jcourier.di.BasicOkHttpClient
 import kz.post.jcourier.utils.HttpUtils
+import kz.post.jcourier.viewmodel.IsLogin
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -20,11 +22,13 @@ import timber.log.Timber
 class TokenAuthenticator @Inject constructor(
     private val gson: Gson,
     @BasicOkHttpClient private val okHttpClient: OkHttpClient,
-    private val sharedPreferencesProvider: SharedPreferencesProvider
+    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    val isLogin: MutableState<IsLogin>,
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
         // This is a synchronous call
+        isLogin.value = IsLogin(false)
         val updatedToken = getUpdatedToken()
         return if (updatedToken.isNullOrBlank()) {
             null
@@ -36,6 +40,7 @@ class TokenAuthenticator @Inject constructor(
     }
 
     private fun getUpdatedToken(): String? {
+        return ""
         synchronized(this) {
             val refreshToken = sharedPreferencesProvider.refreshToken ?: ""
             val accessToken = sharedPreferencesProvider.accessToken ?: ""

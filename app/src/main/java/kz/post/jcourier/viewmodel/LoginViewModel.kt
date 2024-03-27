@@ -11,6 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kz.post.jcourier.utils.addCharAtIndex
 import kz.post.jcourier.common.NetworkResult
+import kz.post.jcourier.common.onError
+import kz.post.jcourier.common.onSuccess
 import kz.post.jcourier.data.model.auth.TokenModel
 import kz.post.jcourier.data.repository.LoginRepository
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
@@ -20,6 +22,7 @@ import javax.inject.Inject
 data class LoginState(
     val user: MutableState<TokenModel?> = mutableStateOf(null),
     var isError: MutableState<Boolean> = mutableStateOf(false),
+    var isRefreshToken: MutableState<Boolean> = mutableStateOf(false),
     var isPassIncorrect: MutableState<Boolean> = mutableStateOf(false),
 )
 
@@ -39,7 +42,12 @@ class LoginViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             isLogin.value = IsLogin(!sharedPreferencesProvider.accessToken.isNullOrEmpty())
+            uiState.isRefreshToken.value = !sharedPreferencesProvider.refreshToken.isNullOrEmpty()
         }
+    }
+
+    fun onFingerprintRecognized(){
+        refreshToken()
     }
 
     fun login(phone: String, password: String) = viewModelScope.launch {
@@ -53,6 +61,7 @@ class LoginViewModel @Inject constructor(
                         this@LoginViewModel.password = password
                         uiState.isPassIncorrect.value = true
                     } else {
+                        sharedPreferencesProvider.saveCredentials(phone, password)
                         saveUserData(it)
                     }
                 }
@@ -112,6 +121,23 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    private fun refreshToken() = viewModelScope.launch {
+        loginRepository.refreshToken(sharedPreferencesProvider.refreshToken!!).onSuccess {
+            it.let {
+                sharedPreferencesProvider.setUserData(it.data!!)
+                sharedPreferencesProvider.login?.let {
+                    sharedPreferencesProvider.password?.let { it1 ->
+                        login(
+                            it,
+                            it1
+                        )
+                    }
+                }
+            }
+        }.onError { code, message ->
+        }
+    }
+
     fun onDialogConfirm() {
         uiState.isError.value = false
     }
@@ -133,5 +159,9 @@ class LoginViewModel @Inject constructor(
                 .addCharAtIndex('-', 7)
                 .addCharAtIndex('-', 10)
         return "+7($updatedPhone"
+    }
+
+    fun hasSavedCredentials(): Boolean{
+        return sharedPreferencesProvider.hasSavedCredentials()
     }
 }
