@@ -87,7 +87,9 @@ fun TaskOptionButtons(taskViewModel: TaskViewModel, task: Task) {
     }
     MyButton(
         stringResource(id = R.string.cancel_task),
-        visibility = task.cancellationReasons?.isNotEmpty() == true
+        visibility =
+        task.cancellationTypes?.isNotEmpty() == true
+                && task.actions.contains(TaskStatus.CANCEL)
     ) {
         taskViewModel.showCancelReasonDialog()
     }

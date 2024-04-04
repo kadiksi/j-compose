@@ -24,6 +24,7 @@ data class LoginState(
     var isError: MutableState<Boolean> = mutableStateOf(false),
     var isRefreshToken: MutableState<Boolean> = mutableStateOf(false),
     var isPassIncorrect: MutableState<Boolean> = mutableStateOf(false),
+    var firebaseToken: MutableState<String?> = mutableStateOf(null),
 )
 
 @HiltViewModel
@@ -60,6 +61,7 @@ class LoginViewModel @Inject constructor(
                         login = getValidPhone(phone)
                         this@LoginViewModel.password = password
                         uiState.isPassIncorrect.value = true
+                        sendToken()
                     } else {
                         sharedPreferencesProvider.saveCredentials(phone, password)
                         saveUserData(it)
@@ -108,8 +110,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun sendToken(token: String) = viewModelScope.launch {
-        when (val result = loginRepository.sendToken(token)) {
+    private fun sendToken() = viewModelScope.launch {
+        when (val result = uiState.firebaseToken.value?.let { loginRepository.sendToken(it) }) {
             is NetworkResult.Success -> {
                 result.data.data?.let {
                 }

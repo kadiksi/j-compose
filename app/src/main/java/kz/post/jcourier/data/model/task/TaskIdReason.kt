@@ -5,6 +5,7 @@ import androidx.annotation.Keep
 @Keep
 class TaskIdReason(
     val taskId: Long,
+    val type: Cancellation,
     val reason: String,
     val cancelReasonOther: String?
 )

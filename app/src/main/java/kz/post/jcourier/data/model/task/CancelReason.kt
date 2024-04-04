@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Keep
 data class CancelReason(
-    var reason: String,
+    var cancellationReason: String,
     var description: String,
 ) : Parcelable

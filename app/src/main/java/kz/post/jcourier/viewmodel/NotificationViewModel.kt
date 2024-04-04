@@ -17,11 +17,14 @@ import javax.inject.Inject
 
 class NotificationViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
+    val isLogin: MutableState<IsLogin>,
 ) : ViewModel(), LifecycleObserver {
 
     fun sendToken(token: String) = viewModelScope.launch {
-        firebaseRepository.sendToken(token).onSuccess {
-            Log.e("Tokend Sended", token)
+        if(isLogin.value.isLogin) {
+            firebaseRepository.sendToken(token).onSuccess {
+                Log.e("Tokend Sended", token)
+            }
         }
     }
 }

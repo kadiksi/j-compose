@@ -29,7 +29,7 @@ class LocationViewModel @Inject constructor(
 
         viewModelScope.launch {
             while (isActive) {
-                delay(10_000)
+                delay(10000_000)
                 if(user.value.status == Shift.ON_SHIFT) {
                     sendCoordinationUseCase.invoke()
                 } else {

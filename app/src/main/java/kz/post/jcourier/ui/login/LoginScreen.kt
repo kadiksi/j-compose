@@ -50,6 +50,14 @@ fun LoginScreen(fragmentActivity: EntryPointActivity,
     val isRefreshToken by viewModel.uiState.isRefreshToken
     val biometricHelper by lazy { BiometricHelper(fragmentActivity) }
 
+    LaunchedEffect(true) {
+        if(isRefreshToken) {
+            if (biometricHelper.isBiometricEnabled() && viewModel.hasSavedCredentials()) {
+                biometricHelper.showTouchId(fragmentActivity)
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)

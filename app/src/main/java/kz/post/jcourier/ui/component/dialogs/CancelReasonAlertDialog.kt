@@ -7,49 +7,46 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kz.post.jcourier.R
-import kz.post.jcourier.data.model.task.CancelReason
-
+import kz.post.jcourier.data.model.task.Cancellation
+import kz.post.jcourier.data.model.task.CancellationType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CancelReasonAlertDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (taskId: Long, reason: String, cancelReasonOther: String?) -> Unit,
+    onConfirm: (taskId: Long, type: Cancellation, reason: String, cancelReasonOther: String?) -> Unit,
     text: String,
     taskId: Long,
-    cancellationReasonsList: ArrayList<CancelReason>?,
+    cancellations: ArrayList<CancellationType>?,
 ) {
-    if (show && !cancellationReasonsList.isNullOrEmpty()) {
-//        var showChooseError by remember { mutableStateOf(false) }
-        var expanded by remember { mutableStateOf(false) }
-        val cancellationReasons = cancellationReasonsList.map { it.description }
+    if (show && !cancellations.isNullOrEmpty()) {
+        var expandedTypes by remember { mutableStateOf(false) }
 
-        var selectedText by remember { mutableStateOf(cancellationReasons[0]) }
-        var selectedIndex by remember { mutableStateOf(0) }
+        var selectedTypeText by remember { mutableStateOf("") }
+        var selectedTypeIndex by remember { mutableStateOf(0) }
+
+        var showReasons by remember { mutableStateOf(false) }
+
+        var expandedReason by remember { mutableStateOf(false) }
+        var cancellationReason by remember { mutableStateOf(cancellations[0].cancellationReasons) }
+
+
+        var selectedReasonText by remember { mutableStateOf("") }
+        var selectedReasonIndex by remember { mutableStateOf(0) }
 
         var inputText by remember { mutableStateOf("") }
-        val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-            disabledBorderColor = if (inputText.isEmpty()) Color.Red else Color.Gray,
-        )
         AlertDialog(
             onDismissRequest = onDismiss,
             confirmButton = {
                 TextButton(onClick = {
-//                    if (selectedIndex == 0) {
-////                        showChooseError = true
-//                        return@TextButton
-//                    }
-//                    if (selectedIndex == 4 && inputText.trim().length < 3) {
-//                        return@TextButton
-//                    }
                     onConfirm.invoke(
                         taskId,
-                        cancellationReasonsList[cancellationReasons.indexOf(selectedText)].reason,
+                        cancellations[selectedTypeIndex].cancellationType,
+                        cancellationReason!![selectedReasonIndex].cancellationReason,
                         inputText
                     )
                 })
@@ -62,7 +59,7 @@ fun CancelReasonAlertDialog(
             text = {
                 Column(
                     modifier = Modifier
-                        .height(140.dp)
+                        .height(200.dp)
                 ) {
                     Text(text)
                     Divider(
@@ -72,53 +69,76 @@ fun CancelReasonAlertDialog(
                             .height(1.dp)
                     )
                     ExposedDropdownMenuBox(
-                        expanded = expanded,
+                        expanded = expandedTypes,
                         onExpandedChange = {
-                            expanded = !expanded
+                            expandedTypes = !expandedTypes
                         }
                     ) {
                         TextField(
-                            value = selectedText,
+                            value = selectedTypeText,
                             onValueChange = {},
                             readOnly = true,
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedTypes) },
                             modifier = Modifier.menuAnchor()
                         )
 
                         ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false }
+                            expanded = expandedTypes,
+                            onDismissRequest = { expandedTypes = false }
                         ) {
-                            cancellationReasons.forEach { item ->
+                            cancellations.forEach { item ->
                                 DropdownMenuItem(
-                                    text = { Text(text = item) },
+                                    text = { Text(text = item.description) },
                                     onClick = {
-                                        selectedText = item
-                                        selectedIndex = cancellationReasons.indexOf(item)
-                                        expanded = false
-//                                        showChooseError = selectedIndex == 0
+                                        selectedTypeText = item.description
+                                        selectedTypeIndex = cancellations.indexOf(item)
+                                        expandedTypes = false
+                                        showReasons = true
+                                        cancellationReason = item.cancellationReasons
+                                        selectedReasonText = ""
                                     }
                                 )
                             }
                         }
                     }
-//                    if (showChooseError) {
-//                        Text(
-//                            color = Color.Red,
-//                            text = stringResource(id = R.string.choose_reason)
-//                        )
-//                    }
-//                    if (selectedText == cancellationReasons.last()) {
-//                        OutlinedTextField(
-//                            colors = textFieldColors,
-//                            isError = inputText.isEmpty(),
-//                            value = inputText,
-//                            onValueChange = { inputText = it },
-//                            placeholder = {
-//                                Text(stringResource(id = R.string.enter_cancellation_reason))
-//                            },
-//                        )
-//                    }
+                    if (showReasons) {
+                        Divider(
+                            color = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp)
+                        )
+                        ExposedDropdownMenuBox(
+                            expanded = expandedReason,
+                            onExpandedChange = {
+                                expandedReason = !expandedReason
+                            }
+                        ) {
+                            TextField(
+                                value = selectedReasonText,
+                                onValueChange = {},
+                                readOnly = true,
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedReason) },
+                                modifier = Modifier.menuAnchor()
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = expandedReason,
+                                onDismissRequest = { expandedReason = false }
+                            ) {
+                                cancellationReason?.forEach { item ->
+                                    DropdownMenuItem(
+                                        text = { Text(text = item.description) },
+                                        onClick = {
+                                            selectedReasonText = item.description
+                                            selectedReasonIndex = cancellationReason!!.indexOf(item)
+                                            expandedReason = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             },
         )

@@ -92,7 +92,7 @@ fun task(
                     isCancelReasonDialog,
                     isCallVariantsDialog,
                     isChooseFileDialog,
-                    task.cancellationReasons,
+                    task.cancellationTypes,
                     navController,
                 )
             }

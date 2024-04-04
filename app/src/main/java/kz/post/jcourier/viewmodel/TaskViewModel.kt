@@ -160,7 +160,7 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    private fun cancelTask(id: Long, reason: String, cancelReasonOther: String?) =
+    private fun cancelTask(id: Long, type: Cancellation, reason: String, cancelReasonOther: String?) =
         viewModelScope.launch {
             val otherReason: String? = if (cancelReasonOther?.isEmpty() == true) {
                 null
@@ -168,7 +168,7 @@ class TaskViewModel @Inject constructor(
                 cancelReasonOther
             }
             showLoadingDialog()
-            taskRepository.cancelTask(TaskIdReason(id, reason, otherReason)).onSuccess {
+            taskRepository.cancelTask(TaskIdReason(id, type, reason, otherReason)).onSuccess {
                 hideLoadingDialog()
                 it.let {
                     uiState.task.value = it
@@ -255,9 +255,9 @@ class TaskViewModel @Inject constructor(
         taskCall(taskId, direction)
     }
 
-    fun onCancelTaskDialog(taskId: Long, reason: String, cancelReasonOther: String?) {
+    fun onCancelTaskDialog(taskId: Long, type: Cancellation, reason: String, cancelReasonOther: String?) {
         hideCancelReasonDialog()
-        cancelTask(taskId, reason, cancelReasonOther)
+        cancelTask(taskId, type, reason, cancelReasonOther)
     }
 
     fun showCallVariantDialog() {
