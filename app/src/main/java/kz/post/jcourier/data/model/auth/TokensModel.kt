@@ -5,11 +5,11 @@ import androidx.annotation.Keep
 @Keep
 data class TokenModelData(
     var success: Boolean?,
-    var data: TokenModel?
+    var data: TokensModel?
 )
 
 @Keep
-data class TokenModel(
+data class TokensModel(
     var tokens: Tokens?,
 
     var status: Int?,
@@ -21,8 +21,8 @@ data class TokenModel(
 
 @Keep
 data class Tokens(
-    var auth: Auth,
-    var refresh: Refresh?
+    var auth: TokenModel,
+    var refresh: TokenModel?
 )
 
 @Keep
@@ -31,14 +31,7 @@ data class RefreshToken(
 )
 
 @Keep
-data class Auth(
-    var token: String? = null,
-    var issued: String? = null,
-    var expired: String? = null
-)
-
-@Keep
-data class Refresh(
+data class TokenModel(
     var token: String? = null,
     var issued: String? = null,
     var expired: String? = null

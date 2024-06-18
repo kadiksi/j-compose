@@ -13,14 +13,14 @@ import kz.post.jcourier.utils.addCharAtIndex
 import kz.post.jcourier.common.NetworkResult
 import kz.post.jcourier.common.onError
 import kz.post.jcourier.common.onSuccess
-import kz.post.jcourier.data.model.auth.TokenModel
+import kz.post.jcourier.data.model.auth.TokensModel
 import kz.post.jcourier.data.repository.LoginRepository
 import kz.post.jcourier.data.sharedprefs.SharedPreferencesProvider
 import kz.post.jcourier.firebase.IsNotification
 import javax.inject.Inject
 
 data class LoginState(
-    val user: MutableState<TokenModel?> = mutableStateOf(null),
+    val user: MutableState<TokensModel?> = mutableStateOf(null),
     var isError: MutableState<Boolean> = mutableStateOf(false),
     var isRefreshToken: MutableState<Boolean> = mutableStateOf(false),
     var isPassIncorrect: MutableState<Boolean> = mutableStateOf(false),
@@ -77,10 +77,10 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun saveUserData(it: TokenModel) {
+    private fun saveUserData(tokensModel: TokensModel) {
         uiState.isPassIncorrect.value = false
-        sharedPreferencesProvider.setUserData(it)
-        uiState.user.value = it
+        sharedPreferencesProvider.setUserData(tokensModel)
+        uiState.user.value = tokensModel
         uiState.isError.value = false
         isLogin.value = IsLogin(true)
     }

@@ -13,6 +13,7 @@ data class ContactFrom(
     var companyName: String? = null,
     var name: String? = null,
     var phone: String? = null,
+    var comments: String? = null,
     var dateFrom: Date? = null,
     var dateTo: Date? = null,
     var workingTime: ArrayList<WorkingTime>? = null,

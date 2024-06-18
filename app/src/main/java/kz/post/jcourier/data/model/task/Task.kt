@@ -48,6 +48,11 @@ data class Task(
                 text += ", этаж: $it"
             }
         }
+        address?.intercom?.let {
+            if (it.isNotEmpty()) {
+                text += ", код домофона: $it"
+            }
+        }
         return text
     }
 }

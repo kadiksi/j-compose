@@ -20,7 +20,7 @@ data class Address(
     var entrance: String? = null,
     var floor: String? = null,
     var intercom: String? = null,
-    var comment: String? = null,
-
+//    var comment: String? = null,
+    var description: String? = null,
     var point: Point? = null
 ) : Parcelable

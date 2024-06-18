@@ -3,6 +3,7 @@ package kz.post.jcourier.ui.login
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kz.post.jcourier.EntryPointActivity
 import kz.post.jcourier.R
-import kz.post.jcourier.data.exception.activityForResult
 import kz.post.jcourier.data.exception.showErrorDialog
 import kz.post.jcourier.ui.biometry.BiometricHelper
 import kz.post.jcourier.ui.biometry.BiometricState
@@ -41,6 +41,7 @@ import kz.post.jcourier.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(fragmentActivity: EntryPointActivity,
+                activityResultLauncher : ActivityResultLauncher<Intent>,
                 viewModel: LoginViewModel = viewModel()
 ) {
     var phone by remember { mutableStateOf("") }
@@ -141,7 +142,7 @@ fun LoginScreen(fragmentActivity: EntryPointActivity,
                                     when (it) {
                                         BiometricState.Success -> viewModel.onFingerprintRecognized()
                                         BiometricState.EnrollTouchId -> startFingerPrintActivity(
-                                            fragmentActivity
+                                            activityResultLauncher
                                         )
 
                                         BiometricState.TooManyAttempts -> fragmentActivity.showErrorDialog(
@@ -165,15 +166,14 @@ fun LoginScreen(fragmentActivity: EntryPointActivity,
     }
 }
 
-private fun startFingerPrintActivity(fragmentActivity: EntryPointActivity) {
-    val launcherFingerPrint = fragmentActivity.activityForResult {}
+private fun startFingerPrintActivity(activityResultLauncher: ActivityResultLauncher<Intent>) {
 
     when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
-            launcherFingerPrint.launch(Intent(Settings.ACTION_BIOMETRIC_ENROLL))
+            activityResultLauncher.launch(Intent(Settings.ACTION_BIOMETRIC_ENROLL))
         }
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-            launcherFingerPrint.launch(Intent(Settings.ACTION_SECURITY_SETTINGS))
+            activityResultLauncher.launch(Intent(Settings.ACTION_SECURITY_SETTINGS))
         }
     }
 }

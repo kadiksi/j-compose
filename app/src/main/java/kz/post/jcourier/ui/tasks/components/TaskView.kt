@@ -41,6 +41,11 @@ fun TaskSenderAddress(task: Task) {
             TextViewAnnotated(
                 R.string.from_address, task.getAddress(task.addressFrom),
             )
+            task.addressFrom?.description?.let {
+                TextViewAnnotated(
+                    R.string.address_company, it,
+                )
+            }
             task.contactFrom?.companyName?.let {
                 TextViewAnnotated(
                     R.string.from_company, it,
@@ -60,7 +65,7 @@ fun TaskSenderAddress(task: Task) {
                     )
                 }
             }
-            task.addressFrom?.comment?.let {
+            task.contactFrom?.comments?.let {
                 TextViewAnnotated(
                     R.string.merchant_comment,
                     it,
@@ -120,6 +125,11 @@ fun TaskClientView(task: Task) {
                 R.string.to_address,
                 task.getAddress(task.addressTo)
             )
+            task.addressTo?.description?.let {
+                TextViewAnnotated(
+                    R.string.address_company, it,
+                )
+            }
             task.contactTo?.name?.let {
                 TextViewAnnotated(
                     R.string.to_contact,
@@ -132,7 +142,7 @@ fun TaskClientView(task: Task) {
                     toDateTimeFormat(it) + "-" + toTimeFormat(task.contactTo?.dateTo!!)
                 )
             }
-            task.addressTo?.comment?.let {
+            task.contactTo?.comments?.let {
                 TextViewAnnotated(
                     R.string.customer_comment,
                     it,

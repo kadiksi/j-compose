@@ -2,7 +2,7 @@ package kz.post.jcourier.data.interceptors
 
 import kz.post.jcourier.BuildConfig
 import kz.post.jcourier.data.api.ApiConstants.HEADER_AUTH
-import kz.post.jcourier.data.model.auth.RefreshTokenModule
+import kz.post.jcourier.data.model.auth.RefreshTokenModel
 import kz.post.jcourier.utils.HttpUtils
 import okhttp3.FormBody
 import okhttp3.Request
@@ -15,10 +15,10 @@ import okhttp3.Request
  */
 fun makeRefreshTokenRequest(accessToken: String, refreshToken: String): Request {
     val authHeader = HttpUtils.getBearerTokenHeader(accessToken)
-    return doMakeRefreshTokenRequest(authHeader, RefreshTokenModule(refreshToken))
+    return doMakeRefreshTokenRequest(authHeader, RefreshTokenModel(refreshToken))
 }
 
-private fun doMakeRefreshTokenRequest(authHeader: String, refreshToken: RefreshTokenModule): Request {
+private fun doMakeRefreshTokenRequest(authHeader: String, refreshToken: RefreshTokenModel): Request {
     val body = FormBody.Builder()
         .add("token", refreshToken.token)
         .build()
