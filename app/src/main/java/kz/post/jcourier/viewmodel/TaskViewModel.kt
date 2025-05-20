@@ -92,9 +92,9 @@ class TaskViewModel @Inject constructor(
             taskRepository.getTaskById(it).onSuccess { task ->
                 hideLoadingDialog()
                 uiState.task.value = task
-                if(isRead != null && isRead != true){
+//                if(isRead != null && isRead != true){
                     makeAsRead()
-                }
+//                }
             }.onError { _, message ->
                 hideLoadingDialog()
                 uiState.isError.value = ErrorModel(true, message)

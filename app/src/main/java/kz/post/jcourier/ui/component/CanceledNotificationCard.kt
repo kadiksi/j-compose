@@ -36,7 +36,7 @@ fun CanceledNotificationCard(
         .padding(8.dp)
         .width(IntrinsicSize.Max), onClick = {
         navController.navigate(
-            DrawerScreens.TaskInfo.route, "taskId" to notification.taskId,
+            DrawerScreens.TaskInfo.route, "taskId" to notification.attributes.taskId,
             "notificationId" to notification.id,
             "isRead" to notification.isRead
         )
@@ -51,7 +51,7 @@ fun CanceledNotificationCard(
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge,
-                text = "№ ${notification.taskId}"
+                text = "№ ${notification.attributes.taskId}"
             )
         }
         Row {
@@ -60,7 +60,7 @@ fun CanceledNotificationCard(
                     .fillMaxWidth()
                     .background(color = Color.Transparent)
                     .padding(8.dp)
-                    .weight(1f), text = notification.title
+                    .weight(1f), text = notification.title.RU
             )
         }
         Row {
@@ -70,7 +70,7 @@ fun CanceledNotificationCard(
                     .padding(8.dp)
                     .background(color = Color.Transparent)
                     .weight(1f), text = AnnotatedString(
-                    text = notification.message, spanStyles = boldSpanStyles()
+                    text = notification.message.RU, spanStyles = boldSpanStyles()
                 )
             )
         }

@@ -18,7 +18,7 @@ data class ForCancel(
     val first: Boolean,
     val last: Boolean,
     val empty: Boolean,
-    val unreadMessages: Int
+    val unreadCount: Int
 ) : Parcelable
 
 @Parcelize
@@ -27,12 +27,26 @@ data class CanceledNotification(
     val id: Long,
     val createdDate: Date,
     val userId: Long,
-    val taskId: Long,
-    val title: String,
-    val message: String,
+    val attributes: Attributes,
+    val title: FieldData,
+    val message: FieldData,
     val isRead: Boolean
 ) : Parcelable
 
+@Parcelize
+@Keep
+data class FieldData(
+    val EN: String,
+    val KK: String,
+    val RU: String,
+) : Parcelable
+
+@Parcelize
+@Keep
+data class Attributes(
+    val taskId: Long,
+    val barcode: String,
+) : Parcelable
 @Parcelize
 @Keep
 data class Pageable(

@@ -90,27 +90,32 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     namespace = "kz.post.jcourier"
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
-    android {
-        lint {
-            baseline = file("lint-baseline.xml")
-        }
+    lint {
+        baseline = file("lint-baseline.xml")
     }
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 dependencies {
+    implementation ("androidx.multidex:multidex:2.0.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation ("androidx.compose.ui:ui:1.4.3")
     implementation ("androidx.compose.material3:material3:1.2.0-alpha02")
@@ -126,8 +131,8 @@ dependencies {
     androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.4.3")
     debugImplementation ("androidx.compose.ui:ui-tooling:1.4.3")
     implementation ("io.socket:socket.io-client:2.0.1")
-    implementation ("com.google.dagger:hilt-android:2.45")
-    kapt ("com.google.dagger:hilt-compiler:2.45")
+    implementation ("com.google.dagger:hilt-android:2.48")
+    kapt ("com.google.dagger:hilt-compiler:2.48")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
@@ -137,7 +142,7 @@ dependencies {
     implementation ("io.coil-kt:coil-compose:2.2.2")
 
     implementation ("androidx.navigation:navigation-compose:2.5.3")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
     //Preferences
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
     //Timber

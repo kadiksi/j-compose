@@ -55,9 +55,30 @@ fun homeMap(
                                     position.addressTo?.point?.latitude!!,
                                     position.addressTo?.point?.longitude!!
                                 ),
-                            )
+                            ),
                         )
                 }
+//                MarkerInfoWindow(
+//                    state = MarkerState(position = locationMap),
+//                    icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_cargo_select)
+//                ) {
+//                    Column(
+//                        horizontalAlignment = Alignment.CenterHorizontally,
+//                        verticalArrangement = Arrangement.Center,
+//                        modifier = Modifier
+//                            .border(
+//                                BorderStroke(1.dp, Color.Black),
+//                                RoundedCornerShape(10)
+//                            )
+//                            .clip(RoundedCornerShape(10))
+//                            .background(Color.Blue)
+//                            .padding(20.dp)
+//                    ) {
+//                        Text("Title", fontWeight = FontWeight.Bold, color = Color.White)
+//                        Text("Description", fontWeight = FontWeight.Medium, color = Color.White)
+//                    }
+//                }
+//            }
             }
         }
     }

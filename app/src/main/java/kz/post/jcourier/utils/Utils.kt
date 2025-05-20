@@ -104,10 +104,10 @@ inline fun Activity?.requestNotificationPermission(
     if (this == null || isFinishing) return null
 
     when {
-//        hasPermissionAccessPushNotification() -> {
-//            if (isGpsEnabled()) onPermissionGranted.invoke()
-//            else return showEnableGpsDialog(this)
-//        }
+        hasPermissionAccessPushNotification() -> {
+            if (isGpsEnabled()) onPermissionGranted.invoke()
+            else return showEnableGpsDialog(this)
+        }
         ActivityCompat.shouldShowRequestPermissionRationale(
             this,
             Manifest.permission.POST_NOTIFICATIONS

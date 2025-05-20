@@ -40,7 +40,8 @@ class TaskRepository @Inject constructor(
     ): NetworkResult<ForCancel> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.getForCancellation(page, size, sortIsRead, sortCreatedDate)
+                taskApiService.getForCancellation(page, size,
+                    "CANCEL_TASK_NOTIFICATION", sortCreatedDate)
             }
         }
     }
@@ -56,7 +57,8 @@ class TaskRepository @Inject constructor(
     suspend fun markAsRead(notificationId: Long): NetworkResult<Unit> {
         return withContext(defaultDispatcher) {
             safeApiCall {
-                taskApiService.markAsRead(notificationId)
+                val notificationList = arrayListOf(notificationId);
+                taskApiService.markAsRead(notificationList)
             }
         }
     }

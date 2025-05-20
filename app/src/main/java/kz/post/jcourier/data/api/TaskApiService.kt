@@ -14,8 +14,8 @@ interface TaskApiService {
     @GET("gw/jpost-courier/api/public/v1/task/{id}")
     suspend fun getTaskById(@Path("id") id: Long): Response<Task>
 
-    @PUT("gw/jpost-courier/api/public/v1/notification/mark-as-read")
-    suspend fun markAsRead(@Query("notificationId") notificationId: Long): Response<Unit>
+    @PUT("gw/jpost-push/api/v1/push/mark/read")
+    suspend fun markAsRead(@Body notificationIds: List<Long>): Response<Unit>
 
     @POST("gw/jpost-courier/api/public/v1/task/submit")
     suspend fun setStatus(@Body taskStatusId: TaskStatusId): Response<Task>
@@ -39,10 +39,10 @@ interface TaskApiService {
         @Part file: List<MultipartBody.Part>,
     ): Response<Boolean>
 
-    @GET("gw/jpost-courier/api/public/v1/notification/for-cancel")
+    @GET("gw/jpost-push/api/v1/push/list/by-userId")
     suspend fun getForCancellation(@Query("page") page: Int,
                                    @Query("size") size: Int,
-                                   @Query("sort") isRead: String,
+                                   @Query("notificationTypes") notificationTypes: String,
                                    @Query("sort") sort: String
     ): Response<ForCancel>
 

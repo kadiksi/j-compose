@@ -10,7 +10,7 @@ pluginManagement {
         }
         dependencies {
             classpath("com.android.tools:r8:8.1.56")
-            classpath("com.google.guava:guava:30.1.1-jre")  // <-- THIS IS REQUIRED UNTIL R8 3.2.4-dev
+            classpath("com.google.guava:guava:32.0.1-jre")  // <-- THIS IS REQUIRED UNTIL R8 3.2.4-dev
         }
     }
 }

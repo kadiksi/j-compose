@@ -21,6 +21,6 @@ interface LoginApiService {
     @POST("/gw/user/v1/auth/refresh")
     suspend fun refreshToken(@Body refreshToken: RefreshToken): Response<TokenModelData>
 
-    @POST("/gw/jpost-employee/api/public/v1/employee/token")
+    @POST("/gw/jpost-push/api/v1/token/register")
     suspend fun sendToken(@Query("token") token: String): Response<TokenModelData>
 }

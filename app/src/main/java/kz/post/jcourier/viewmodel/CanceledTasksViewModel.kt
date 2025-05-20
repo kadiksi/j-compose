@@ -59,7 +59,7 @@ class CanceledTasksViewModel @Inject constructor(
             taskRepository.getForCancellation(page, pageSize, sortIsRead, sortCreatedDate).onSuccess {
                 uiState.isRefreshing.value = false
                 it.let {
-                    uiState.canceledTaskCount.value = it.unreadMessages
+                    uiState.canceledTaskCount.value = it.unreadCount
 
                     canPaginate = it.content.size == pageSize
 
