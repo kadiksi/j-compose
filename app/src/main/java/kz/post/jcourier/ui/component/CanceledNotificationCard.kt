@@ -75,7 +75,7 @@ fun CanceledNotificationCard(
             )
         }
 
-        notification.createdDate?.let {
+        notification.createdDate.let {
             Row {
                 Text(
                     modifier = Modifier

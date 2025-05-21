@@ -115,7 +115,6 @@ kotlin {
 }
 
 dependencies {
-    implementation ("androidx.multidex:multidex:2.0.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation ("androidx.compose.ui:ui:1.4.3")
     implementation ("androidx.compose.material3:material3:1.2.0-alpha02")
@@ -131,10 +130,10 @@ dependencies {
     androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.4.3")
     debugImplementation ("androidx.compose.ui:ui-tooling:1.4.3")
     implementation ("io.socket:socket.io-client:2.0.1")
-    implementation ("com.google.dagger:hilt-android:2.48")
+    implementation ("com.google.dagger:hilt-android:2.49")
     kapt ("com.google.dagger:hilt-compiler:2.48")
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.10.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.10.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

@@ -4,8 +4,8 @@ object AppConfig {
     const val compileSdk = 31
     const val minSdk = 21
     const val targetSdk = 34
-    const val versionCode = 36
-    const val versionName = "1.36"
+    const val versionCode = 37
+    const val versionName = "1.37"
     const val androidTestInstrumentation = "androidx.test.runner.AndroidJUnitRunner"
     const val proguardConsumerRules =  "consumer-rules.pro"
     const val dimension = "default"
